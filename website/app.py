@@ -15,19 +15,13 @@ from sqlalchemy.exc import SQLAlchemyError, OperationalError
 import stripe
 import time
 from flask import Flask
-from .config import Config
+from config import Config
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 # --- Config / Env -----------------------------------------------------------
-
-class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret")
-    DATABASE_URI = os.environ.get("DATABASE_URI")
-    # add other settings as needed
-
 
 try:
     from config import Config
