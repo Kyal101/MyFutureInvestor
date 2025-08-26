@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Fund & Invest{% endblock %}
+
+{% block content %}
+<style>
+    /* Import Montserrat for headers */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+    .idea-banner-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .idea-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+        font-family: 'Montserrat', Arial, sans-serif;
+    }
+
+    .details-btn, .pdf-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #00aaff;
+        box-shadow: 0 0 8px #00aaff88;
+    }
+    .details-btn:hover, .pdf-btn:hover {
+        background-color: white;
+        color: #0077cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0088ee;
+    }
+
+    .fund-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+    .fund-btn:hover {
+        background-color: #1b5e20;
+        border-color: #145214;
+        box-shadow: 0 0 8px #4caf5088;
+    }
+
+    .join-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+    }
+    .join-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    #ideas-heading {
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 2rem;
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+    }
+
+    #ideas-heading + p {
+        font-size: 1.00rem;
+    }
+
+    #patents-heading {
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 2rem;
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+    }
+
+    .blue-bold {
+        color: #00aaff;
+    }
+
+    .ideas-section, .patent-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid #333;
+    }
+
+    .ideas-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .idea-card {
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        margin: 1rem;
+        border: 1px solid #005cbf;
+        border-radius: 8px;
+        padding: 1rem;
+        background-color: #0e0e0e;
+        color: #fff;
+    }
+
+    .idea-card h3 {
+        color: #fff;
+        font-family: inherit;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-weight: 600;
+    }
+
+    .idea-card p {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .goal-bar {
+        background-color: #333;
+        border-radius: 6px;
+        height: 20px;
+        margin: 1rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .progress {
+        background: linear-gradient(90deg, #00aaff, #4caf50);
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+
+    .whitepaper-preview {
+        margin: 1rem 0;
+        text-align: left;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .whitepaper-snippet {
+        color: #ccc;
+        font-style: italic;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+</style>
+
+<div class="content-container">
+    <section class="ideas-section" aria-labelledby="ideas-heading">
+        <h2 id="ideas-heading" class="centered-text">Our Innovative Projects</h2>
+        <p class="centered-text">Explore our ecosystem of ideas designed to solve humanity's greatest challenges. Support these projects to help build a better future!</p>
+        {% if ideas %}
+        <div class="ideas-container">
+            {% for idea in ideas %}
+            <article class="idea-card" aria-labelledby="{{ idea.name | replace(' ', '-') }}-title">
+                <div class="idea-banner-container">
+                    {% if idea.name == "JARVI3" %}
+                        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 9, 2025, 11_52_32 AM.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "QuantumSystemLock" %}
+                        <img src="{{ url_for('static', filename='images/qsl/5d5ead93-f52d-4072-96ba-328d0adbcfaf.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "EcoKure" %}
+                        <img src="{{ url_for('static', filename='images/ecokure/Ecokurebackgroundwallpaper.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "KureAcademy" %}
+                        <img src="{{ url_for('static', filename='images/kure_academy/kureacademybannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "KureMechanics" %}
+                        <img src="{{ url_for('static', filename='images/kure_mechanics/kuremechanicsbannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "PropertySolutionsAustralia (PSA)" %}
+                        <img src="{{ url_for('static', filename='images/psa/psabannor2.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "Zero Debt Solution" %}
+                        <img src="{{ url_for('static', filename='images/zde/zdebannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "Patents" %}
+                        <img src="{{ url_for('static', filename='images/Patentscover.jpg') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "Support Kyal" %}
+                        <img src="{{ url_for('static', filename='images/profilepic.jpg') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/' + (idea.image or 'placeholder.png')) }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% endif %}
+                </div>
+
+                <h3 id="{{ idea.name | replace(' ', '-') }}-title">{{ idea.name }}</h3>
+                <p>{{ idea.description }}</p>
+                <p><strong class="blue-bold">Stage:</strong> {{ idea.stage }}</p>
+                <p><strong class="blue-bold">Market:</strong> {{ idea.market }}</p>
+
+                <div class="whitepaper-preview">
+                    <p class="whitepaper-snippet">Ecosystem Impact: 
+                        <span style="color: #00aaff;">
+                            {% if idea.name == "Patents" %}
+                                Enabling hidden innovations to thrive, expanding MyFutureInvestor with cutting-edge tech ideas and new opportunities.
+                            {% elif idea.name == "Support Kyal" %}
+                                Direct contributions empower the founder’s vision, driving impactful advancements and new possibilities for MyFutureInvestor.
+                            {% elif idea.name == "JARVI3" %}
+                                Pioneering AI with golden ratio principles for ethical, intuitive human-AI collaboration.
+                            {% elif idea.name == "QuantumSystemLock" %}
+                                Revolutionizing cybersecurity with quantum encryption for unbreakable data protection.
+                            {% elif idea.name == "EcoKure" %}
+                                Promoting sustainable living through practical, eco-friendly strategies that support personal and planetary wellbeing.
+                            {% elif idea.name == "KureMechanics" %}
+                                Redefining physics education through consciousness-driven theoretical exploration.
+                            {% elif idea.name == "KureAcademy" %}
+                                Transforming education with consciousness-focused learning for global impact.
+                            {% elif idea.name == "PropertySolutionsAustralia (PSA)" %}
+                                Streamlining real estate investment for wealth creation in Australia’s market.
+                            {% elif idea.name == "Zero Debt Solution" %}
+                                Empowering financial freedom through innovative debt management techniques.
+                            {% else %}
+                                {{ idea.whitepaper_preview | default('Critical foundation for our interconnected future.') | truncate(100, True) }}
+                            {% endif %}
+                        </span>
+                    </p>
+                </div>
+
+                <div class="goal-bar" aria-label="Funding progress for {{ idea.name }}">
+                    <div class="progress" style="width: {{ (idea.funding_raised / idea.funding_goal * 100) if idea.funding_goal > 0 else 0 }}%"></div>
+                    <p>${{ idea.funding_raised | int }} / ${{ idea.funding_goal | int }} raised</p>
+                </div>
+
+                <div class="buttons">
+                    <a href="{{ url_for(idea.detail_endpoint) }}" class="btn details-btn" aria-label="View details for {{ idea.name }}">Details</a>
+                    {% if idea.name != "Patents" and idea.name != "Support Kyal" %}
+                    <a href="{{ idea.pdf_url or '#' }}" target="_blank" class="btn pdf-btn" aria-label="View full {{ idea.name }} whitepaper">Whitepaper</a>
+                    {% endif %}
+                    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                        <a href="{{ url_for('invest') }}" class="btn fund-btn" aria-label="Donate or invest in {{ idea.name }}">Donate or Invest</a>
+                        <a href="{{ url_for('join_ecosystem') }}" class="btn join-btn" aria-label="Join the ecosystem">Join Ecosystem</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="error">No projects available yet. Check back soon for exciting opportunities!</p>
+        {% endif %}
+    </section>
+
+    <section class="patent-section" aria-labelledby="patents-heading">
+        <h2 id="patents-heading" class="centered-text">Patent Status</h2>
+        <p class="centered-text">Support our innovative projects to help secure patents and accelerate their impact on the world. Fund now to push new ideas forward!</p>
+        <div class="buttons" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+            <a href="{{ url_for('invest') }}" class="btn fund-btn" aria-label="Fund new ideas">Donate or Invest</a>
+            <a href="{{ url_for('join_ecosystem') }}" class="btn join-btn" aria-label="Join the ecosystem">Join Ecosystem</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

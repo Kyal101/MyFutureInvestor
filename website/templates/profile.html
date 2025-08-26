@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Profile{% endblock %}
+
+{% block content %}
+<style>
+    body { background-color: #000; }
+    .content-container { max-width: 1200px; margin: 0 auto; padding: 2rem; color: #fff; }
+    .glow-heading { font-family: Arial, sans-serif; font-weight: 700; font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: #00aaff; text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88; }
+    .section-heading { font-family: Arial, sans-serif; font-size: 1.5rem; font-weight: 600; color: #00aaff; margin-bottom: 1rem; text-align: center; text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88; }
+    .section-card { background-color: #1e1e1e; border-radius: 12px; padding: 2rem; border: 1px solid #333; margin-bottom: 2rem; }
+    .leaderboard-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+    .leaderboard-table th, .leaderboard-table td { border: 1px solid #444; padding: 0.5rem; text-align: left; color: #fff; font-family: Arial, sans-serif; }
+    .leaderboard-table th { background-color: #1e1e1e; font-weight: 600; }
+    .buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; align-items: center; }
+    .btn { padding: 0.5rem 1.25rem; font-size: 1rem; border-radius: 6px; cursor: pointer; border: 2px solid transparent; background-color: #007bff; color: white; font-family: Arial, sans-serif; font-weight: 600; transition: all 0.3s ease; text-decoration: none; text-align: center; box-shadow: 0 0 8px #007bff88; }
+    .btn:hover { background-color: #0069d9; box-shadow: 0 0 12px #007bffcc; border-color: #005cbf; }
+    .no-data { color: #aaa; font-style: italic; text-align: center; font-family: Arial, sans-serif; }
+    .subscription-info { text-align: center; margin-top: 1rem; font-size: 1rem; }
+    .subscription-info strong { color: #00aaff; }
+    .blue-bold { color: #00aaff; font-weight: 600; }
+    .contact-section { margin-bottom: 2rem; text-align: center; padding: 0; background: none; border: none; }
+    .contact-form { max-width: 600px; margin: 2rem auto 0 auto; padding: 0; border: none; border-radius: 0; background: none; }
+    .contact-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #fff; text-align: left; }
+    .contact-form select, .contact-form textarea { width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #444; border-radius: 4px; font-size: 1rem; background-color: #333; color: #fff; font-family: Arial, sans-serif; }
+    .contact-form textarea { height: 150px; resize: vertical; }
+    .subscription-message { text-align: center; font-size: 1rem; color: #ccc; margin-right: 1rem; }
+</style>
+
+<div class="content-container">
+    <h2 class="glow-heading">Welcome, {{ current_user.username | default('User') }}</h2>
+
+    <!-- Support CTA -->
+    <div class="section-card">
+        <h3 class="section-heading">Support Our Vision</h3>
+        <p style="text-align: center; font-size: 1.1rem; margin-bottom: 1rem;">
+            Empower our projects and secure the future. Every contribution counts.
+        </p>
+        <div class="buttons">
+            <a href="{{ url_for('invest') }}" class="btn" aria-label="Donate or Make an Investment">Donate or Make an Investment</a>
+        </div>
+    </div>
+
+    <!-- Donations -->
+    <div class="section-card">
+        <h3 class="section-heading">Your Donations</h3>
+        {% if donations %}
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in donations %}
+                <tr>
+                    <td>{{ donation.idea or 'N/A' }}</td>
+                    <td>${{ (donation.amount / 100) | float | round(2) }}</td>
+                    <td>{{ donation.message or 'No message' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">You haven't made any donations yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Investments -->
+    <div class="section-card">
+        <h3 class="section-heading">Your Investments</h3>
+        {% if investments %}
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for investment in investments %}
+                <tr>
+                    <td>{{ investment.idea or 'N/A' }}</td>
+                    <td>${{ (investment.amount / 100) | float | round(2) }}</td>
+                    <td>{{ investment.percentage or 'N/A' }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">You haven't made any investments yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Subscription -->
+    <div class="section-card">
+        <h3 class="section-heading">Your Subscription</h3>
+        {% if subscription %}
+            <!-- Paid subscription -->
+            <p class="subscription-info">
+                Subscribed to <strong>{{ subscription.plan }}</strong> plan.<br>
+                Status: <strong>{{ subscription.status }}</strong><br>
+                Created: {{ subscription.created_at.strftime('%d %b %Y') }}
+            </p>
+            <div class="buttons">
+            
+                <form action="{{ url_for('unsubscribe') }}" method="POST">
+                    <input type="hidden" name="type" value="monthly">
+                    <button type="submit" class="btn" aria-label="Cancel Email Subscription">Cancel Email Subscription</button>
+                </form>
+            </div>
+        {% elif email_subscribed %}
+            <!-- Email-only subscription -->
+            <p class="subscription-info">
+                You are subscribed to email updates only.
+            </p>
+            <div class="buttons">
+                <form action="{{ url_for('unsubscribe') }}" method="POST">
+                    <input type="hidden" name="type" value="email">
+                    <button type="submit" class="btn" aria-label="Unsubscribe from Email">Unsubscribe from Email</button>
+                </form>
+            </div>
+        {% else %}
+            <!-- No subscription -->
+            <p class="subscription-info">You are currently not subscribed.</p>
+            <div class="buttons">
+                <a href="{{ url_for('join_ecosystem') }}" class="btn" aria-label="Subscribe to Email Updates">Subscribe to Email Updates</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section">
+        <h3 class="section-heading">Contact Us</h3>
+        <form class="contact-form" action="mailto:kyal11105@gmail.com" method="POST" enctype="text/plain">
+            <label for="message-type">Message Type</label>
+            <select id="message-type" name="message_type" required>
+                <option value="support">Support</option>
+                <option value="inquiry">Inquiry</option>
+                <option value="collaboration">Collaboration</option>
+                <option value="feedback">Feedback</option>
+                <option value="other">Other</option>
+            </select>
+            <label for="message-content">Your Message</label>
+            <textarea id="message-content" name="message" required placeholder="Type your message here..."></textarea>
+            <div class="buttons">
+                <button type="submit" class="btn" aria-label="Send message">Send Message</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

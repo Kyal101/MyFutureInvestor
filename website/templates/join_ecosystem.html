@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Join Our Ecosystem{% endblock %}
+
+{% block content %}
+<style>
+/* ===== General Styles ===== */
+.banner-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+.banner { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+
+.buttons, .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+
+.btn, .cta-btn {
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    font-weight: 600;
+    user-select: none;
+}
+
+.subscribe-btn { background-color: #00aaff; color: white; border-color: #00aaff; box-shadow: 0 0 8px #00aaff88; }
+.subscribe-btn:hover { background-color: white; color: #0077cc; box-shadow: 0 0 12px #00aaffcc; border-color: #0088ee; }
+
+.cta-invest-btn { background-color: #2e7d32; color: white; border-color: #1b5e20; }
+.cta-invest-btn:hover { background-color: #1b5e20; box-shadow: 0 0 12px #4caf50cc; border-color: #145214; }
+
+.cta-donate-btn { background-color: #00aaff; color: white; border-color: #0088cc; }
+.cta-donate-btn:hover { background-color: #0088cc; box-shadow: 0 0 12px #00aaffcc; border-color: #0066aa; }
+
+.centered-text { text-align: center; }
+.subscription-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    border: 1px solid #000000;
+}
+.subscription-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #fff; text-align: left; }
+.subscription-form input, .subscription-form select {
+    width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #000; border-radius: 4px; font-size: 1rem;
+    background-color: #333; color: #fff;
+}
+.subscription-form input[readonly] { background-color: #222; cursor: not-allowed; }
+.subscription-form .submit-btn { background-color: #007bff; color: white; border-color: #0069d9; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; }
+.subscription-form .submit-btn:hover { background-color: #0069d9; box-shadow: 0 0 12px #007bffcc; border-color: #005cbf; }
+
+.glow-heading { text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88; font-family: inherit; }
+.blue-bold { color: #00aaff; font-weight: 600; }
+.green-bold { color: #4caf50; font-weight: 600; }
+
+.subscription-section, .benefits-section, .cta-section { margin-bottom: 2rem; padding: 2rem; background-color: #1e1e1e; border-radius: 12px; text-align: center; border: 1px solid #333; }
+.benefits-section { background: linear-gradient(135deg, #00aaff11, #4caf5011); border-left: 4px solid #00aaff; }
+.highlight-box { background: linear-gradient(135deg, #00aaff11, #4caf5011); border-left: 4px solid #00aaff; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; text-align: left; }
+</style>
+
+<div class="content-container">
+    <div class="top-logo">
+        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}" 
+             alt="My Future Investor Logo" class="main-logo" loading="lazy">
+    </div>
+
+    <section class="subscription-section" aria-labelledby="subscription-heading">
+        <h2 id="subscription-heading" class="centered-text glow-heading">Join Our Ecosystem</h2>
+        <p class="centered-text" style="font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+            Stay at the forefront of innovation by subscribing to our ecosystem updates. By joining, you'll receive exclusive insights, progress reports, and opportunities to engage with our mission.
+        </p>
+    </section>
+
+    <!-- Email Subscription Form -->
+    <section class="subscription-section" aria-labelledby="subscribe-email-heading">
+        <h2 id="subscribe-email-heading" class="centered-text glow-heading">Subscribe to Email Updates</h2>
+        <form class="subscription-form" action="{{ url_for('subscribe_email') }}" method="POST">
+            <label for="subscription-type">Subscription Type</label>
+            <select id="subscription-type" name="subscription_type" required>
+                <option value="general">General Updates</option>
+                <option value="investor">Investor Opportunities</option>
+                <option value="collaborator">Collaborator Insights</option>
+                <option value="supporter">Supporter News</option>
+            </select>
+
+            <button type="submit" class="btn submit-btn">
+                {% if email_subscribed %}Update Subscription{% else %}Subscribe{% endif %}
+            </button>
+        </form>
+
+        {% if email_subscribed %}
+        <form action="{{ url_for('unsubscribe') }}" method="POST" style="text-align:center; margin-top:1rem;">
+            <button type="submit" class="btn" style="background-color:#ff4444; border-color:#ff4444;">Unsubscribe</button>
+        </form>
+        {% endif %}
+    </section>
+
+
+    <section class="cta-section" aria-labelledby="cta-heading">
+        <h2 id="cta-heading" class="centered-text glow-heading">Take the Next Step</h2>
+        <p class="centered-text" style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6;">
+            Subscribing is just the beginning. Join thousands of forward-thinking individuals by investing in or supporting our mission.
+        </p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('invest') }}" class="cta-btn cta-invest-btn" aria-label="Invest in Our Future">Invest in Our Future</a>
+        </div>
+        <p style="margin-top: 2rem; font-style: italic; color: #aaa; font-size: 1rem;">
+            Because the future isn't something that happens to us — it's something we build together.
+        </p>
+    </section>
+</div>
+{% endblock %}

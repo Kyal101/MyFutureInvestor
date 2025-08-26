@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Leaderboards{% endblock %}
+
+{% block content %}
+<style>
+    .banner-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+    }
+
+    .blue-bold {
+        color: #00aaff;
+        font-weight: 600;
+    }
+
+    .green-bold {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    .leaderboards-section, .total-raised-section, .sponsors-collaborators-section {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #333;
+    }
+
+    .leaderboards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .leaderboard, .recent-donations {
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        margin: 1rem;
+        border: 1px solid #005cbf;
+        border-radius: 8px;
+        padding: 1rem;
+        background-color: #1e1e1e;
+        color: #fff;
+    }
+
+    .leaderboard h3, .recent-donations h3 {
+        color: #fff;
+        font-family: inherit;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+    }
+
+    .leaderboard-table {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        border-collapse: collapse;
+    }
+
+    .leaderboard-table th, .leaderboard-table td {
+        border: 1px solid #444;
+        padding: 0.5rem;
+        text-align: left;
+        color: #fff;
+    }
+
+    #sponsors-leaderboard .leaderboard-table,
+    #collaborators-leaderboard .leaderboard-table {
+        text-align: center;
+    }
+
+    #sponsors-leaderboard .leaderboard-table th,
+    #sponsors-leaderboard .leaderboard-table td,
+    #collaborators-leaderboard .leaderboard-table th,
+    #collaborators-leaderboard .leaderboard-table td {
+        text-align: center;
+    }
+
+    .recent-donations ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .recent-donations li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #444;
+    }
+
+    .recent-donations li:last-child {
+        border-bottom: none;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .neis-badge {
+        margin-top: 1.5rem;
+        padding: 1rem 1.5rem;
+        display: inline-block;
+        background: linear-gradient(135deg, #00aaff33, #4caf5033);
+        border: 2px solid #00aaff;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        text-align: center;
+        box-shadow: 0 0 12px #00aaff66;
+    }
+
+    .apply-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    .apply-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+</style>
+
+<div class="content-container">
+    <div class="top-logo">
+        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}" 
+             alt="My Future Investor Logo" class="main-logo" loading="lazy">
+    </div>
+
+    <section class="total-raised-section" aria-labelledby="total-raised-heading">
+        <h2 id="total-raised-heading" class="centered-text glow-heading">Community Support</h2>
+        <p id="total-raised-amount" class="centered-text" style="font-size: 2.5rem; margin: 1rem 0; font-weight: bold; color: #4caf50; text-shadow: 0 0 10px #9691916c, 0 0 20px #ffffff88;">
+            ${{ '{:,.2f}'.format(total_raised | default(23400)) }}
+        </p>
+        <p class="centered-text" style="font-size: 1.1rem; color: #ccc;">
+            Total community support raised for ecosystem development
+        </p>
+      
+    </section>
+
+    <section class="leaderboards-section" aria-labelledby="leaderboards-heading">
+        <h2 id="leaderboards-heading" class="centered-text glow-heading">Our Community Leaderboards</h2>
+        <p class="centered-text" style="font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+            Celebrate the contributions of our supporters and partners who are helping shape humanity's future. Join our community and see your name on the leaderboards!
+        </p>
+
+        <div class="leaderboards-container">
+            <div id="recent-donations" class="recent-donations">
+                <h3>Recent Contributions</h3>
+                {% if donations %}
+                <ul>
+                    {% for donation in donations[:5] %}
+                    <li>
+                        <strong>{{ donation.username }}</strong> supported our mission with ${{ donation.amount | int }}
+                        {% if donation.message %}
+                        <br><em style="color: #aaa;">"{{ donation.message | truncate(50, True) }}"</em>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Be the first to support our mission!</p>
+                {% endif %}
+            </div>
+            <div id="donation-leaderboard" class="leaderboard">
+                <h3>Mission Supporters</h3>
+                {% if donations %}
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Supporter</th>
+                            <th>Contribution</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donation in donations %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ donation.username }}</td>
+                            <td>${{ donation.amount | int }}</td>
+                            <td>{{ donation.message | default('Supporting the future') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>Join our mission and be recognized here!</p>
+                {% endif %}
+            </div>
+            <div id="investor-leaderboard" class="leaderboard">
+                <h3>Ecosystem Partners</h3>
+                {% if investments %}
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Partner</th>
+                            <th>Investment</th>
+                            <th>Platform</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for investment in investments %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ investment.username }}</td>
+                            <td>${{ investment.amount | int }}</td>
+                            <td>{{ investment.idea }}</td>
+                            <td style="color: #4caf50;">{{ investment.benefits }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>Become our first ecosystem partner!</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin: 2rem auto; max-width: 600px;">
+            <p><strong class="green-bold">Join the Leaders!</strong> Your contribution, whether through donations or investments, will amplify our mission and earn you a place among our top supporters.</p>
+        </div>
+    </section>
+
+    <section class="sponsors-collaborators-section" aria-labelledby="sponsors-collaborators-heading">
+        <h2 id="sponsors-collaborators-heading" class="centered-text glow-heading">Strategic Partners & Collaborators</h2>
+        <p style="margin-bottom: 2rem;">Organizations and professionals contributing to ecosystem development</p>
+        
+        <div class="leaderboards-container">
+            <div id="sponsors-leaderboard" class="leaderboard">
+                <h3>Strategic Sponsors</h3>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Partner</th>
+                            <th>Contribution</th>
+                            <th>Impact Area</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Self-Employment Assistance (NEIS)</td>
+                            <td>$23,400</td>
+                            <td>EcoKure Development</td>
+                        </tr>
+                        <tr>
+                            <td>Tech Innovate</td>
+                            <td>$5,000</td>
+                            <td>AI Safety Research</td>
+                        </tr>
+                        <tr>
+                            <td>Grow Ventures</td>
+                            <td>$3,000</td>
+                            <td>Ecosystem Development</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="collaborators-leaderboard" class="leaderboard">
+                <h3>Collaborators and Supporters</h3>
+                <p>Join our growing team of innovators, researchers, and visionaries working to solve humanity's greatest challenges.</p>
+                <div style="margin-top: 1rem;">
+                    <a href="{{ url_for('join_a_team') }}" class="btn apply-btn">Apply to Join Our Mission</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

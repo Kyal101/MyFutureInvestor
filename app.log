@@ -1,0 +1,259 @@
+2025-08-24 22:50:00,744 - INFO - Checking database initialization...
+2025-08-24 22:50:00,744 - INFO - Initializing database schema...
+2025-08-24 22:50:01,370 - ERROR - Error loading c:\Users\kyal1\Documents\KyalsInvesterHub\website\investments.json: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2025-08-24 22:50:01,371 - INFO - JSON data successfully migrated to database
+2025-08-24 22:50:01,372 - INFO - Database connection established at startup
+2025-08-24 22:50:01,397 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.181:5000
+2025-08-24 22:50:01,398 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-24 22:50:01,399 - INFO -  * Restarting with stat
+2025-08-24 22:50:03,312 - INFO - Checking database initialization...
+2025-08-24 22:50:03,313 - INFO - Database schema already exists
+2025-08-24 22:50:03,314 - INFO - Database connection established at startup
+2025-08-24 22:50:03,334 - WARNING -  * Debugger is active!
+2025-08-24 22:50:03,337 - INFO -  * Debugger PIN: 117-910-574
+2025-08-24 22:50:05,457 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-24 22:50:05,463 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-24 22:50:05,502 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:05] "GET / HTTP/1.1" 200 -
+2025-08-24 22:50:05,551 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:05] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-08-24 22:50:05,558 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:05] "[36mGET /static/images/wallpaper3.jpg HTTP/1.1[0m" 304 -
+2025-08-24 22:50:05,576 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:05] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:05,642 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:05] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:07,843 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:07] "[36mGET /static/images/ChatGPT%20Image%20Aug%209,%202025,%2011_52_32%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:07,844 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:07] "[36mGET /static/images/qsl/5d5ead93-f52d-4072-96ba-328d0adbcfaf.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:07,845 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:07] "[36mGET /static/images/ecokure/Ecokurebackgroundwallpaper.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:08,127 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:08] "[36mGET /static/images/j3/jslogo.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:08,128 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:08] "[36mGET /static/images/qsl/ChatGPT%20Image%20Aug%2011,%202025,%2007_22_20%20PM.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:08,128 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:08] "[36mGET /static/images/ecokure/ecokurelogo2.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:08,727 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:08] "[36mGET /static/images/kure_mechanics/kuremechanicsbannor.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:08,728 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:08] "[36mGET /static/images/kure_academy/kureacademybannor.png HTTP/1.1[0m" 304 -
+2025-08-24 22:50:08,728 - INFO - 127.0.0.1 - - [24/Aug/2025 22:50:08] "[36mGET /static/images/psa/psabannor2.png HTTP/1.1[0m" 304 -
+2025-08-24 22:54:40,262 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\config.py', reloading
+2025-08-24 22:54:40,760 - INFO -  * Restarting with stat
+2025-08-24 23:46:44,173 - INFO - Checking database initialization...
+2025-08-24 23:46:44,174 - INFO - Database schema already exists
+2025-08-24 23:46:44,175 - INFO - Database connection established at startup
+2025-08-24 23:46:44,211 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.181:5000
+2025-08-24 23:46:44,211 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-24 23:46:44,212 - INFO -  * Restarting with stat
+2025-08-24 23:46:46,286 - INFO - Checking database initialization...
+2025-08-24 23:46:46,286 - INFO - Database schema already exists
+2025-08-24 23:46:46,287 - INFO - Database connection established at startup
+2025-08-24 23:46:46,303 - WARNING -  * Debugger is active!
+2025-08-24 23:46:46,306 - INFO -  * Debugger PIN: 117-910-574
+2025-08-24 23:46:49,166 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-24 23:46:49,173 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-24 23:46:49,214 - INFO - 127.0.0.1 - - [24/Aug/2025 23:46:49] "GET / HTTP/1.1" 200 -
+2025-08-24 23:46:49,263 - INFO - 127.0.0.1 - - [24/Aug/2025 23:46:49] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-08-24 23:46:49,271 - INFO - 127.0.0.1 - - [24/Aug/2025 23:46:49] "[36mGET /static/images/wallpaper3.jpg HTTP/1.1[0m" 304 -
+2025-08-24 23:46:49,392 - INFO - 127.0.0.1 - - [24/Aug/2025 23:46:49] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 23:46:51,959 - INFO - 127.0.0.1 - - [24/Aug/2025 23:46:51] "[36mGET /static/images/ChatGPT%20Image%20Aug%209,%202025,%2011_52_32%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 23:46:52,070 - INFO - 127.0.0.1 - - [24/Aug/2025 23:46:52] "[36mGET /static/images/j3/jslogo.png HTTP/1.1[0m" 304 -
+2025-08-24 23:47:03,874 - INFO - Checking database initialization...
+2025-08-24 23:47:03,875 - INFO - Database schema already exists
+2025-08-24 23:47:03,876 - INFO - Database connection established at startup
+2025-08-24 23:47:03,909 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.181:5000
+2025-08-24 23:47:03,909 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-24 23:47:03,910 - INFO -  * Restarting with stat
+2025-08-24 23:47:05,922 - INFO - Checking database initialization...
+2025-08-24 23:47:05,922 - INFO - Database schema already exists
+2025-08-24 23:47:05,923 - INFO - Database connection established at startup
+2025-08-24 23:47:05,939 - WARNING -  * Debugger is active!
+2025-08-24 23:47:05,942 - INFO -  * Debugger PIN: 117-910-574
+2025-08-24 23:47:08,962 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-24 23:47:08,970 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-24 23:47:09,008 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:09] "GET / HTTP/1.1" 200 -
+2025-08-24 23:47:09,057 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:09] "GET /static/styles.css HTTP/1.1" 200 -
+2025-08-24 23:47:09,064 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:09] "[36mGET /static/images/wallpaper3.jpg HTTP/1.1[0m" 304 -
+2025-08-24 23:47:09,088 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:09] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 23:47:09,089 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:09] "[36mGET /static/images/ChatGPT%20Image%20Aug%209,%202025,%2011_52_32%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 23:47:09,090 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:09] "[36mGET /static/images/qsl/5d5ead93-f52d-4072-96ba-328d0adbcfaf.png HTTP/1.1[0m" 304 -
+2025-08-24 23:47:09,091 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:09] "[36mGET /static/images/ecokure/Ecokurebackgroundwallpaper.png HTTP/1.1[0m" 304 -
+2025-08-24 23:47:09,171 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:09] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 23:47:12,991 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-24 23:47:12,999 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-24 23:47:13,002 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:13] "GET / HTTP/1.1" 200 -
+2025-08-24 23:47:13,022 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:13] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-08-24 23:47:13,037 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:13] "[36mGET /static/images/wallpaper3.jpg HTTP/1.1[0m" 304 -
+2025-08-24 23:47:13,054 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:13] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-24 23:47:13,079 - INFO - 127.0.0.1 - - [24/Aug/2025 23:47:13] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-26 15:40:05,843 - INFO - Checking database initialization...
+2025-08-26 15:40:05,898 - INFO - Database schema already exists
+2025-08-26 15:40:05,899 - INFO - Database connection established at startup
+2025-08-26 15:40:07,070 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.20.10.2:5000
+2025-08-26 15:40:07,070 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-26 15:40:07,087 - INFO -  * Restarting with stat
+2025-08-26 15:40:09,161 - INFO - Checking database initialization...
+2025-08-26 15:40:09,162 - INFO - Database schema already exists
+2025-08-26 15:40:09,163 - INFO - Database connection established at startup
+2025-08-26 15:40:09,173 - WARNING -  * Debugger is active!
+2025-08-26 15:40:09,217 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 15:54:31,658 - INFO - Checking database initialization...
+2025-08-26 15:54:31,659 - INFO - Database schema already exists
+2025-08-26 15:54:31,660 - INFO - Database connection established at startup
+2025-08-26 15:54:31,680 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.20.10.2:5000
+2025-08-26 15:54:31,680 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-26 15:54:31,681 - INFO -  * Restarting with stat
+2025-08-26 15:54:33,454 - INFO - Checking database initialization...
+2025-08-26 15:54:33,455 - INFO - Database schema already exists
+2025-08-26 15:54:33,456 - INFO - Database connection established at startup
+2025-08-26 15:54:33,466 - WARNING -  * Debugger is active!
+2025-08-26 15:54:33,469 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 15:54:38,326 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-26 15:54:38,332 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-26 15:54:38,720 - INFO - 127.0.0.1 - - [26/Aug/2025 15:54:38] "GET / HTTP/1.1" 200 -
+2025-08-26 15:54:38,824 - INFO - 127.0.0.1 - - [26/Aug/2025 15:54:38] "GET /static/styles.css HTTP/1.1" 200 -
+2025-08-26 15:54:39,130 - INFO - 127.0.0.1 - - [26/Aug/2025 15:54:39] "GET /static/images/wallpaper3.jpg HTTP/1.1" 200 -
+2025-08-26 15:54:39,306 - INFO - 127.0.0.1 - - [26/Aug/2025 15:54:39] "GET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1" 200 -
+2025-08-26 15:54:39,842 - INFO - 127.0.0.1 - - [26/Aug/2025 15:54:39] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-26 16:01:04,717 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\config.py', reloading
+2025-08-26 16:01:05,060 - INFO -  * Restarting with stat
+2025-08-26 16:01:06,878 - INFO - Checking database initialization...
+2025-08-26 16:01:06,879 - INFO - Database schema already exists
+2025-08-26 16:01:06,880 - INFO - Database connection established at startup
+2025-08-26 16:01:06,889 - WARNING -  * Debugger is active!
+2025-08-26 16:01:06,893 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 16:01:07,904 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\config.py', reloading
+2025-08-26 16:01:08,277 - INFO -  * Restarting with stat
+2025-08-26 16:01:10,219 - INFO - Checking database initialization...
+2025-08-26 16:01:10,219 - INFO - Database schema already exists
+2025-08-26 16:01:10,220 - INFO - Database connection established at startup
+2025-08-26 16:01:10,231 - WARNING -  * Debugger is active!
+2025-08-26 16:01:10,234 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 16:10:04,028 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\app.py', reloading
+2025-08-26 16:10:04,531 - INFO -  * Restarting with stat
+2025-08-26 16:11:00,227 - INFO - Checking database initialization...
+2025-08-26 16:11:00,228 - INFO - Database schema already exists
+2025-08-26 16:11:00,229 - INFO - Database connection established at startup
+2025-08-26 16:11:00,250 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.20.10.2:5000
+2025-08-26 16:11:00,250 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-26 16:11:00,251 - INFO -  * Restarting with stat
+2025-08-26 16:11:02,081 - INFO - Checking database initialization...
+2025-08-26 16:11:02,082 - INFO - Database schema already exists
+2025-08-26 16:11:02,083 - INFO - Database connection established at startup
+2025-08-26 16:11:02,092 - WARNING -  * Debugger is active!
+2025-08-26 16:11:02,095 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 16:46:39,636 - INFO - Checking database initialization...
+2025-08-26 16:46:39,637 - INFO - Database schema already exists
+2025-08-26 16:46:39,638 - INFO - Database connection established at startup
+2025-08-26 16:46:39,658 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.20.10.2:5000
+2025-08-26 16:46:39,658 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-26 16:46:39,659 - INFO -  * Restarting with stat
+2025-08-26 16:46:41,328 - INFO - Checking database initialization...
+2025-08-26 16:46:41,329 - INFO - Database schema already exists
+2025-08-26 16:46:41,330 - INFO - Database connection established at startup
+2025-08-26 16:46:41,340 - WARNING -  * Debugger is active!
+2025-08-26 16:46:41,343 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 16:46:50,378 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\app.py', reloading
+2025-08-26 16:46:50,752 - INFO -  * Restarting with stat
+2025-08-26 16:46:52,608 - INFO - Checking database initialization...
+2025-08-26 16:46:52,608 - INFO - Database schema already exists
+2025-08-26 16:46:52,610 - INFO - Database connection established at startup
+2025-08-26 16:46:52,621 - WARNING -  * Debugger is active!
+2025-08-26 16:46:52,624 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 17:24:11,671 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\config.py', reloading
+2025-08-26 17:24:12,035 - INFO -  * Restarting with stat
+2025-08-26 17:24:14,590 - INFO - Checking database initialization...
+2025-08-26 17:24:14,590 - INFO - Database schema already exists
+2025-08-26 17:24:14,591 - INFO - Database connection established at startup
+2025-08-26 17:24:14,602 - WARNING -  * Debugger is active!
+2025-08-26 17:24:14,604 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 17:30:28,797 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\config.py', reloading
+2025-08-26 17:30:29,208 - INFO -  * Restarting with stat
+2025-08-26 17:30:31,359 - INFO - Checking database initialization...
+2025-08-26 17:30:31,360 - INFO - Database schema already exists
+2025-08-26 17:30:31,361 - INFO - Database connection established at startup
+2025-08-26 17:30:31,372 - WARNING -  * Debugger is active!
+2025-08-26 17:30:31,375 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 17:32:54,893 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\app.py', reloading
+2025-08-26 17:32:55,249 - INFO -  * Restarting with stat
+2025-08-26 17:33:03,052 - INFO - Checking database initialization...
+2025-08-26 17:33:03,052 - INFO - Database schema already exists
+2025-08-26 17:33:03,053 - INFO - Database connection established at startup
+2025-08-26 17:33:03,076 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.20.10.2:5000
+2025-08-26 17:33:03,076 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-26 17:33:03,076 - INFO -  * Restarting with stat
+2025-08-26 17:33:04,984 - INFO - Checking database initialization...
+2025-08-26 17:33:04,984 - INFO - Database schema already exists
+2025-08-26 17:33:04,985 - INFO - Database connection established at startup
+2025-08-26 17:33:04,997 - WARNING -  * Debugger is active!
+2025-08-26 17:33:05,000 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 17:35:42,155 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-26 17:35:42,163 - INFO - Saved data to c:\Users\kyal1\Documents\KyalsInvesterHub\website\totals.json
+2025-08-26 17:35:42,233 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:42] "GET / HTTP/1.1" 200 -
+2025-08-26 17:35:42,353 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:42] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-08-26 17:35:42,359 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:42] "[36mGET /static/images/wallpaper3.jpg HTTP/1.1[0m" 304 -
+2025-08-26 17:35:42,467 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:42] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-26 17:35:42,557 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:42] "[36mGET /static/images/ChatGPT%20Image%20Aug%2011,%202025,%2009_11_41%20AM.png HTTP/1.1[0m" 304 -
+2025-08-26 17:35:44,220 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:44] "GET /static/images/ChatGPT%20Image%20Aug%209,%202025,%2011_52_32%20AM.png HTTP/1.1" 200 -
+2025-08-26 17:35:44,236 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:44] "GET /static/images/qsl/5d5ead93-f52d-4072-96ba-328d0adbcfaf.png HTTP/1.1" 200 -
+2025-08-26 17:35:46,685 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:46] "GET /static/images/j3/jslogo.png HTTP/1.1" 200 -
+2025-08-26 17:35:46,685 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:46] "GET /static/images/qsl/ChatGPT%20Image%20Aug%2011,%202025,%2007_22_20%20PM.png HTTP/1.1" 200 -
+2025-08-26 17:35:48,927 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:48] "GET /invest HTTP/1.1" 200 -
+2025-08-26 17:35:48,948 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:48] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-08-26 17:35:48,954 - INFO - 127.0.0.1 - - [26/Aug/2025 17:35:48] "[36mGET /static/images/wallpaper3.jpg HTTP/1.1[0m" 304 -
+2025-08-26 17:36:14,284 - INFO - message='Request to Stripe api' method=post url=https://api.stripe.com/v1/payment_intents
+2025-08-26 17:36:15,252 - INFO - message='Stripe API response' path=https://api.stripe.com/v1/payment_intents response_code=200
+2025-08-26 17:36:15,272 - INFO - 127.0.0.1 - - [26/Aug/2025 17:36:15] "POST /create-payment-intent HTTP/1.1" 200 -
+2025-08-26 17:54:52,084 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\app.py', reloading
+2025-08-26 17:54:52,429 - INFO -  * Restarting with stat
+2025-08-26 17:55:17,691 - INFO - Checking database initialization...
+2025-08-26 17:55:17,692 - INFO - Database schema already exists
+2025-08-26 17:55:17,693 - INFO - Database connection established at startup
+2025-08-26 17:55:17,716 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.20.10.2:5000
+2025-08-26 17:55:17,716 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-26 17:55:17,717 - INFO -  * Restarting with stat
+2025-08-26 17:55:19,566 - INFO - Checking database initialization...
+2025-08-26 17:55:19,566 - INFO - Database schema already exists
+2025-08-26 17:55:19,567 - INFO - Database connection established at startup
+2025-08-26 17:55:19,579 - WARNING -  * Debugger is active!
+2025-08-26 17:55:19,582 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 17:56:15,781 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\app.py', reloading
+2025-08-26 17:56:16,175 - INFO -  * Restarting with stat
+2025-08-26 17:59:32,552 - INFO - Checking database initialization...
+2025-08-26 17:59:32,552 - INFO - Database schema already exists
+2025-08-26 17:59:32,553 - INFO - Database connection established at startup
+2025-08-26 17:59:32,579 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.20.10.2:5000
+2025-08-26 17:59:32,579 - INFO - [33mPress CTRL+C to quit[0m
+2025-08-26 17:59:32,580 - INFO -  * Restarting with stat
+2025-08-26 17:59:34,360 - INFO - Checking database initialization...
+2025-08-26 17:59:34,360 - INFO - Database schema already exists
+2025-08-26 17:59:34,361 - INFO - Database connection established at startup
+2025-08-26 17:59:34,371 - WARNING -  * Debugger is active!
+2025-08-26 17:59:34,374 - INFO -  * Debugger PIN: 117-910-574
+2025-08-26 17:59:53,441 - INFO -  * Detected change in 'c:\\Users\\kyal1\\Documents\\KyalsInvesterHub\\website\\app.py', reloading
+2025-08-26 17:59:53,772 - INFO -  * Restarting with stat
+2025-08-26 17:59:55,652 - INFO - Checking database initialization...
+2025-08-26 17:59:55,652 - INFO - Database schema already exists
+2025-08-26 17:59:55,653 - INFO - Database connection established at startup
+2025-08-26 17:59:55,664 - WARNING -  * Debugger is active!
+2025-08-26 17:59:55,666 - INFO -  * Debugger PIN: 117-910-574

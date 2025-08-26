@@ -1,0 +1,435 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Future Investor{% endblock %}</title>
+    <meta name="description" content="Explore and invest in Kyal's innovative app ideas for personal growth and industry transformation.">
+    <meta name="keywords" content="app investment, personal growth, innovative apps, Kyal's Investor Hub">
+    <meta property="og:title" content="My Future Investor">
+    <meta property="og:description" content="Discover Kyal's groundbreaking app ideas designed to foster personal growth and revolutionize industries.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}">
+    <meta property="og:url" content="https://myfutureinvestor.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+    <style>
+        /* Header styling */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-nav {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-left {
+            position: absolute;
+            left: 2rem;
+        }
+
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-center ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .header-nav li {
+            margin: 0;
+        }
+
+        .header-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .header-nav a:hover {
+            background-color: #00aaff;
+            color: #fff;
+        }
+
+        .header-nav a.active {
+            background-color: #00aaff;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .header-auth {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: absolute;
+            right: 2rem;
+        }
+
+        .header-auth .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-auth .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #00aaff;
+            object-fit: cover;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00aaff;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .header-auth .username {
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .header-auth .auth-btn {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid #00aaff;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .header-auth .auth-btn:hover {
+            background-color: #00aaff;
+            color: #fff;
+        }
+
+        .header-auth .auth-btn.profile-btn {
+            background-color: transparent;
+            border-color: #4caf50;
+        }
+
+        .header-auth .auth-btn.profile-btn:hover {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        .header-auth .auth-btn.logout-btn {
+            background-color: transparent;
+            border-color: #f44336;
+        }
+
+        .header-auth .auth-btn.logout-btn:hover {
+            background-color: #f44336;
+            color: #fff;
+        }
+
+        /* Body styling with background image */
+        body {
+            margin: 0;
+            padding-top: 80px; /* Account for fixed header */
+            background-image: url('{{ url_for('static', filename='images/wallpaper3.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: #1e1e1e; /* Fallback color */
+            color: #fff; /* Ensure text contrast */
+            font-family: 'Inter', sans-serif;
+        }
+
+        .main-view {
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.007); /* Minimal overlay for background visibility */
+        }
+
+        .main-content {
+            padding-top: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #1e1e1e;
+            border-top: 1px solid #333;
+            color: #aaa;
+        }
+
+        /* Flash Messages Styling */
+        .flash-messages-container {
+            position: fixed;
+            top: 100px; /* Below fixed header */
+            right: 20px;
+            z-index: 1050;
+            max-width: 400px;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideInRight 0.4s ease-out;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .alert:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: white;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f44336, #ef5350);
+            color: white;
+            border-left: 4px solid #c62828;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #2196f3, #42a5f5);
+            color: white;
+            border-left: 4px solid #1565c0;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #ff9800, #ffb74d);
+            color: white;
+            border-left: 4px solid #e65100;
+        }
+
+        .alert::after {
+            content: '×';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .alert:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            body {
+                padding-top: 140px; /* Increased for mobile stacked header */
+            }
+
+            .nav-left {
+                position: static;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-center {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header-auth {
+                position: static;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .header-auth .user-info {
+                order: 1;
+                margin-bottom: 0.5rem;
+            }
+
+            .header-auth .auth-btn {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .flash-messages-container {
+                top: 160px; /* Adjusted for mobile header */
+                left: 10px;
+                right: 10px;
+                max-width: none;
+            }
+
+            body {
+                background-size: cover;
+                background-attachment: scroll; /* Fixed backgrounds can be problematic on mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0.5rem;
+            }
+
+            .flash-messages-container {
+                top: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-view">
+        <header class="main-header">
+            <nav class="header-nav" aria-label="Primary navigation">
+                <div class="nav-left">
+                    <ul>
+                        <li><a href="{{ url_for('leaderboards') }}" {% if request.path == url_for('leaderboards') %}class="active" aria-current="page"{% endif %}>Leaderboards</a></li>
+                    </ul>
+                </div>
+                <div class="nav-center">
+                    <ul>
+                        <li><a href="{{ url_for('index') }}" {% if request.path == url_for('index') %}class="active" aria-current="page"{% endif %}>Home</a></li>
+                        <li><a href="{{ url_for('about') }}" {% if request.path == url_for('about') %}class="active" aria-current="page"{% endif %}>About</a></li>
+                        <li><a href="{{ url_for('projects') }}" {% if request.path == url_for('projects') %}class="active" aria-current="page"{% endif %}>Ideas</a></li>
+                        <li><a href="{{ url_for('invest') }}" {% if request.path == url_for('invest') %}class="active" aria-current="page"{% endif %}>Invest</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="header-auth">
+                {% if current_user.is_authenticated %}
+                <div class="user-info">
+                    {% if current_user.avatar_url %}
+                        <img src="{{ current_user.avatar_url }}" alt="{{ current_user.username }}'s avatar" class="user-avatar">
+                    {% else %}
+                        <div class="user-avatar">{{ current_user.username[0].upper() }}</div>
+                    {% endif %}
+                    <span class="username">{{ current_user.username }}</span>
+                </div>
+                <a href="{{ url_for('profile') }}" class="auth-btn profile-btn" aria-label="View Profile">Profile</a>
+                <a href="{{ url_for('logout') }}" class="auth-btn logout-btn" aria-label="Sign Out">Sign Out</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="auth-btn" aria-label="Sign In">Sign In</a>
+                {% endif %}
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" 
+                             data-category="{{ category }}"
+                             role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2025 My Future Investor | Created by Kyal</p>
+    </footer>
+
+    <!-- Auto-hide Flash Messages Script -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Base: DOMContentLoaded fired');
+        const flashMessages = document.querySelectorAll('.alert');
+
+        flashMessages.forEach(function(message) {
+            // Auto-hide after 4 seconds
+            setTimeout(function() {
+                hideMessage(message);
+            }, 4000);
+
+            // Click to dismiss
+            message.addEventListener('click', function() {
+                hideMessage(message);
+            });
+        });
+
+        function hideMessage(message) {
+            console.log('Base: Hiding flash message');
+            message.style.animation = 'slideOutRight 0.4s ease-in-out forwards';
+            setTimeout(function() {
+                if (message.parentNode) message.parentNode.removeChild(message);
+                
+                // Remove container if empty
+                const container = document.querySelector('.flash-messages-container');
+                if (container && container.children.length === 0) {
+                    container.parentNode.removeChild(container);
+                    console.log('Base: Flash messages container removed');
+                }
+            }, 400);
+        }
+    });
+    </script>
+</body>
+</html>

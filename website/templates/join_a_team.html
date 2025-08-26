@@ -1,0 +1,517 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Join a Team{% endblock %}
+
+{% block content %}
+<style>
+    .idea-banner-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .idea-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    .details-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #00aaff;
+        box-shadow: 0 0 8px #00aaff88;
+    }
+    .details-btn:hover {
+        background-color: white;
+        color: #0077cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0088ee;
+    }
+
+    .apply-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .apply-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    .contact-section {
+        margin-bottom: 2rem;
+        text-align: center;
+        padding: 0;
+        background: none;
+        border: none;
+    }
+
+    .contact-form {
+        max-width: 600px;
+        margin: 2rem auto 0 auto;
+        padding: 1rem;
+        border: 1px solid #005cbf;
+        border-radius: 8px;
+        background-color: #1e1e1e;
+        box-shadow: 0 0 12px #007bff88;
+    }
+
+    .contact-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #fff;
+        text-align: left;
+    }
+
+    .contact-form select,
+    .contact-form textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #444;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: #333;
+        color: #fff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-form select:focus,
+    .contact-form textarea:focus {
+        border-color: #00aaff;
+        box-shadow: 0 0 8px #00aaff88;
+        outline: none;
+    }
+
+    .contact-form textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    .contact-form .submit-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .contact-form .submit-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+    }
+
+    .blue-bold {
+        color: #00aaff;
+    }
+
+    .disclaimer-section,
+    .ideas-section,
+    .contact-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background-color: #1e1e1e00;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .ideas-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .idea-card {
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        margin: 1rem;
+        border: 1px solid #005cbf;
+        border-radius: 8px;
+        padding: 1rem;
+        background-color: #1e1e1e;
+        color: #fff;
+    }
+
+    .idea-card h3 {
+        color: #fff;
+        font-family: inherit;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+    }
+
+    .idea-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+
+    .idea-card li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #444;
+    }
+
+    .idea-card li:last-child {
+        border-bottom: none;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+</style>
+
+<div class="content-container">
+    <div class="top-logo">
+        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}" 
+             alt="My Future Investor Logo" class="main-logo" loading="lazy">
+    </div>
+
+    <section class="disclaimer-section" aria-labelledby="disclaimer-heading">
+        <h2 id="disclaimer-heading" class="centered-text glow-heading">Disclaimer</h2>
+        <p class="centered-text">
+            The opportunities listed below are for future endeavors. We welcome you to apply early to express your interest and join our talent pool. Please note that hiring will not commence until sufficient funding is secured for each project. Your application helps us plan for a brighter, innovative future!
+        </p>
+    </section>
+
+    <section class="ideas-section" aria-labelledby="ideas-heading">
+        <h2 id="ideas-heading" class="centered-text glow-heading">Join Our Innovative Projects</h2>
+        {% if ideas %}
+        <div class="ideas-container">
+            {% for idea in ideas %}
+            <article class="idea-card" aria-labelledby="{{ idea.name | replace(' ', '-') }}-title">
+                <div class="idea-banner-container">
+                    {% if idea.name == "JARVI3" %}
+                        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 9, 2025, 11_52_32 AM.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "QuantumSystemLock" %}
+                        <img src="{{ url_for('static', filename='images/qsl/5d5ead93-f52d-4072-96ba-328d0adbcfaf.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "EcoKure" %}
+                        <img src="{{ url_for('static', filename='images/ecokure/Ecokurebackgroundwallpaper.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "KureAcademy" %}
+                        <img src="{{ url_for('static', filename='images/kure_academy/kureacademybannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "KureMechanics" %}
+                        <img src="{{ url_for('static', filename='images/kure_mechanics/kuremechanicsbannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "PropertySolutionsAustralia (PSA)" %}
+                        <img src="{{ url_for('static', filename='images/psa/psabannor2.png') }}" 
+                             alt="Property Solutions Australia (PSA) banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "Zero Debt Solution" %}
+                        <img src="{{ url_for('static', filename='images/zde/zdebannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% else %}
+                        <img src="{{ idea.banner }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% endif %}
+                </div>
+
+                <h3 id="{{ idea.name | replace(' ', '-') }}-title">{{ idea.name }}</h3>
+                <p>{{ idea.description }}</p>
+                <h4>Roles Needed</h4>
+                <ul>
+                    {% if idea.name == "JARVI3" %}
+                        <li>AI Engineer (Machine Learning)</li>
+                        <li>NLP Specialist</li>
+                        <li>UI/UX Designer</li>
+                        <li>Backend Developer (Python, Flask)</li>
+                        <li>Ethics Consultant (AI Alignment)</li>
+                        <li>Data Scientist (AI Optimization)</li>
+                        <li>Frontend Developer (React)</li>
+                        <li>DevOps Engineer</li>
+                        <li>Project Manager (Agile)</li>
+                        <li>Technical Writer (AI Documentation)</li>
+                    {% elif idea.name == "QuantumSystemLock" %}
+                        <li>Quantum Computing Specialist</li>
+                        <li>Cybersecurity Analyst</li>
+                        <li>Software Engineer (Cryptography)</li>
+                        <li>DevOps Engineer</li>
+                        <li>Systems Architect</li>
+                        <li>Security Compliance Specialist</li>
+                        <li>Frontend Developer (React)</li>
+                        <li>QA Engineer (Security Testing)</li>
+                        <li>Project Manager (Tech)</li>
+                        <li>Technical Support Specialist</li>
+                    {% elif idea.name == "EcoKure" %}
+                        <li>Environmental Scientist</li>
+                        <li>Mobile App Developer (iOS/Android)</li>
+                        <li>Content Creator (Sustainability)</li>
+                        <li>Data Analyst (Environmental Metrics)</li>
+                        <li>UI/UX Designer</li>
+                        <li>Marketing Specialist (Green Tech)</li>
+                        <li>Backend Developer (Node.js)</li>
+                        <li>Community Manager</li>
+                        <li>Product Manager</li>
+                        <li>Graphic Designer (Eco-Branding)</li>
+                    {% elif idea.name == "KureMechanics" %}
+                        <li>Physics Researcher (Theoretical)</li>
+                        <li>Software Developer (Scientific Computing)</li>
+                        <li>Educational Content Developer</li>
+                        <li>UI/UX Designer</li>
+                        <li>Data Scientist (Physics Modeling)</li>
+                        <li>Technical Writer (Physics)</li>
+                        <li>Frontend Developer (React)</li>
+                        <li>Research Coordinator</li>
+                        <li>Grant Writer</li>
+                        <li>Visualization Specialist</li>
+                    {% elif idea.name == "KureAcademy" %}
+                        <li>Curriculum Developer (EdTech)</li>
+                        <li>Full-Stack Developer</li>
+                        <li>Instructional Designer</li>
+                        <li>Marketing Specialist</li>
+                        <li>E-Learning Content Creator</li>
+                        <li>UI/UX Designer</li>
+                        <li>Backend Developer (Python)</li>
+                        <li>Student Support Specialist</li>
+                        <li>EdTech Consultant</li>
+                        <li>Analytics Specialist (Learning Metrics)</li>
+                    {% elif idea.name == "PropertySolutionsAustralia (PSA)" %}
+                        <li>Real Estate Analyst</li>
+                        <li>Web Developer (React, Flask)</li>
+                        <li>Financial Consultant</li>
+                        <li>Customer Support Specialist</li>
+                        <li>Data Analyst (Real Estate Trends)</li>
+                        <li>Marketing Manager</li>
+                        <li>Property Management Specialist</li>
+                        <li>UI/UX Designer</li>
+                        <li>Backend Developer (APIs)</li>
+                        <li>Legal Advisor (Real Estate)</li>
+                    {% elif idea.name == "Zero Debt Solution" %}
+                        <li>Financial Advisor</li>
+                        <li>Backend Developer (Fintech)</li>
+                        <li>Data Scientist (Financial Modeling)</li>
+                        <li>UI/UX Designer</li>
+                        <li>Customer Success Manager</li>
+                        <li>Marketing Specialist (Fintech)</li>
+                        <li>Frontend Developer (React)</li>
+                        <li>Compliance Officer (Financial Regulations)</li>
+                        <li>Product Manager</li>
+                        <li>Technical Support Engineer</li>
+                    {% else %}
+                        <li>General Application (Specify Interest)</li>
+                        <li>Software Developer</li>
+                        <li>Project Manager</li>
+                        <li>Marketing Specialist</li>
+                        <li>UI/UX Designer</li>
+                        <li>Data Analyst</li>
+                        <li>Customer Support</li>
+                        <li>Technical Writer</li>
+                        <li>DevOps Engineer</li>
+                        <li>Business Analyst</li>
+                    {% endif %}
+                </ul>
+                <div class="buttons">
+                    <a href="{{ url_for(idea.detail_endpoint) }}" class="btn details-btn" aria-label="View details for {{ idea.name }}">Details</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="error">No projects available yet. Check back soon!</p>
+        {% endif %}
+    </section>
+
+    <section class="contact-section" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" class="centered-text glow-heading">Apply to Join a Team</h2>
+        <p class="centered-text">Interested in contributing to our projects? Submit your application below to join our talent pool. We’ll reach out once funding is secured and hiring begins!</p>
+        <form class="contact-form" action="mailto:jobs@myfutureinvestor.com" method="POST" enctype="text/plain">
+            <label for="project">Project of Interest</label>
+            <select id="project" name="project" required>
+                <option value="JARVI3" selected>JARVI3</option>
+                <option value="QuantumSystemLock">QuantumSystemLock</option>
+                <option value="EcoKure">EcoKure</option>
+                <option value="KureMechanics">KureMechanics</option>
+                <option value="KureAcademy">KureAcademy</option>
+                <option value="PropertySolutionsAustralia (PSA)">PropertySolutionsAustralia (PSA)</option>
+                <option value="Zero Debt Solution">Zero Debt Solution</option>
+                <option value="General">General Interest</option>
+            </select>
+            <label for="role">Preferred Role</label>
+            <select id="role" name="role" required>
+                <option value="AI Engineer (Machine Learning)">AI Engineer (Machine Learning)</option>
+                <option value="NLP Specialist">NLP Specialist</option>
+                <option value="UI/UX Designer">UI/UX Designer</option>
+                <option value="Backend Developer (Python, Flask)">Backend Developer (Python, Flask)</option>
+                <option value="Ethics Consultant (AI Alignment)">Ethics Consultant (AI Alignment)</option>
+                <option value="Data Scientist (AI Optimization)">Data Scientist (AI Optimization)</option>
+                <option value="Frontend Developer (React)">Frontend Developer (React)</option>
+                <option value="DevOps Engineer">DevOps Engineer</option>
+                <option value="Project Manager (Agile)">Project Manager (Agile)</option>
+                <option value="Technical Writer (AI Documentation)">Technical Writer (AI Documentation)</option>
+            </select>
+            <label for="message-content">Your Message</label>
+            <textarea id="message-content" name="message" required placeholder="Tell us about your skills and why you want to join..."></textarea>
+            <button type="submit" class="btn submit-btn" aria-label="Submit application">Submit Application</button>
+        </form>
+    </section>
+</div>
+
+<script>
+    const rolesByProject = {
+        "JARVI3": [
+            "AI Engineer (Machine Learning)",
+            "NLP Specialist",
+            "UI/UX Designer",
+            "Backend Developer (Python, Flask)",
+            "Ethics Consultant (AI Alignment)",
+            "Data Scientist (AI Optimization)",
+            "Frontend Developer (React)",
+            "DevOps Engineer",
+            "Project Manager (Agile)",
+            "Technical Writer (AI Documentation)"
+        ],
+        "QuantumSystemLock": [
+            "Quantum Computing Specialist",
+            "Cybersecurity Analyst",
+            "Software Engineer (Cryptography)",
+            "DevOps Engineer",
+            "Systems Architect",
+            "Security Compliance Specialist",
+            "Frontend Developer (React)",
+            "QA Engineer (Security Testing)",
+            "Project Manager (Tech)",
+            "Technical Support Specialist"
+        ],
+        "EcoKure": [
+            "Environmental Scientist",
+            "Mobile App Developer (iOS/Android)",
+            "Content Creator (Sustainability)",
+            "Data Analyst (Environmental Metrics)",
+            "UI/UX Designer",
+            "Marketing Specialist (Green Tech)",
+            "Backend Developer (Node.js)",
+            "Community Manager",
+            "Product Manager",
+            "Graphic Designer (Eco-Branding)"
+        ],
+        "KureMechanics": [
+            "Physics Researcher (Theoretical)",
+            "Software Developer (Scientific Computing)",
+            "Educational Content Developer",
+            "UI/UX Designer",
+            "Data Scientist (Physics Modeling)",
+            "Technical Writer (Physics)",
+            "Frontend Developer (React)",
+            "Research Coordinator",
+            "Grant Writer",
+            "Visualization Specialist"
+        ],
+        "KureAcademy": [
+            "Curriculum Developer (EdTech)",
+            "Full-Stack Developer",
+            "Instructional Designer",
+            "Marketing Specialist",
+            "E-Learning Content Creator",
+            "UI/UX Designer",
+            "Backend Developer (Python)",
+            "Student Support Specialist",
+            "EdTech Consultant",
+            "Analytics Specialist (Learning Metrics)"
+        ],
+        "PropertySolutionsAustralia (PSA)": [
+            "Real Estate Analyst",
+            "Web Developer (React, Flask)",
+            "Financial Consultant",
+            "Customer Support Specialist",
+            "Data Analyst (Real Estate Trends)",
+            "Marketing Manager",
+            "Property Management Specialist",
+            "UI/UX Designer",
+            "Backend Developer (APIs)",
+            "Legal Advisor (Real Estate)"
+        ],
+        "Zero Debt Solution": [
+            "Financial Advisor",
+            "Backend Developer (Fintech)",
+            "Data Scientist (Financial Modeling)",
+            "UI/UX Designer",
+            "Customer Success Manager",
+            "Marketing Specialist (Fintech)",
+            "Frontend Developer (React)",
+            "Compliance Officer (Financial Regulations)",
+            "Product Manager",
+            "Technical Support Engineer"
+        ],
+        "General": [
+            "General Application (Specify Interest)",
+            "Software Developer",
+            "Project Manager",
+            "Marketing Specialist",
+            "UI/UX Designer",
+            "Data Analyst",
+            "Customer Support",
+            "Technical Writer",
+            "DevOps Engineer",
+            "Business Analyst"
+        ]
+    };
+
+    function populateRoles(project) {
+        const roleSelect = document.getElementById('role');
+        roleSelect.innerHTML = ''; // Clear existing options
+
+        const roles = rolesByProject[project] || ['Select a project first'];
+        roles.forEach(role => {
+            const option = document.createElement('option');
+            option.value = role;
+            option.textContent = role;
+            roleSelect.appendChild(option);
+        });
+    }
+
+    // Initialize roles dropdown with JARVI3 roles on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        populateRoles('JARVI3');
+    });
+
+    // Update roles dropdown when project changes
+    document.getElementById('project').addEventListener('change', function() {
+        populateRoles(this.value);
+    });
+</script>
+{% endblock %}

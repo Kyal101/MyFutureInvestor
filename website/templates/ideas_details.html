@@ -1,0 +1,471 @@
+{% extends "base.html" %}
+{% block title %}Patents Details - My Future Investor{% endblock %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .idea-banner-container {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        background: transparent;
+    }
+
+    .idea-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    .total-raised-section,
+    .section-box,
+    .donation-structure-section {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #333;
+    }
+
+    .total-raised-section,
+    .donation-structure-section {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+        color: #fff;
+    }
+
+    .blue-bold {
+        color: #00aaff;
+        font-weight: 600;
+    }
+
+    .green-bold {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+        margin: 1rem 0;
+    }
+
+    ul li {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    ul ul {
+        list-style-type: none;
+        padding-left: 1.5rem;
+    }
+
+    ul ul li:before {
+        content: "• ";
+        color: #00aaff;
+    }
+
+    ul ul ul li:before {
+        content: "◦ ";
+        color: #4caf50;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    .invest-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+
+    .invest-btn:hover {
+        background-color: #1b5e20;
+        box-shadow: 0 0 8px #4caf5088;
+        border-color: #145214;
+    }
+
+    .donate-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #0088cc;
+    }
+
+    .donate-btn:hover {
+        background-color: #0088cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0066aa;
+    }
+
+    .back-btn, .risk-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+    }
+
+    .back-btn:hover, .risk-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    .risk-btn {
+        background-color: #ff6600;
+        border-color: #cc5500;
+    }
+
+    .risk-btn:hover {
+        background-color: #cc5500;
+        box-shadow: 0 0 12px #ff6600cc;
+        border-color: #b34700;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .risk-warning-box {
+        background: linear-gradient(135deg, #ff660011, #ff990011);
+        border-left: 4px solid #ff6600;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lightbox img {
+        width: 100%;
+        height: 100%;
+        max-width: 95vw;
+        max-height: 95vh;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 2px solid #fff;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        text-shadow: 0 0 5px #000;
+    }
+
+    #risk-disclosure-section {
+        display: none;
+    }
+</style>
+
+<div class="content-container">
+    <!-- Banner -->
+    <div class="idea-banner-container">
+        <img src="{{ url_for('static', filename='images/Patentscover.jpg') }}" 
+             alt="Patents Banner" class="idea-banner" loading="lazy">
+    </div>
+
+    <!-- Total Raised -->
+    <section class="total-raised-section" aria-labelledby="total-raised-heading">
+        <h2 id="total-raised-heading" class="centered-text glow-heading">Total Raised for Patent Development</h2>
+        <p id="total-raised-amount" class="centered-text" style="font-size: 3rem; margin: 1rem 0; color: #4caf50; text-shadow: 0 0 10px #ffffffaa, 0 0 20px #ffffff88;">
+            ${{ '{:,.2f}'.format(0) }}
+        </p>
+        <p class="centered-text" style="font-size: 1.1rem; color: #ccc;">Futureproofing Innovative Ideas Through Patent Protection</p>
+    </section>
+
+    <!-- Why Donate -->
+    <section class="section-box" aria-labelledby="why-donate-heading">
+        <h2 id="why-donate-heading" class="glow-heading">Why Donate to Patent Development?</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Our exploration of transformative projects—JARVI3 AI, Quantum System Lock, EcoKure, KURE Mechanics, Kure Academy, and Property Solutions Australia—has sparked groundbreaking technological concepts. These innovations, rooted in consciousness-aligned AI, quantum security, harmonic wellness, and sustainable systems, require patent protection to ensure safe, ethical, and controlled deployment. Your donations will be used exclusively for patent-related expenses, including filing international applications, conducting prior art searches, hiring legal experts, and prototyping for validation. This ensures our ideas are futureproofed against misuse, delivering awe-inspiring solutions that redefine technology’s role in society.
+        </p>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Every dollar donated is allocated directly to patent development—no funds will be diverted to operational overheads, marketing, or unrelated activities. Your support safeguards these innovations, ensuring they are responsibly implemented to captivate and benefit users worldwide.
+        </p>
+        <div class="highlight-box">
+            <p><strong class="green-bold">Your Donation Impact:</strong> Fund the protection of revolutionary technologies, ensuring ethical deployment and establishing My Future Investor as a leader in transformative innovation.</p>
+        </div>
+        <div class="buttons" style="margin-bottom: 1.5rem;">
+            <button id="view-risk-disclosures" class="btn risk-btn" aria-label="View Donation Risks" aria-controls="risk-disclosure-section">View Donation Risks</button>
+        </div>
+    </section>
+
+    <!-- Risk Disclosure Section -->
+    <section id="risk-disclosure-section" class="donation-structure-section" aria-labelledby="risk-disclosure-heading">
+        <h2 id="risk-disclosure-heading" class="glow-heading">Donation Risks</h2>
+        <div class="risk-warning-box">
+            <h3 style="color: #ff6600; margin-bottom: 1rem;">⚠️ CRITICAL DONATION RISK DISCLOSURE</h3>
+            <p><strong>READ CAREFULLY:</strong> Donating to patent development is a philanthropic act with no financial returns. Larger donations do not yield monetary gains, as the goal is to futureproof innovative ideas through patent protection. Contributions are non-refundable and solely support patent-related activities.</p>
+            <p><strong>Key Risks:</strong></p>
+            <ul>
+                <li><strong>No Financial Return:</strong> Donations, regardless of size, offer no equity, profit-sharing, or monetary return, as this is a non-profit-driven effort to protect intellectual property.</li>
+                <li><strong>Patent Uncertainty:</strong> Innovations may not qualify for patents due to prior art, rejection by patent offices, or legal challenges.</li>
+                <li><strong>Development Risk:</strong> Technical validation may fail, delaying or preventing successful patent filings.</li>
+                <li><strong>High Costs:</strong> Patent filing and legal fees may exceed estimates, requiring additional funding without guaranteed success.</li>
+                <li><strong>Market Risk:</strong> Patented technologies may not achieve commercial adoption, limiting their impact.</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Only donate funds you can afford to contribute without expecting financial returns. This opportunity is ideal for supporters passionate about futureproofing cutting-edge ideas through ethical patent protection. Consult legal or financial advisors before contributing.</p>
+        </div>
+        <div class="buttons">
+            <button id="close-risk-disclosures" class="btn back-btn" aria-label="Close Risk Disclosures">Close Risk Disclosures</button>
+        </div>
+    </section>
+
+    <!-- What You Get as a Donor -->
+    <section class="section-box" aria-labelledby="donor-benefits-heading">
+        <h2 id="donor-benefits-heading" class="glow-heading">What You Get as a Donor</h2>
+        <ul>
+            <li><strong class="blue-bold">Recognition:</strong> Major donors ($100,000+) receive acknowledgment in patent documentation and on our website.</li>
+            <li><strong class="blue-bold">Exclusive Updates:</strong> Access to detailed reports on patent progress and innovation milestones.</li>
+            <li><strong class="blue-bold">Priority Insights:</strong> Early access to information on patented technologies and invitations to exclusive innovation showcases.</li>
+            <li><strong class="blue-bold">Legacy Impact:</strong> Contribute to protecting ideas that could transform AI, quantum security, wellness, and more.</li>
+            <li><strong class="blue-bold">Community Connection:</strong> Join a network of visionaries supporting ethical, game-changing innovation.</li>
+        </ul>
+    </section>
+
+    <!-- How Ideas Led to Patents -->
+    <section class="section-box" aria-labelledby="evolution-heading">
+        <h2 id="evolution-heading" class="glow-heading">How Our Ideas Evolved into Patentable Technologies</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Deep reflection on our projects—JARVI3 AI, Quantum System Lock, EcoKure, KURE Mechanics, Kure Academy, and Property Solutions Australia—has sparked a series of revolutionary technologies. These concepts, blending consciousness, quantum science, harmonic resonance, and sustainable systems, require patent protection to ensure safe, ethical deployment. By patenting these innovations, we prevent misuse, enable rigorous validation, and deliver solutions that captivate users with their ingenuity and transformative potential.
+        </p>
+    </section>
+
+    <!-- Patent Ideas -->
+    <section class="section-box" aria-labelledby="patent-ideas-heading">
+        <h2 id="patent-ideas-heading" class="glow-heading">Potential Patentable Technologies</h2>
+        <ul>
+            <li><strong class="blue-bold">Harmonic AI Training Method (Inspired by JARVI3):</strong> A novel framework using φ²-aligned cymatic datasets at 432 Hz and 528 Hz to train AI models, achieving a 0.09 perplexity loss (pending peer review) for ethical, high-efficiency AI.</li>
+            <li><strong class="blue-bold">Quantum-Resistant Encryption Protocol (Inspired by QSL):</strong> An asymmetric encryption system with a 2^512 keyspace, NIST Kyber-compatible, designed to neutralize quantum threats like Grover’s algorithm.</li>
+            <li><strong class="blue-bold">Global Wellness Resonance Mapping (Inspired by EcoKure):</strong> An AI-driven platform visualizing real-time wellness trends via ley lines and harmonic frequencies, boosting engagement by 90% in holistic applications.</li>
+            <li><strong class="blue-bold">Unified Harmonic Theory Equation (Inspired by KURE Mechanics):</strong> An extension of E = mc² to E = φ² × consciousness × mass, with validation methods for quantum, healthcare, and agricultural applications.</li>
+            <li><strong class="blue-bold">Adaptive VR Learning Environment (Inspired by Kure Academy):</strong> Immersive VR simulations for consciousness education, using resonance-based adaptive paths to achieve 90% learner comprehension.</li>
+            <li><strong class="blue-bold">Automated Stale Property Auction System (Inspired by PSA):</strong> An AI-powered platform for rapid auctions of stalled property listings, reducing sale times by 50% with optimized agent matchmaking.</li>
+        </ul>
+    </section>
+
+    <!-- Patent Process -->
+    <section class="section-box" aria-labelledby="process-heading">
+        <h2 id="process-heading" class="glow-heading">Our Patent Process: Ensuring Safe Practice</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Patenting our technologies is critical to futureproof our ideas against misuse. Every donation is used exclusively for patent-related activities: filing international applications, conducting prior art searches, hiring legal experts, and prototyping for validation. This rigorous process ensures ethical deployment, robust validation, and controlled release, delivering technologies that inspire awe while prioritizing safety and responsibility.
+        </p>
+        <ul>
+            <li><strong class="blue-bold">Idea Validation:</strong> Prototyping and expert review to confirm novelty and technical feasibility.</li>
+            <li><strong class="blue-bold">Patent Filing:</strong> Comprehensive international applications to secure intellectual property.</li>
+            <li><strong class="blue-bold">Ethical Safeguards:</strong> Integration of safety protocols to protect users and prevent misuse.</li>
+            <li><strong class="blue-bold">Controlled Deployment:</strong> Strategic release of patented technologies to maximize impact and user trust.</li>
+        </ul>
+    </section>
+
+    <!-- Donation Structure -->
+    <section class="section-box" aria-labelledby="donation-structure-heading">
+        <h2 id="donation-structure-heading" class="glow-heading">Donation Structure</h2>
+        <ul>
+            <li><strong class="blue-bold">Patent Supporter:</strong>
+                <ul>
+                    <li><strong>Donation Levels:</strong> Flexible contributions starting at $1,000, with major support at $100,000+ for up to 10 major donors.</li>
+                    <li><strong>Availability:</strong> Open to all supporters, targeting a total of $1M.</li>
+                    <li><strong>Benefits:</strong> Major donors receive recognition in patent documentation, exclusive progress updates, and invitations to innovation showcases.</li>
+                    <li><strong>Impact:</strong> Funds are used solely for patent filings, legal fees, prior art searches, and R&D to futureproof our innovations.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">Total Donation Goal:</strong> $1M, dedicated exclusively to patent development and protection activities.</li>
+        </ul>
+    </section>
+
+    <!-- Use of Funds -->
+    <section class="section-box" aria-labelledby="use-of-funds-heading">
+        <h2 id="use-of-funds-heading" class="glow-heading">Use of Funds</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Every donation is allocated exclusively to patent-related expenses, ensuring your contribution directly supports the protection and validation of our innovations. No funds will be used for operational overheads, marketing, or unrelated activities.
+        </p>
+        <ul>
+            <li><strong class="blue-bold">Patent Filing & Legal Fees:</strong> $500,000 for international patent applications and expert legal counsel to secure intellectual property.</li>
+            <li><strong class="blue-bold">Prior Art Searches & Validation:</strong> $200,000 for comprehensive research and prototyping to confirm novelty and feasibility.</li>
+            <li><strong class="blue-bold">R&D for Ethical Safeguards:</strong> $200,000 to develop protocols ensuring safe and ethical deployment.</li>
+            <li><strong class="blue-bold">Administrative Support:</strong> $100,000 for patent-related documentation and compliance processes.</li>
+            <li><strong class="blue-bold">Total:</strong> $1M, fully dedicated to futureproofing our innovations through patent protection.</li>
+        </ul>
+    </section>
+
+    <!-- Sustainability -->
+    <section class="section-box" aria-labelledby="sustainability-heading">
+        <h2 id="sustainability-heading" class="glow-heading">Sustainability & Long-Term Value</h2>
+        <ul>
+            <li><strong class="blue-bold">Future Funding:</strong> Licensing fees and royalties from patented technologies will support ongoing development.</li>
+            <li><strong class="blue-bold">Cost Efficiency:</strong> Strict allocation to patent activities maximizes impact and minimizes waste.</li>
+            <li><strong class="blue-bold">Scalability:</strong> Global patent protection enables licensing across industries, amplifying reach.</li>
+            <li><strong class="blue-bold">Legacy Impact:</strong> Your donations secure a future where ethical, transformative technologies thrive.</li>
+        </ul>
+    </section>
+
+    <!-- Future Plans -->
+    <section class="section-box" aria-labelledby="future-plans-heading">
+        <h2 id="future-plans-heading" class="glow-heading">Future Plans & Potential Achievements</h2>
+        <ul>
+            <li><strong class="blue-bold">Secure Patents:</strong> File applications for 6+ innovations within 12 months, covering AI, quantum security, and wellness.</li>
+            <li><strong class="blue-bold">Validate Technologies:</strong> Conduct rigorous testing to ensure ethical and safe deployment.</li>
+            <li><strong class="blue-bold">Establish Partnerships:</strong> Collaborate with industries for licensing and global adoption.</li>
+            <li><strong class="blue-bold">Transform Industries:</strong> Deploy patented technologies to revolutionize AI, security, wellness, and real estate.</li>
+        </ul>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section-box" aria-labelledby="cta-heading">
+        <h2 id="cta-heading" class="glow-heading">Support the Future of Innovation</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Your donation to My Future Investor’s patent development will futureproof groundbreaking technologies, ensuring their safe and ethical deployment. Join us in protecting ideas that have the potential to transform industries and inspire awe worldwide.
+        </p>
+        <div class="buttons">
+            <a href="{{ url_for('invest') }}" class="btn invest-btn" aria-label="Donate or Invest in Patent Development">Donate or Invest</a>
+            <a href="{{ url_for('join_ecosystem') }}" class="btn invest-btn" aria-label="Join Patents Ecosystem">Join Ecosystem</a>
+            <a href="{{ url_for('index') }}" class="btn back-btn" aria-label="Back to Home">Back to Home</a>
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Patents: DOMContentLoaded fired');
+
+        // Risk disclosure functionality
+        const riskButton = document.getElementById('view-risk-disclosures');
+        const closeButton = document.getElementById('close-risk-disclosures');
+        const riskSection = document.getElementById('risk-disclosure-section');
+
+        if (!riskButton) console.error('Patents: View Risk Disclosures button not found');
+        if (!closeButton) console.error('Patents: Close Risk Disclosures button not found');
+        if (!riskSection) console.error('Patents: Risk Disclosure section not found');
+
+        if (riskButton) {
+            riskButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        if (closeButton) {
+            closeButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        function toggleRiskDisclosures() {
+            console.log('Patents: toggleRiskDisclosures called');
+            if (riskSection) {
+                if (riskSection.style.display === 'none' || riskSection.style.display === '') {
+                    riskSection.style.display = 'block';
+                    riskSection.scrollIntoView({ behavior: 'smooth' });
+                    console.log('Patents: Risk section shown');
+                } else {
+                    riskSection.style.display = 'none';
+                    const whyDonateHeading = document.getElementById('why-donate-heading');
+                    if (whyDonateHeading) {
+                        whyDonateHeading.scrollIntoView({ behavior: 'smooth' });
+                        console.log('Patents: Risk section hidden');
+                    } else {
+                        console.error('Patents: Why Donate heading not found');
+                    }
+                }
+            }
+        }
+
+        // Lightbox functionality
+        const galleryImages = document.querySelectorAll('.gallery-img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        if (galleryImages.length > 0) {
+            galleryImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.style.display = 'flex';
+                });
+            });
+        }
+
+        if (lightbox) {
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target === lightboxClose) {
+                    lightbox.style.display = 'none';
+                    lightboxImg.src = '';
+                    lightboxImg.alt = '';
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox && lightbox.style.display === 'flex') {
+                lightbox.style.display = 'none';
+                lightboxImg.src = '';
+                lightboxImg.alt = '';
+            }
+        });
+    });
+    </script>
+</div>
+{% endblock %}

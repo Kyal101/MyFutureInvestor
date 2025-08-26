@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Sign Up{% endblock %}
+
+{% block content %}
+<style>
+    /* Import Montserrat for headers and buttons */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        color: #fff;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-heading {
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 5px #00aaff88;
+    }
+
+    .signup-form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        padding: 2rem;
+        border: 1px solid #333;
+        box-shadow: 0 0 15px #00aaff22;
+    }
+
+    .signup-form label {
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-weight: 600;
+        color: #fff;
+        text-align: left;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .signup-form input[type="text"],
+    .signup-form input[type="email"],
+    .signup-form input[type="password"] {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #444;
+        border-radius: 4px;
+        background-color: #333;
+        color: #fff;
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+        font-family: 'Montserrat', Arial, sans-serif;
+        background-color: #00aaff;
+        color: white;
+        border-color: #00aaff;
+        box-shadow: 0 0 8px #00aaff88;
+    }
+
+    .btn:hover {
+        background-color: white;
+        color: #0077cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0088ee;
+    }
+
+    .flash-messages {
+        max-width: 600px;
+        margin: 1rem auto;
+        text-align: center;
+    }
+
+    .flash-messages .success {
+        color: #4caf50;
+        background-color: #1e1e1e;
+        padding: 0.5rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    .flash-messages .error {
+        color: #ff4444;
+        background-color: #1e1e1e;
+        padding: 0.5rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    .password-error {
+        color: #ff4444;
+        background-color: #1e1e1e;
+        padding: 0.5rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-size: 0.9rem;
+        text-align: left;
+    }
+</style>
+
+<div class="content-container">
+    <h2 class="glow-heading">Create Your Account</h2>
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <form class="signup-form" action="{{ url_for('signup') }}" method="POST" id="signupForm">
+        <h3 class="section-heading">Sign Up</h3>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required aria-label="Enter your username">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required aria-label="Enter your email">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required aria-label="Enter your password">
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" required aria-label="Confirm your password">
+        <div id="password-error" class="password-error" aria-live="polite" style="display: none;"></div>
+        <button type="submit" class="btn" aria-label="Sign up">Sign Up</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('signupForm').addEventListener('submit', function(e) {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm_password').value;
+    const errorDiv = document.getElementById('password-error');
+    errorDiv.textContent = '';
+    errorDiv.style.display = 'none';
+
+    // Password validation rules
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    let errors = [];
+
+    if (password.length < minLength) {
+        errors.push('Password must be at least 8 characters long.');
+    }
+    if (!hasUpperCase) {
+        errors.push('Password must contain at least one uppercase letter.');
+    }
+    if (!hasLowerCase) {
+        errors.push('Password must contain at least one lowercase letter.');
+    }
+    if (!hasNumber) {
+        errors.push('Password must contain at least one number.');
+    }
+    if (!hasSpecialChar) {
+        errors.push('Password must contain at least one special character (e.g., !@#$%^&*).');
+    }
+    if (password !== confirmPassword) {
+        errors.push('Passwords do not match.');
+    }
+
+    if (errors.length > 0) {
+        e.preventDefault();
+        errorDiv.textContent = errors.join(' ');
+        errorDiv.style.display = 'block';
+        return;
+    }
+});
+</script>
+{% endblock %}

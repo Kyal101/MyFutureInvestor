@@ -1,0 +1,518 @@
+{% extends "base.html" %}
+{% block title %}Quantum System Lock Details - My Future Investor{% endblock %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .idea-banner-container {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        background: transparent;
+    }
+
+    .idea-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    .total-raised-section,
+    .section-box,
+    .investment-structure-section {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #333;
+    }
+
+    .total-raised-section,
+    .investment-structure-section {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+        color: #fff;
+    }
+
+    .blue-bold {
+        color: #00aaff;
+        font-weight: 600;
+    }
+
+    .green-bold {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+        margin: 1rem 0;
+    }
+
+    ul li {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    ul ul {
+        list-style-type: none;
+        padding-left: 1.5rem;
+    }
+
+    ul ul li:before {
+        content: "• ";
+        color: #00aaff;
+    }
+
+    ul ul ul li:before {
+        content: "◦ ";
+        color: #4caf50;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    .invest-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+
+    .invest-btn:hover {
+        background-color: #1b5e20;
+        box-shadow: 0 0 8px #4caf5088;
+        border-color: #145214;
+    }
+
+    .donate-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #0088cc;
+    }
+
+    .donate-btn:hover {
+        background-color: #0088cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0066aa;
+    }
+
+    .back-btn, .risk-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+    }
+
+    .back-btn:hover, .risk-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    .risk-btn {
+        background-color: #ff6600;
+        border-color: #cc5500;
+    }
+
+    .risk-btn:hover {
+        background-color: #cc5500;
+        box-shadow: 0 0 12px #ff6600cc;
+        border-color: #b34700;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .risk-warning-box {
+        background: linear-gradient(135deg, #ff660011, #ff990011);
+        border-left: 4px solid #ff6600;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .pdf-viewer {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .pdf-viewer iframe {
+        width: 100%;
+        height: 800px;
+        border: none;
+        border-radius: 8px;
+    }
+
+    .video-section {
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .video-section video {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 8px;
+    }
+
+    .progress-gallery {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+        justify-items: center;
+    }
+
+    .progress-gallery img {
+        width: 100%;
+        max-width: 1000px;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #333;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        transform-origin: center;
+    }
+
+    .progress-gallery img:hover {
+        transform: scale(1.05);
+    }
+
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lightbox img {
+        width: 100%;
+        height: 100%;
+        max-width: 95vw;
+        max-height: 95vh;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 2px solid #fff;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        text-shadow: 0 0 5px #000;
+    }
+
+    #risk-disclosure-section {
+        display: none;
+    }
+</style>
+
+<div class="content-container">
+    <!-- Banner -->
+    <div class="idea-banner-container">
+        <img src="{{ url_for('static', filename='images/qsl/5d5ead93-f52d-4072-96ba-328d0adbcfaf.png') }}" 
+             alt="Quantum System Lock Banner" class="idea-banner" loading="lazy">
+    </div>
+
+    <!-- Total Raised -->
+    <section class="total-raised-section" aria-labelledby="total-raised-heading">
+        <h2 id="total-raised-heading" class="centered-text glow-heading">Total Raised for Quantum System Lock</h2>
+        <p id="total-raised-amount" class="centered-text" style="font-size: 3rem; margin: 1rem 0; color: #4caf50; text-shadow: 0 0 10px #ffffffaa, 0 0 20px #ffffff88;">
+            ${{ "%0.2f" | format(total_raised | default(0) | float) }}
+        </p>
+        <p class="centered-text" style="font-size: 1.1rem; color: #ccc;">To a Safer, Quantum-Resistant Future</p>
+    </section>
+
+    <!-- Why Invest -->
+    <section class="section-box" aria-labelledby="vision-heading">
+        <h2 id="vision-heading" class="glow-heading">Why Invest in Quantum System Lock?</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            QuantumSystemLock (QSL) is a revolutionary encryption technology designed to counter the quantum computing threat. Developed by Kyal McAuliffe, QSL is in its theoretical and prototype stages, offering a 2^512 keyspace—exceeding AES-256 by 10^77 combinations. Its asymmetric speed advantage ensures seamless access for authorized users while thwarting intruders with computational complexity.
+        </p>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            QSL’s unique approach integrates with NIST Kyber standards, providing future-proof quantum resistance. With strategic investment, QSL aims to become the gold standard in encryption, protecting data across finance, healthcare, and technology sectors in the quantum era.
+        </p>
+        <div class="highlight-box">
+            <p><strong class="green-bold">Your Investment Impact:</strong> Fund QSL to set the standard for quantum-resistant encryption, with potential 20× returns at a $1B valuation by 2035, complemented by synergies with JARVI3’s AI ecosystem.</p>
+        </div>
+        <div class="buttons" style="margin-bottom: 1.5rem;">
+            <button id="view-risk-disclosures" class="btn risk-btn" aria-label="View Investment Risks">View Investment Risks</button>
+        </div>
+    </section>
+
+    <!-- Risk Disclosure Section -->
+    <section id="risk-disclosure-section" class="investment-structure-section" aria-labelledby="risk-disclosure-heading">
+        <h2 id="risk-disclosure-heading" class="glow-heading">Investment Risks</h2>
+        <div class="risk-warning-box">
+            <h3 style="color: #ff6600; margin-bottom: 1rem;">⚠️ CRITICAL INVESTMENT RISK DISCLOSURE</h3>
+            <p><strong>READ CAREFULLY:</strong> Investing in Quantum System Lock involves significant risks, including the potential for total loss of your investment. Returns are speculative and depend entirely on QSL’s success.</p>
+            <p><strong>Key Risks:</strong></p>
+            <ul>
+                <li><strong>Early-Stage Risk:</strong> QSL is in the theoretical and prototype phase with unproven technology.</li>
+                <li><strong>Market Risk:</strong> Competition, market rejection, or regulatory changes could hinder adoption.</li>
+                <li><strong>Technical Risk:</strong> Failure to develop a scalable quantum-resistant framework could lead to project failure.</li>
+                <li><strong>Financial Risk:</strong> No guarantee of revenue, profitability, or exits (e.g., IPO or acquisition).</li>
+                <li><strong>Investment Concentration:</strong> Your investment is solely in QSL, with no diversification across other companies.</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Only invest funds you can afford to lose completely. Suitable for accredited investors with high risk tolerance.</p>
+        </div>
+        <div class="buttons">
+            <button id="close-risk-disclosures" class="btn back-btn" aria-label="Close Risk Disclosures">Close Risk Disclosures</button>
+        </div>
+    </section>
+
+    <!-- What You Get as an Investor -->
+    <section class="section-box" aria-labelledby="investor-benefits-heading">
+        <h2 id="investor-benefits-heading" class="glow-heading">What You Get as an Investor</h2>
+        <ul>
+            <li><strong class="blue-bold">Equity Ownership:</strong> 1% stake per $100,000 investment (max 10 partners, 10% total equity). At a $1B valuation by 2035, your stake could yield $10M (100× ROI).</li>
+            <li><strong class="blue-bold">Strategic Influence:</strong> Shape QSL’s development and access annual performance reports.</li>
+            <li><strong class="blue-bold">Exclusive Access:</strong> Lifetime enterprise access to QSL, priority integration support, and early access to quantum-resistant protocols.</li>
+            <li><strong class="blue-bold">Co-Branding:</strong> Align your brand with a leader in quantum-resistant security.</li>
+            <li><strong class="blue-bold">Ecosystem Synergies:</strong> Benefit from QSL’s integration with finance, healthcare, and tech markets ($500B+ opportunity by 2030).</li>
+        </ul>
+    </section>
+
+    <!-- Core Features -->
+    <section class="section-box" aria-labelledby="core-innovation-heading">
+        <h2 id="core-innovation-heading" class="glow-heading">Core Features of Quantum System Lock</h2>
+        <ul>
+            <li><strong class="blue-bold">Quantum Resistance:</strong> Neutralizes Grover’s algorithm attacks, compatible with NIST Kyber standards.</li>
+            <li><strong class="blue-bold">Replay Attack Prevention:</strong> Unique encryption instances per deployment ensure security integrity.</li>
+            <li><strong class="blue-bold">Deployment Simplicity:</strong>
+                <ul>
+                    <li>Dependencies installed in under 10 minutes.</li>
+                    <li>Compilation via CMake in ~30 minutes.</li>
+                    <li>Implementation in <50 lines of code.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">Performance:</strong> Latency under 500 ms on standard CPUs.</li>
+            <li><strong class="blue-bold">Platform Reach:</strong> Web, iOS, Android, Flask, Node.js.</li>
+        </ul>
+    </section>
+
+    <!-- Market Opportunity -->
+    <section class="section-box" aria-labelledby="market-opportunity-heading">
+        <h2 id="market-opportunity-heading" class="glow-heading">Market Opportunity</h2>
+        <ul>
+            <li><strong class="blue-bold">$500B Cybersecurity Market:</strong> Growing to $1T by 2030 across finance, healthcare, and tech.</li>
+            <li><strong class="blue-bold">Revenue Streams:</strong>
+                <ul>
+                    <li>Subscriptions: $0–$25/month for individuals.</li>
+                    <li>Enterprise Licenses: $10,000–$250,000+ for organizations.</li>
+                    <li>API Usage: $0.01 per call for secure queries.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">5-Year Goal:</strong> $50M/year revenue with 10–20× investor returns.</li>
+        </ul>
+    </section>
+
+    <!-- Investment Structure -->
+    <section class="investment-structure-section" aria-labelledby="investment-structure-heading">
+        <h2 id="investment-structure-heading" class="glow-heading">Investment Structure</h2>
+        <ul>
+            <li><strong class="blue-bold">Equity Partner:</strong>
+                <ul>
+                    <li>Investment: $100,000 per 1% equity.</li>
+                    <li>Availability: Up to 10 partners (10% total equity).</li>
+                    <li>Benefits: Equity ownership, strategic influence, co-branding, and priority access to quantum-resistant protocols.</li>
+                    <li>Growth Potential: $10M per 1% at a $1B valuation by 2035.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">Total Capital Goal:</strong> $1M for 10% equity allocation.</li>
+        </ul>
+    </section>
+
+    <!-- Use of Funds -->
+    <section class="section-box" aria-labelledby="use-of-funds-heading">
+        <h2 id="use-of-funds-heading" class="glow-heading">Use of Funds (Year 1)</h2>
+        <ul>
+            <li><strong class="blue-bold">Development & Research:</strong> $300,000 for cryptographic advancements and prototype testing.</li>
+            <li><strong class="blue-bold">Infrastructure:</strong> $200,000 for secure testing environments and hardware integration.</li>
+            <li><strong class="blue-bold">Operations:</strong> $50,000 for office, utilities, and equipment.</li>
+            <li><strong class="blue-bold">Marketing & SDK:</strong> $250,000 for global rollout and developer outreach.</li>
+            <li><strong class="blue-bold">Total:</strong> $800,000, with significant runway for scaling, patents, and deployment.</li>
+        </ul>
+    </section>
+
+    <!-- Sustainability -->
+    <section class="section-box" aria-labelledby="sustainability-heading">
+        <h2 id="sustainability-heading" class="glow-heading">Sustainability & Long-Term Value</h2>
+        <ul>
+            <li><strong class="blue-bold">Recurring Revenue:</strong> Subscriptions, API calls, and enterprise licenses ensure steady income.</li>
+            <li><strong class="blue-bold">Controlled Costs:</strong> Efficient resource allocation limits operational expenses.</li>
+            <li><strong class="blue-bold">Scalability:</strong> High viability with market-ready development and customer acquisition.</li>
+            <li><strong class="blue-bold">Legacy Impact:</strong> Build a world where data security is uncompromised, with your investment driving global change.</li>
+        </ul>
+    </section>
+
+    <!-- Synergy with Applications -->
+    <section class="section-box" aria-labelledby="synergy-heading">
+        <h2 id="synergy-heading" class="glow-heading">Synergy with Applications</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Quantum System Lock (QSL) is designed to seamlessly integrate with any application requiring secure data storage and transmission. Its quantum-resistant encryption framework, with a 2^512 keyspace, provides unparalleled security for apps across industries like finance, healthcare, and technology. QSL’s SDK enables developers to embed quantum-safe encryption in under 50 lines of code, with deployment on web, iOS, Android, Flask, and Node.js platforms in less than 10 minutes. This compatibility ensures that any app—such as JARVI3’s consciousness-driven AI or other third-party solutions—can leverage QSL to securely store and protect sensitive data, creating a robust, scalable ecosystem for the quantum era.
+        </p>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section-box" aria-labelledby="cta-heading">
+        <h2 id="cta-heading" class="glow-heading">Join the Future of Encryption</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Invest in QSL to secure a stake in the most advanced quantum-resistant encryption technology. With only 10% equity available, your investment fuels a transformative ecosystem with significant financial returns.
+        </p>
+        <div class="buttons">
+            <a href="{{ url_for('invest') }}" class="btn invest-btn" aria-label="Donate or Invest in Quantum System Lock">Donate or Invest</a>
+            <a href="{{ url_for('join_ecosystem') }}" class="btn invest-btn" aria-label="Join QSL Ecosystem">Join Ecosystem</a>
+            <a href="{{ url_for('index') }}" class="btn back-btn" aria-label="Back to Home">Back to Home</a>
+        </div>
+    </section>
+
+    <!-- Whitepaper -->
+    <section class="pdf-viewer" aria-labelledby="whitepaper-heading">
+        <h2 id="whitepaper-heading" class="glow-heading">Quantum System Lock Whitepaper</h2>
+        <iframe src="{{ url_for('static', filename='pdf/QuantumSystemLock(whitepaper11).pdf') }}" 
+                width="100%" height="800" style="border: none;"></iframe>
+    </section>
+
+    <!-- Promotional Video -->
+    <section class="video-section" aria-labelledby="promo-video-heading">
+        <h2 id="promo-video-heading" class="glow-heading">Quantum System Lock Promotional Video</h2>
+        <video controls>
+            <source src="{{ url_for('static', filename='mp4/QSLvid.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <!-- Development Progress -->
+    <section class="section-box" aria-labelledby="progress-heading">
+        <h2 id="progress-heading" class="glow-heading">Development Progress</h2>
+        <div class="progress-gallery">
+            <img src="{{ url_for('static', filename='images/q_lock/qlock1.png') }}" alt="QSL Progress Image 1" loading="lazy" class="gallery-img">
+            <img src="{{ url_for('static', filename='images/q_lock/qlock2.png') }}" alt="QSL Progress Image 2" loading="lazy" class="gallery-img">
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const riskButton = document.getElementById('view-risk-disclosures');
+    const closeButton = document.getElementById('close-risk-disclosures');
+    const riskSection = document.getElementById('risk-disclosure-section');
+
+    // Add event listener for View Investment Risks button
+    if (riskButton) {
+        riskButton.addEventListener('click', toggleRiskDisclosures);
+    }
+
+    // Add event listener for Close Risk Disclosures button
+    if (closeButton) {
+        closeButton.addEventListener('click', toggleRiskDisclosures);
+    }
+
+    function toggleRiskDisclosures() {
+        if (riskSection.style.display === 'none' || riskSection.style.display === '') {
+            riskSection.style.display = 'block';
+            riskSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            riskSection.style.display = 'none';
+            document.getElementById('vision-heading').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Lightbox functionality
+    const galleryImages = document.querySelectorAll('.gallery-img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = document.querySelector('.lightbox-close');
+
+    galleryImages.forEach(img => {
+        img.addEventListener('click', () => {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightbox.style.display = 'flex';
+        });
+    });
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target === lightboxClose) {
+            lightbox.style.display = 'none';
+            lightboxImg.src = '';
+            lightboxImg.alt = '';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.style.display === 'flex') {
+            lightbox.style.display = 'none';
+            lightboxImg.src = '';
+            lightboxImg.alt = '';
+        }
+    });
+});
+</script>
+{% endblock %}

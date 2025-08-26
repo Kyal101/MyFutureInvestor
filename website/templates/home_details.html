@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Details - My Future Investor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}">
+</head>
+<body>
+    <div class="main-view">
+        <header class="main-header">
+            <nav class="header-nav" aria-label="Primary navigation">
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('projects') }}">Ideas</a></li>
+                    <li><a href="{{ url_for('invest') }}">Invest</a></li>
+                </ul>
+            </nav>
+            <div class="header-auth">
+                {% if session.get('username') %}
+                <span class="username">{{ session.username }}</span>
+                <a href="{{ url_for('profile') }}" class="auth-btn" aria-label="View Profile">Profile</a>
+                <a href="{{ url_for('logout') }}" class="auth-btn" aria-label="Sign Out">Sign Out</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="auth-btn" aria-label="Sign In">Sign In</a>
+                {% endif %}
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="content-container">
+                <h1>Home Details</h1>
+                <p>Welcome to the detailed overview of the Home section. This page is designed to give you an in-depth look at the mission and vision of My Future Investor. Our platform aims to connect innovative app ideas with potential investors, fostering personal growth and industry transformation.</p>
+                <p>Key features include real-time investment tracking, a community leaderboard, and detailed project insights. Stay tuned for updates on new opportunities and success stories from our investors.</p>
+                <a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+            </div>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2025 My Future Investor | Created by Kyal</p>
+    </footer>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

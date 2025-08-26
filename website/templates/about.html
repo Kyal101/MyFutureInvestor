@@ -1,0 +1,654 @@
+{% extends "base.html" %}
+{% block title %}About Our Shared Vision for Humanity's Future{% endblock %}
+
+{% block content %}
+<style>
+    /* General container styling */
+    .content-container, .content-container * {
+        text-align: center;
+    }
+
+    /* Heading with glow effect */
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+        color: #fff;
+    }
+
+    /* Color utilities */
+    .blue-bold {
+        color: #00aaff;
+        font-weight: 600;
+    }
+
+    .green-bold {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    /* Section box styling */
+    .content-section, .donation-structure-section {
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        border: 1px solid #333;
+    }
+
+    /* Vision banner styling */
+    .vision-banner {
+        width: 100%;
+        height: 300px;
+        background: linear-gradient(135deg, #00aaff22, #4caf5022);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border: 2px solid #00aaff44;
+    }
+
+    /* Ecosystem grid for project cards */
+    .ecosystem-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .ecosystem-card {
+        background-color: #2a2a2a;
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid #444;
+        transition: all 0.3s ease;
+    }
+
+    .ecosystem-card:hover {
+        border-color: #00aaff;
+        box-shadow: 0 0 15px #00aaff33;
+    }
+
+    .ecosystem-card h4 {
+        color: #00aaff;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    /* Timeline for journey visualization */
+    .timeline {
+        position: relative;
+        margin: 2rem 0;
+        padding-left: 2rem;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, #00aaff, #4caf50);
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 2rem;
+        padding: 0 2rem;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+        background-color: #00aaff;
+        border-radius: 50%;
+        border: 2px solid #1e1e1e;
+    }
+
+    .timeline-item h4 {
+        color: #00aaff;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Highlight box for emphasis */
+    .highlight-box {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    /* Risk disclosure styling */
+    .risk-warning-box {
+        background: linear-gradient(135deg, #ff660011, #ff990011);
+        border-left: 4px solid #ff6600;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    #risk-disclosure-section {
+        display: none;
+    }
+
+    /* Pillars for vision components */
+    .pillars-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin: 2rem 0;
+    }
+
+    .pillar {
+        flex: 1;
+        min-width: 200px;
+        max-width: 300px;
+        padding: 1.5rem;
+        background-color: #2a2a2a;
+        border-radius: 8px;
+        border: 2px solid #444;
+        transition: all 0.3s ease;
+    }
+
+    .pillar:hover {
+        border-color: #00aaff;
+        transform: translateY(-5px);
+    }
+
+    .pillar-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #00aaff;
+    }
+
+    /* Stats grid for impact metrics */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .stat-card {
+        background-color: #2a2a2a;
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid #444;
+    }
+
+    .stat-card p {
+        font-size: 1rem;
+        color: #ccc;
+        margin-top: 0.5rem;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        color: #00aaff;
+        font-weight: bold;
+        display: block;
+    }
+
+    /* Call to action section */
+    .cta-section {
+        background: linear-gradient(135deg, #00aaff22, #4caf5022);
+        border: 2px solid #00aaff44;
+        border-radius: 12px;
+        padding: 3rem;
+        margin-top: 3rem;
+    }
+
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .cta-btn {
+        padding: 0.75rem 2rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        border-radius: 8px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        user-select: none;
+    }
+
+    .cta-invest-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+
+    .cta-invest-btn:hover {
+        background-color: #1b5e20;
+        box-shadow: 0 0 12px #4caf50cc;
+        border-color: #145214;
+    }
+
+    .cta-donate-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #0088cc;
+    }
+
+    .cta-donate-btn:hover {
+        background-color: #0088cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0066aa;
+    }
+
+    /* Risk button styling */
+    .risk-btn {
+        background-color: #ff6600;
+        color: white;
+        border-color: #cc5500;
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+    }
+
+    .risk-btn:hover {
+        background-color: #cc5500;
+        box-shadow: 0 0 12px #ff6600cc;
+        border-color: #b34700;
+    }
+
+    .back-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+    }
+
+    .back-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    /* Lightbox for potential gallery images */
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lightbox img {
+        width: 100%;
+        height: 100%;
+        max-width: 95vw;
+        max-height: 95vh;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 2px solid #fff;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        text-shadow: 0 0 5px #000;
+    }
+
+    /* Quote box for inspirational text */
+    .quote-box {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+        color: #ccc;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .vision-banner h1 {
+            font-size: 1.8rem;
+        }
+
+        .ecosystem-grid, .pillars-container, .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .timeline::before {
+            left: 1rem;
+        }
+
+        .timeline-item {
+            padding-left: 2.5rem;
+        }
+
+        .timeline-item::before {
+            left: 1rem;
+            transform: none;
+        }
+
+        .cta-btn {
+            font-size: 1rem;
+            padding: 0.5rem 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .content-container {
+            padding: 1rem;
+        }
+
+        .content-section {
+            padding: 1.5rem;
+        }
+
+        .vision-banner {
+            height: 200px;
+        }
+    }
+</style>
+
+<div class="content-container">
+    <!-- Logo -->
+    <div class="top-logo">
+        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}" 
+             alt="My Future Investor Logo" class="main-logo" loading="lazy">
+    </div>
+
+    <!-- Vision Banner -->
+    <div class="vision-banner" role="banner">
+        <div>
+            <h1 class="glow-heading" style="font-size: 2.5rem; margin: 0;">Together We Shape Tomorrow</h1>
+            <p style="font-size: 1.2rem; margin-top: 1rem; color: #ccc;">A Global Movement for a Thriving, Equitable Future</p>
+        </div>
+    </div>
+
+    <!-- Our Vision -->
+    <section class="content-section" aria-labelledby="vision-heading">
+        <h2 id="vision-heading" class="glow-heading">Our Shared Dream: A World Where All Thrive</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            I am Kyal, and I envision a future where every individual unlocks their potential. Debt no longer binds us. Technology empowers all. Our planet flourishes alongside vibrant communities. This vision unites us in building a brighter tomorrow.
+        </p>
+        <div class="quote-box">
+            <p>"The future belongs to those who believe in the beauty of their dreams." — Eleanor Roosevelt</p>
+        </div>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            My Future Investor creates a global ecosystem connecting people, ideas, and resources. We aim to redefine possibility, inviting everyone to shape a secure, sustainable world filled with opportunity.
+        </p>
+    </section>
+
+    <!-- Ecosystem -->
+    <section class="content-section" aria-labelledby="ecosystem-heading">
+        <h2 id="ecosystem-heading" class="glow-heading">The Heart of Our Ecosystem: People and Purpose</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            Our ecosystem thrives on interconnected solutions, each empowering humanity and amplifying our shared potential. Here’s how we bring this vision to life:
+        </p>
+        <div class="ecosystem-grid">
+            <div class="ecosystem-card">
+                <h4>🤖 JARVI3: Ethical Innovation</h4>
+                <p>Offline AI guides decisions with human values, optimizing resources and inspiring solutions to uplift global communities.</p>
+            </div>
+            <div class="ecosystem-card">
+                <h4>🔒 QuantumSystemLock: Trust Foundation</h4>
+                <p>Unbreakable security safeguards every transaction, fostering trust to dream big and act boldly.</p>
+            </div>
+            <div class="ecosystem-card">
+                <h4>🏡 PropertySolutionsAustralia: Opportunity Access</h4>
+                <p>Tokenized real estate democratizes wealth-building, transforming financial freedom into reality for all.</p>
+            </div>
+            <div class="ecosystem-card">
+                <h4>🌱 EcoKure: Planetary Healing</h4>
+                <p>Environmental projects restore ecosystems while generating value, ensuring a healthier world for future generations.</p>
+            </div>
+            <div class="ecosystem-card">
+                <h4>🎓 KureAcademy: Potential Unleashed</h4>
+                <p>Global education equips individuals with skills and mindsets to thrive in an evolving world.</p>
+            </div>
+            <div class="ecosystem-card">
+                <h4>💸 Global Coin: Economic Freedom</h4>
+                <p>A currency fuels growth and reduces debt, connecting people to opportunities without barriers.</p>
+            </div>
+        </div>
+        <div class="highlight-box">
+            <h3 class="blue-bold">A Movement Powered by You</h3>
+            <p>Your participation creates ripples of positive change worldwide, strengthening our ecosystem.</p>
+        </div>
+    </section>
+
+    <!-- Pillars -->
+    <section class="content-section" aria-labelledby="pillars-heading">
+        <h2 id="pillars-heading" class="glow-heading">Building a Brighter Future</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            Our ecosystem grows with humanity. Here’s how it transforms lives:
+        </p>
+        <div class="pillars-container">
+            <div class="pillar">
+                <div class="pillar-icon">🌍</div>
+                <h3 class="blue-bold">Prosperity Without Debt</h3>
+                <p>Our coin funds global debt reduction and impactful projects, bypassing traditional financial barriers.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">🔄</div>
+                <h3 class="blue-bold">Exponential Impact</h3>
+                <p>Platforms amplify each other—AI optimizes resources, education sparks innovation, and environmental restoration benefits all.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">🛡️</div>
+                <h3 class="blue-bold">Trust and Resilience</h3>
+                <p>QuantumSystemLock ensures security, while sustainable design builds a lasting legacy for good.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Vision -->
+    <section class="content-section" aria-labelledby="future-heading">
+        <h2 id="future-heading" class="glow-heading">The Future We Create Together</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">Envision a world where:</p>
+        <ul style="list-style: none; padding: 0; text-align: left; max-width: 600px; margin: 1rem auto;">
+            <li style="margin-bottom: 1rem;"><strong class="blue-bold">Debt vanishes:</strong> Global debt of $315 trillion dissolves within 15–20 years, fueling innovation.</li>
+            <li style="margin-bottom: 1rem;"><strong class="blue-bold">All thrive:</strong> Global GDP soars to $500 trillion, with education and opportunity for every individual.</li>
+            <li style="margin-bottom: 1rem;"><strong class="blue-bold">Planet heals:</strong> Environmental restoration drives economic growth, creating a sustainable future.</li>
+            <li style="margin-bottom: 1rem;"><strong class="blue-bold">Humanity unites:</strong> A global community collaborates, with ethical AI and secure systems solving challenges.</li>
+        </ul>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">7B+</span>
+                <p>People Empowered Globally</p>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$500T</span>
+                <p>Potential Global GDP Growth</p>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">100%</span>
+                <p>Commitment to Collective Good</p>
+            </div>
+        </div>
+        <div class="quote-box">
+            <p>"We are not here to curse the darkness but to light the candle that guides us to a safe and sane future." — John F. Kennedy</p>
+        </div>
+    </section>
+
+    <!-- Why Your Role Matters -->
+    <section class="content-section" aria-labelledby="role-heading">
+        <h2 id="role-heading" class="glow-heading">Why Your Role Matters</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            This vision needs passionate individuals like you—engineers, educators, dreamers—all uniting to shape an unstoppable future. Together, we transform lives.
+        </p>
+        <div class="highlight-box">
+            <h3 class="green-bold">A Legacy for Generations</h3>
+            <p>Your contribution builds a world of opportunity and security, ensuring future generations thrive.</p>
+        </div>
+    </section>
+
+    <!-- Join the Movement -->
+    <section class="content-section" aria-labelledby="join-heading">
+        <h2 id="join-heading" class="glow-heading">Join the Global Movement</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            This transcends financial gain—it’s an investment in humanity’s potential. Join our community to build a future where every voice matters and every dream has a chance.
+        </p>
+        <div class="highlight-box">
+            <h3 class="blue-bold">Be the Change</h3>
+            <p>Your investment, collaboration, or advocacy brings us closer to a world of abundance and equity. Every action counts.</p>
+        </div>
+        <div class="cta-buttons" style="margin-bottom: 1.5rem;">
+            <button id="view-risk-disclosures" class="cta-btn risk-btn" aria-label="View Donation and Investment Risks">View Risks</button>
+        </div>
+    </section>
+
+    <!-- Risk Disclosure Section -->
+    <section id="risk-disclosure-section" class="donation-structure-section" aria-labelledby="risk-disclosure-heading">
+        <h2 id="risk-disclosure-heading" class="glow-heading">Donation and Investment Risks</h2>
+        <div class="risk-warning-box">
+            <h3 style="color: #ff6600; margin-bottom: 1rem;">⚠️ CRITICAL RISK DISCLOSURE</h3>
+            <p><strong>READ CAREFULLY:</strong> Contributing to My Future Investor’s vision through donations or investments is a philanthropic commitment with no guaranteed financial returns. Contributions are non-refundable and dedicated to advancing our ecosystem’s projects.</p>
+            <p><strong>Key Risks:</strong></p>
+            <ul style="list-style: none; padding: 0; text-align: left; margin: 1rem 0;">
+                <li style="margin-bottom: 1rem;"><strong>No Financial Return:</strong> Donations and investments, regardless of size, offer no equity, profit-sharing, or monetary returns, as this is a mission-driven effort to transform humanity’s future.</li>
+                <li style="margin-bottom: 1rem;"><strong>Development Uncertainty:</strong> Projects like JARVI3, QuantumSystemLock, and EcoKure may face technical, regulatory, or market challenges, delaying or preventing success.</li>
+                <li style="margin-bottom: 1rem;"><strong>High Costs:</strong> Development, legal protection, and implementation costs may exceed estimates, requiring additional funding.</li>
+                <li style="margin-bottom: 1rem;"><strong>Market Risk:</strong> Innovations may not achieve widespread adoption, limiting their global impact.</li>
+                <li style="margin-bottom: 1rem;"><strong>Execution Risk:</strong> Unforeseen obstacles may hinder the realization of our vision, despite best efforts.</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Only contribute funds you can afford without expecting financial returns. This opportunity is for those passionate about advancing ethical, transformative innovations. Consult financial or legal advisors before contributing.</p>
+        </div>
+        <div class="cta-buttons">
+            <button id="close-risk-disclosures" class="cta-btn back-btn" aria-label="Close Risk Disclosures">Close Risks</button>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+        <h2 id="cta-heading" class="glow-heading">Ready to Shape the Future?</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
+            Join visionaries worldwide who believe in a better tomorrow. Together, we build a world where every person and idea thrives.
+        </p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('invest') }}" class="cta-btn cta-invest-btn" aria-label="Donate or Invest in the Vision">Donate or Invest</a>
+            <a href="{{ url_for('join_ecosystem') }}" class="cta-btn cta-donate-btn" aria-label="Join the Ecosystem">Join Ecosystem</a>
+        </div>
+        <p style="margin-top: 2rem; font-style: italic; color: #aaa;">
+            The future awaits our collective vision. Let’s create it together.
+        </p>
+    </section>
+
+    <!-- Collective Journey -->
+    <section class="content-section" aria-labelledby="journey-heading">
+        <h2 id="journey-heading" class="glow-heading">Our Collective Journey</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            Our vision reaches unprecedented heights, yet the path is complex. Navigating regulatory landscapes, technological frontiers, and global adoption requires creativity, commitment, and collaboration. Your belief and engagement lay the foundation for a future where our systems drive collective progress and benefit humanity.
+        </p>
+    </section>
+
+    <!-- Lightbox for potential gallery images -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" aria-label="Close Lightbox">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('About: DOMContentLoaded fired');
+
+        // Risk disclosure functionality
+        const riskButton = document.getElementById('view-risk-disclosures');
+        const closeButton = document.getElementById('close-risk-disclosures');
+        const riskSection = document.getElementById('risk-disclosure-section');
+
+        if (!riskButton) console.error('About: View Risk Disclosures button not found');
+        if (!closeButton) console.error('About: Close Risk Disclosures button not found');
+        if (!riskSection) console.error('About: Risk Disclosure section not found');
+
+        if (riskButton) {
+            riskButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        if (closeButton) {
+            closeButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        function toggleRiskDisclosures() {
+            console.log('About: toggleRiskDisclosures called');
+            if (riskSection) {
+                if (riskSection.style.display === 'none' || riskSection.style.display === '') {
+                    riskSection.style.display = 'block';
+                    riskSection.scrollIntoView({ behavior: 'smooth' });
+                    console.log('About: Risk section shown');
+                } else {
+                    riskSection.style.display = 'none';
+                    const joinHeading = document.getElementById('join-heading');
+                    if (joinHeading) {
+                        joinHeading.scrollIntoView({ behavior: 'smooth' });
+                        console.log('About: Risk section hidden');
+                    } else {
+                        console.error('About: Join heading not found');
+                    }
+                }
+            }
+        }
+
+        // Lightbox functionality for potential gallery images
+        const galleryImages = document.querySelectorAll('.gallery-img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        if (galleryImages.length > 0) {
+            galleryImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.style.display = 'flex';
+                    console.log('About: Lightbox opened for image', img.src);
+                });
+            });
+        }
+
+        if (lightbox) {
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target === lightboxClose) {
+                    lightbox.style.display = 'none';
+                    lightboxImg.src = '';
+                    lightboxImg.alt = '';
+                    console.log('About: Lightbox closed');
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox && lightbox.style.display === 'flex') {
+                lightbox.style.display = 'none';
+                lightboxImg.src = '';
+                lightboxImg.alt = '';
+                console.log('About: Lightbox closed via Escape key');
+            }
+        });
+    });
+    </script>
+</div>
+{% endblock %}

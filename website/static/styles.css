@@ -1,0 +1,512 @@
+/* Import fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@400;700&display=swap');
+
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #1a1a1a;
+    --text-primary: #f0f4f8;
+    --text-secondary: #a3bffa;
+    --accent-primary: #1e90ff;
+    --accent-hover: #1e7bff;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    --button-glow: 0 0 10px rgba(30, 144, 255, 0.6);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    overflow-x: hidden;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.main-view {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--bg-primary);
+    position: relative;
+    z-index: 10;
+}
+
+.main-header {
+    background: var(--bg-secondary);
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: var(--shadow);
+    border-bottom: 2px solid var(--accent-primary);
+    height: 60px;
+}
+
+.header-nav {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    transform: translateX(0);
+}
+
+.header-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.header-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.header-nav a.active,
+.header-nav a:hover {
+    background: var(--accent-primary);
+    color: #fff;
+    box-shadow: var(--button-glow);
+}
+
+.header-auth {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.header-auth .username {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.auth-btn {
+    background: var(--accent-primary);
+    color: #fff;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--button-glow);
+    transition: transform 0.2s ease;
+    font-size: 0.85rem;
+}
+
+.auth-btn:hover {
+    transform: scale(1.05);
+    background: var(--accent-hover);
+}
+
+.main-content {
+    flex-grow: 1;
+    margin-top: 0px;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.content-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    position: relative;
+}
+
+.top-logo {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    animation: fadeIn 1s ease-out;
+}
+
+.main-logo {
+    max-width: 200px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.main-logo:hover {
+    transform: scale(1.1);
+}
+
+.total-raised-section,
+.about-section,
+.why-invest-section,
+.ideas-section,
+.leaderboards-section,
+.sponsors-section,
+.cta-section {
+    margin-bottom: 3.5rem;
+    padding: 2rem;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.5s ease;
+}
+
+.total-raised-section {
+    background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+    border: 2px solid var(--accent-primary);
+    text-align: center;
+    padding: 2.5rem;
+}
+
+.total-raised-section h2,
+.about-section h2,
+.why-invest-section h2,
+.ideas-section h2,
+.leaderboards-section h2,
+.sponsors-section h2,
+.cta-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.3rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.total-raised-section #total-raised-amount {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin-bottom: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+.why-invest-section ul {
+    list-style: none;
+    padding-left: 1.5rem;
+}
+
+.why-invest-section li {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.why-invest-section li:before {
+    content: "›";
+    color: var(--accent-primary);
+    font-weight: bold;
+    position: absolute;
+    left: -1.5rem;
+}
+
+.ideas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin: 2rem 0;
+}
+
+.idea-card {
+    background: var(--bg-primary);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.idea-card:hover {
+    transform: translateY(-8px);
+}
+
+.idea-banner {
+    max-width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.idea-header {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.idea-logo {
+    max-width: 45px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.idea-card h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--accent-primary);
+}
+
+.whitepaper-preview {
+    margin: 1rem 0;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border-left: 4px solid var(--accent-primary);
+}
+
+.whitepaper-snippet {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.whitepaper-snippet span {
+    display: block;
+    padding: 0.4rem;
+    background: rgba(30, 144, 255, 0.1);
+    border-radius: 3px;
+}
+
+.pdf-btn {
+    background: #007bff;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.pdf-btn:hover,
+.pdf-btn:focus {
+    background: #0056b3;
+    transform: scale(1.05);
+    box-shadow: var(--button-glow);
+}
+
+.details {
+    margin-top: 1.5rem;
+    text-align: left;
+    max-height: 1000px;
+    overflow: visible;
+    opacity: 1;
+    transition: none;
+}
+
+.btn {
+    background: var(--accent-primary);
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin: 0.5rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover,
+.btn:focus {
+    background: var(--accent-hover);
+    transform: scale(1.05);
+    box-shadow: var(--button-glow);
+}
+
+.invest-btn {
+    background: #28a745;
+}
+
+.invest-btn:hover,
+.invest-btn:focus {
+    background: #1e7e34;
+}
+
+.cta-btn {
+    background: #dc3545;
+    font-size: 1.2rem;
+    padding: 0.9rem 1.8rem;
+}
+
+.cta-btn:hover,
+.cta-btn:focus {
+    background: #b02a37;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.leaderboards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 2rem;
+}
+
+.leaderboard {
+    background: var(--bg-primary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.leaderboard h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.6rem;
+    color: var(--accent-primary);
+    margin-bottom: 1.5rem;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.leaderboard-table th {
+    background: var(--accent-primary);
+    color: #fff;
+    font-weight: 600;
+}
+
+.leaderboard-table tr:hover {
+    background: rgba(30, 144, 255, 0.1);
+}
+
+.sponsors-section {
+    margin-bottom: 2.5rem;
+}
+
+footer {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    padding: 1.2rem;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+.centered-btn {
+    display: block;
+    margin: 1.5rem auto;
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .leaderboards-container {
+        grid-template-columns: 1fr;
+    }
+    .main-header {
+        padding: 0.5rem;
+    }
+    .header-nav ul {
+        gap: 1rem;
+    }
+    .header-nav a {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+    .header-auth .auth-btn {
+        padding: 0.3rem 0.7rem;
+    }
+    .content-container {
+        padding: 1.5rem;
+    }
+    .total-raised-section h2,
+    .about-section h2,
+    .why-invest-section h2,
+    .ideas-section h2,
+    .leaderboards-section h2,
+    .sponsors-section h2,
+    .cta-section h2 {
+        font-size: 1.9rem;
+    }
+    .idea-banner {
+        height: 140px;
+    }
+    .idea-card h3 {
+        font-size: 1.4rem;
+    }
+    .top-logo {
+        margin-bottom: 2rem;
+    }
+    .main-logo {
+        max-width: 150px;
+    }
+    .header-nav {
+        transform: translateX(5%);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-top: 70px;
+    }
+    .header-nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    .header-auth {
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+    .ideas-container {
+        grid-template-columns: 1fr;
+    }
+    .leaderboard-table th,
+    .leaderboard-table td {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+    .top-logo {
+        margin-bottom: 1.5rem;
+    }
+    .main-logo {
+        max-width: 120px;
+    }
+    .header-nav {
+        transform: none;
+    }
+}

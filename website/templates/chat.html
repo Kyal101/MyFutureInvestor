@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Chat with Ideas{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <div class="ai-assistant-logo">
+        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}" alt="AI Assistant Logo" id="ai-logo" loading="lazy">
+    </div>
+    <div id="chat-box" role="log" aria-live="polite" tabindex="0">
+        <div class="message bot-message"><p>Hello! Welcome to My Future Investor .com. Ask about our innovative app ideas or investment opportunities!</p></div>
+        {% if response %}
+        <div class="message bot-message"><p>{{ response }}</p></div>
+        {% endif %}
+    </div>
+    <div id="typing-indicator" hidden>My Future Investor is thinking...</div>
+    <form id="chat-form" class="input-group" role="search" aria-label="Send a message" action="{{ url_for('chat') }}" method="POST">
+        <div class="input-row">
+            <textarea id="user-input" name="user-input" placeholder="Ask about our ideas or investment opportunities..." aria-label="Type your query" autocomplete="off" required rows="1"></textarea>
+            <button id="send-btn" type="submit" disabled aria-label="Send message">Send</button>
+            <div class="action-dropdown">
+                <select id="action-select" name="action" aria-label="Select action">
+                    <option value="default">Action</option>
+                    <option value="think">Think</option>
+                    <option value="deepsearch">DeepSearch</option>
+                    <option value="multitask">Multitask</option>
+                </select>
+            </div>
+            <button id="voice-btn" type="button" class="icon-btn" aria-label="Voice input">🎙️</button>
+        </div>
+        <div class="control-row" role="group" aria-label="Settings">
+            <label for="model-select">Model:</label>
+            <select id="model-select" name="model" aria-label="Select AI model">
+                <option value="jarvi3" selected>My Future Investor (Main)</option>
+                <option value="chatgpt">ChatGPT</option>
+                <option value="grok">GROK</option>
+                <option value="deepseek">DeepSeek</option>
+                <option value="gemini">Gemini</option>
+                <option value="claude">Claude</option>
+            </select>
+            <label for="module-select">API Module:</label>
+            <select id="module-select" name="module" aria-label="Select API module">
+                <option value="general" selected>General (No API)</option>
+                <option value="market">Market Analysis</option>
+                <option value="funding">Funding Insights</option>
+                <option value="pitch">Pitch Deck Generator</option>
+            </select>
+            <label class="offline-toggle" for="offline">
+                <input id="offline" type="checkbox" name="offline" aria-label="Use offline mode">
+                Offline Mode
+            </label>
+        </div>
+    </form>
+    <div id="ideas" aria-labelledby="ideas-heading">
+        <h2 id="ideas-heading">Our Innovative Ideas</h2>
+        {% if ideas %}
+        <div class="ideas-container">
+            {% for idea in ideas %}
+            <article class="idea-card" aria-labelledby="{{ idea.name | replace(' ', '-') }}-title">
+                <img src="{{ url_for('static', filename='images/' + (idea.banner or 'placeholder.png')) }}" alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                <div class="idea-header">
+                    <img src="{{ url_for('static', filename='images/' + (idea.logo or 'placeholder.png')) }}" alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    <h3 id="{{ idea.name | replace(' ', '-') }}-title">{{ idea.name }}</h3>
+                </div>
+                <p>{{ idea.description }}</p>
+                <div class="whitepaper-preview">
+                    <p>Whitepaper Preview: {{ idea.whitepaper_preview | default('Preview not available') }}</p>
+                    <a href="{{ idea.pdf_url }}" target="_blank" class="btn pdf-btn" aria-label="View {{ idea.name }} whitepaper">Read Full Whitepaper</a>
+                </div>
+                <div class="goal-bar" aria-label="Funding progress for {{ idea.name }}">
+                    <div class="progress" style="width: {{ (idea.funding_raised / idea.funding_goal * 100) if idea.funding_goal > 0 else 0 }}%"></div>
+                    <p>${{ idea.funding_raised | int }} / ${{ idea.funding_goal | int }} raised</p>
+                </div>
+                <div class="buttons">
+                    <form action="{{ url_for('donate') }}" method="POST">
+                        <input type="hidden" name="idea" value="{{ idea.name }}">
+                        <button type="submit" class="btn donate-btn" aria-label="Donate to {{ idea.name }}">Donate</button>
+                    </form>
+                    <form action="{{ url_for('invest') }}" method="POST">
+                        <input type="hidden" name="idea" value="{{ idea.name }}">
+                        <button type="submit" class="btn invest-btn" aria-label="Invest in {{ idea.name }}">Invest</button>
+                    </form>
+                    <button class="btn details-btn" onclick="toggleDetails('{{ idea.name | replace(' ', '-') }}')" aria-expanded="false" aria-controls="{{ idea.name | replace(' ', '-') }}-details">Details</button>
+                </div>
+                <div id="{{ idea.name | replace(' ', '-') }}-details" class="details" style="display: none;" role="region" aria-hidden="true">
+                    <p>{{ idea.long_description }}</p>
+                    <p>Stage: {{ idea.stage }}</p>
+                    <p>Market: {{ idea.market }}</p>
+                    <p>Investor Benefits: {{ idea.benefits }}</p>
+                    {% if idea.achievements %}
+                    <h4>Achievements</h4>
+                    <ul>
+                        {% for achievement in idea.achievements %}
+                        <li>{{ achievement }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="error">No ideas available yet. Check back soon for exciting opportunities!</p>
+        {% endif %}
+    </div>
+    <div id="leaderboard" aria-labelledby="leaderboard-heading">
+        <h2 id="leaderboard-heading">Donation Leaderboard</h2>
+        {% if donations %}
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in donations %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ donation.username }}</td>
+                    <td>${{ donation.amount | int }}</td>
+                    <td>{{ donation.message | default('No message') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No donations yet. Be the first to contribute!</p>
+        {% endif %}
+    </div>
+    <div id="investor-leaderboard" aria-labelledby="investor-leaderboard-heading">
+        <h2 id="investor-leaderboard-heading">Investor Leaderboard</h2>
+        {% if investments %}
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th>Idea</th>
+                    <th>Benefits</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for investment in investments %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ investment.username }}</td>
+                    <td>${{ investment.amount | int }}</td>
+                    <td>{{ investment.idea }}</td>
+                    <td>{{ investment.benefits }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No investments yet. Be the first to invest!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

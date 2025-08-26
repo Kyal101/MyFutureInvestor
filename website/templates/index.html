@@ -1,0 +1,1026 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Join a Team{% endblock %}
+
+{% block content %}
+<style>
+    /* Banner styling for idea images */
+    .idea-banner-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .idea-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    /* Button styling for action links */
+    .buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    .details-btn, .pdf-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #00aaff;
+        box-shadow: 0 0 8px #00aaff88;
+    }
+    .details-btn:hover, .pdf-btn:hover {
+        background-color: white;
+        color: #0077cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0088ee;
+    }
+
+    .donate-btn, .invest-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+    .donate-btn:hover, .invest-btn:hover {
+        background-color: #1b5e20;
+        border-color: #145214;
+        box-shadow: 0 0 8px #4caf5088;
+    }
+
+    /* Call-to-action button styling */
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .cta-btn {
+        padding: 0.75rem 2rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        border-radius: 8px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        user-select: none;
+    }
+
+    .cta-invest-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+    .cta-invest-btn:hover {
+        background-color: #1b5e20;
+        box-shadow: 0 0 12px #4caf50cc;
+        border-color: #145214;
+    }
+
+    .cta-donate-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #0088cc;
+    }
+    .cta-donate-btn:hover {
+        background-color: #0088cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0066aa;
+    }
+
+    /* Text alignment utility */
+    .centered-text {
+        text-align: center;
+    }
+
+    /* Apply button styling */
+    .apply-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .apply-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    /* Contact form section styling */
+    .contact-section {
+        margin-bottom: 2rem;
+        text-align: center;
+        padding: 0;
+        background: none;
+        border: none;
+    }
+
+    .contact-form {
+        max-width: 600px;
+        margin: 2rem auto 0 auto;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        background: none;
+    }
+
+    .contact-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #fff;
+        text-align: left;
+    }
+
+    .contact-form select,
+    .contact-form textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #444;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: #333;
+        color: #fff;
+    }
+
+    .contact-form textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    .contact-form .submit-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .contact-form .submit-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    /* Heading with glow effect */
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+    }
+
+    /* Color utilities */
+    .blue-bold {
+        color: #00aaff;
+        font-weight: 600;
+    }
+
+    .green-bold {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    /* Section styling for content blocks */
+    .total-raised-section,
+    .about-section,
+    .investment-structure-section,
+    .why-invest-section,
+    .ideas-section,
+    .leaderboards-section,
+    .sponsors-collaborators-section,
+    .cta-section,
+    .join-team-section,
+    .impact-section,
+    .market-opportunity-section {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #333;
+    }
+
+    /* Specific styling for impact and market opportunity sections */
+    .impact-section,
+    .market-opportunity-section {
+        border-left: 4px solid #00aaff;
+    }
+
+    /* Risk disclosure section */
+    .investment-structure-section {
+        border-left: 4px solid #ff6600;
+    }
+
+    /* Highlight and risk warning boxes with solid black background */
+    .highlight-box {
+        background-color: #1e1e1e;
+        border-left: 4px solid #00aaff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .risk-warning-box {
+        background-color: #1e1e1e;
+        border-left: 4px solid #ff6600;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    /* Leaderboard container styling */
+    .leaderboards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .leaderboard, .recent-donations {
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        margin: 1rem;
+        border: 1px solid #005cbf;
+        border-radius: 8px;
+        padding: 1rem;
+        background-color: #1e1e1e;
+        color: #fff;
+    }
+
+    .leaderboard h3, .recent-donations h3 {
+        color: #fff;
+        font-family: inherit;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    #recent-donations h3, #donation-leaderboard h3, #investor-leaderboard h3 {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+    }
+
+    .leaderboard-table {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        border-collapse: collapse;
+    }
+
+    .leaderboard-table th, .leaderboard-table td {
+        border: 1px solid #444;
+        padding: 0.5rem;
+        text-align: left;
+        color: #fff;
+    }
+
+    #sponsors-leaderboard .leaderboard-table,
+    #collaborators-leaderboard .leaderboard-table {
+        text-align: center;
+    }
+
+    #sponsors-leaderboard .leaderboard-table th,
+    #sponsors-leaderboard .leaderboard-table td,
+    #collaborators-leaderboard .leaderboard-table th,
+    #collaborators-leaderboard .leaderboard-table td {
+        text-align: center;
+    }
+
+    .recent-donations ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .recent-donations li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #444;
+    }
+
+    .recent-donations li:last-child {
+        border-bottom: none;
+    }
+
+    /* Stats grid for metrics */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .stat-card {
+        background-color: #2a2a2a;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid #444;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        color: #00aaff;
+        font-weight: bold;
+        display: block;
+    }
+
+    /* NEIS badge styling */
+    .neis-badge {
+        margin-top: 1.5rem;
+        padding: 1rem 1.5rem;
+        display: inline-block;
+        background: linear-gradient(135deg, #00aaff33, #4caf5033);
+        border: 2px solid #00aaff;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        text-align: center;
+        box-shadow: 0 0 12px #00aaff66;
+    }
+
+    /* Idea card styling */
+    .idea-card {
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        margin: 1rem;
+        border: 1px solid #005cbf;
+        border-radius: 8px;
+        padding: 1rem;
+        background-color: #0e0e0e;
+        color: #fff;
+    }
+
+    .idea-card h3 {
+        color: #fff;
+        font-family: inherit;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-weight: 600;
+    }
+
+    .idea-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .idea-logo {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+    }
+
+    /* Whitepaper preview styling */
+    .whitepaper-preview {
+        margin: 1rem 0;
+        text-align: left;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .whitepaper-snippet {
+        color: #ccc;
+        font-style: italic;
+    }
+
+    /* Funding goal progress bar */
+    .goal-bar {
+        background-color: #333;
+        border-radius: 6px;
+        height: 20px;
+        margin: 1rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .progress {
+        background: linear-gradient(90deg, #00aaff, #4caf50);
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+</style>
+
+<div class="content-container">
+    <!-- Logo -->
+    <div class="top-logo">
+        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 11, 2025, 09_11_41 AM.png') }}" 
+             alt="My Future Investor Logo" class="main-logo" loading="lazy">
+    </div>
+
+    <!-- Total Raised Section -->
+    <section class="total-raised-section" aria-labelledby="total-raised-heading">
+        <h2 id="total-raised-heading" class="centered-text glow-heading">Building Tomorrow's Safety Net</h2>
+        <p id="total-raised-amount" class="centered-text" style="font-size: 2.5rem; margin: 1rem 0; font-weight: bold; color: #4caf50; text-shadow: 0 0 10px #c0c0c03d, 0 0 20px #ffffff88;">
+            ${{ '{:,.2f}'.format(total_raised | default(23400)) }}
+        </p>
+        <p class="centered-text" style="font-size: 1.1rem; color: #ccc;">
+            Total community support raised for ecosystem development
+        </p>
+        
+        <div class="stats-grid" style="margin-top: 2rem;">
+            <div class="stat-card">
+                <span class="stat-number">6</span>
+                <p>Innovative Companies</p>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$200B+</span>
+                <p>Combined Market Opportunity</p>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">100%</span>
+                <p>Committed to Our Mission</p>
+            </div>
+        </div>
+
+        <div class="centered-text">
+            <div class="neis-badge">
+                ✅ Founder Supported Through the Australian NEIS Entrepreneur Program
+            </div>
+        </div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section" aria-labelledby="welcome-heading">
+        <h2 id="welcome-heading" class="centered-text glow-heading">Welcome to My Future Investor</h2>
+        <p class="centered-text" style="font-size: 1.3rem; margin: 1.5rem auto; max-width: 800px; line-height: 1.6; color: #fff;">
+            Welcome, future builders and visionaries! Thank you for your interest in supporting humanity's next chapter. Whether you're here to make a donation to support our mission or explore investment opportunities in groundbreaking technologies, your participation helps us tackle the world's greatest challenges together.
+        </p>
+        
+        <div class="highlight-box" style="margin: 2rem auto; max-width: 700px;">
+            <p style="text-align: center; font-size: 1.1rem;">
+                <strong class="blue-bold">For Supporters & Donors:</strong> Every contribution, no matter the size, directly funds the development of technologies that could reshape our future - from AI safety to environmental restoration.
+                <br><br>
+                <strong class="green-bold">For Potential Investors:</strong> We offer equity investment opportunities in individual companies developing cutting-edge solutions. Please read all risk disclosures carefully before proceeding.
+            </p>
+        </div>
+        
+        <div class="cta-buttons" style="margin-top: 2rem; margin-bottom: 2rem;">
+            <button id="view-risk-disclosures" class="cta-btn" style="padding: 0.75rem 1.5rem; font-size: 1.1rem; background-color: #ff6600; border-color: #cc5500;" onclick="toggleRiskDisclosures()">View Investment Risks</button>
+        </div>
+    </section>
+
+    <!-- Risk Disclosure Section -->
+    <section id="risk-disclosure-section" class="investment-structure-section" style="display: none;" aria-labelledby="investment-structure-heading">
+        <h2 id="investment-structure-heading" class="glow-heading">Investment Structure & Risk Management</h2>
+        
+        <div class="risk-warning-box" style="margin-bottom: 2rem;">
+            <h3 style="color: #ff6600; margin-bottom: 1rem;">⚠️ CRITICAL INVESTMENT RISK DISCLOSURE</h3>
+            <p><strong>READ CAREFULLY:</strong> All investments are made directly into individual companies within our ecosystem. When you invest in a specific platform (e.g., JARVI3, EcoKure, etc.), your investment returns are <strong>entirely dependent on the success of that particular company.</strong></p>
+            <p><strong>Key Risks:</strong></p>
+            <ul style="margin: 1rem 0; line-height: 1.6;">
+                <li><strong>Individual Company Risk:</strong> If the specific company you invest in fails, you may lose your entire investment regardless of how other companies in the ecosystem perform</li>
+                <li><strong>No Cross-Company Guarantees:</strong> Success of other platforms does not guarantee returns on your specific investment</li>
+                <li><strong>Future Returns Uncertainty:</strong> All projected returns are speculative and based on future company performance that may never materialize</li>
+                <li><strong>Development Stage Risk:</strong> These are early-stage companies with unproven business models and technologies</li>
+                <li><strong>Market Risk:</strong> Market conditions, competition, and regulatory changes could prevent success</li>
+            </ul>
+            <p><strong>Investment Recommendation:</strong> Only invest money you can afford to lose completely. This is high-risk, speculative investment suitable only for accredited investors with risk tolerance for potential total loss.</p>
+        </div>
+
+        <div class="highlight-box">
+            <h3 class="blue-bold">Individual Company Investment Model</h3>
+            <p><strong>Investment Structure:</strong> $100,000 = 1% equity stake in the specific company you choose to invest in</p>
+            <p><strong>Important:</strong> Your equity is in one individual company, not the entire ecosystem. Your investment success depends solely on that company's performance, development milestones, and eventual profitability or exit opportunities.</p>
+        </div>
+
+        <div style="text-align: left; margin: 2rem 0;">
+            <h3 class="green-bold">How Ecosystem Interconnection Works (But Doesn't Guarantee Returns)</h3>
+            <p style="margin-bottom: 1.5rem;">While companies in our ecosystem are designed to work together, <strong>this does not reduce your investment risk or guarantee returns:</strong></p>
+            
+            <ul style="margin-bottom: 2rem; line-height: 1.8;">
+                <li><strong class="blue-bold">Interconnected Development:</strong> When one company achieves breakthroughs, it may create opportunities for other companies through shared systems - but this doesn't guarantee your specific investment will benefit</li>
+                <li><strong class="blue-bold">Shared Resources:</strong> Companies may utilize systems developed by others, but operational efficiencies don't guarantee profitability or investment returns</li>
+                <li><strong class="blue-bold">Independent Success Required:</strong> Each company must achieve individual market success, customer adoption, and revenue generation regardless of ecosystem connections</li>
+                <li><strong class="blue-bold">No Risk Transfer:</strong> If your chosen company fails, ecosystem connections cannot transfer your investment to successful companies</li>
+            </ul>
+
+            <div class="risk-warning-box">
+                <h4 style="color: #ff6600; margin-bottom: 1rem;">Diversification Reality Check</h4>
+                <p><strong>Clarification:</strong> "Diversified risk" refers to companies having multiple potential revenue streams and market applications - NOT diversification of your investment risk. Your investment remains concentrated in one specific company with all associated risks of that concentration.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3 class="green-bold">Investment Timeline & Return Expectations</h3>
+            <p><strong>Timeline:</strong> Any potential returns are projected years into the future, assuming successful company development, market adoption, and profitable operations or successful exit (acquisition/IPO).</p>
+            <p><strong>No Guarantees:</strong> There is no guarantee that any company will achieve profitability, market success, or provide any returns to investors. Many early-stage companies fail completely.</p>
+        </div>
+
+        <div class="risk-warning-box" style="margin-top: 2rem;">
+            <h3 style="color: #ff6600;">⚠️ Company-Specific Investment Risk</h3>
+            <p><strong>Your investment returns depend entirely on the individual company you invest in achieving:</strong></p>
+            <ul>
+                <li>Successful product/service development and launch</li>
+                <li>Market acceptance and customer acquisition</li>
+                <li>Revenue generation and path to profitability</li>
+                <li>Competitive advantage in their specific market</li>
+                <li>Management execution of business plan</li>
+            </ul>
+            <p><strong>If your chosen company fails in any of these areas, you may lose your entire investment.</strong></p>
+        </div>
+
+        <div style="text-align: left;">
+            <h3 class="green-bold" style="margin-bottom: 1rem;">Company-Specific Revenue Targets:</h3>
+            <ul style="margin-bottom: 2rem;">
+                <li><strong class="blue-bold">JARVI3:</strong> Must successfully develop and sell AI safety consulting services to enterprise clients - returns depend on this company's ability to capture market share in AI governance</li>
+                <li><strong class="blue-bold">QuantumSystemLock:</strong> Must successfully develop quantum security technology and secure customers - returns depend solely on this company's technical development and sales success</li>
+                <li><strong class="blue-bold">EcoKure:</strong> Must secure environmental restoration contracts and develop profitable operations - returns depend only on this company's project execution and market development</li>
+                <li><strong class="blue-bold">KureAcademy:</strong> Must develop successful education technology and achieve user adoption - returns depend exclusively on this company's product development and market penetration</li>
+                <li><strong class="blue-bold">Property Solutions Australia:</strong> Must successfully execute real estate tokenization and generate transaction revenue - returns depend entirely on this company's operational success</li>
+                <li><strong class="blue-bold">Zero Debt Solution:</strong> Must develop and scale debt optimization services with paying customers - returns depend solely on this company's service delivery and customer acquisition</li>
+            </ul>
+
+            <div class="risk-warning-box">
+                <h4 style="color: #ff6600; margin-bottom: 1rem;">Reality of Early-Stage Investment</h4>
+                <p><strong>Statistical Reality:</strong> The majority of early-stage companies fail. Even with ecosystem connections, each company faces independent risks of:</p>
+                <ul>
+                    <li>Technical development failures</li>
+                    <li>Market rejection of products/services</li>
+                    <li>Inability to achieve sustainable revenue</li>
+                    <li>Management or execution problems</li>
+                    <li>Competitive pressures</li>
+                    <li>Economic or regulatory changes</li>
+                </ul>
+                <p><strong>Ecosystem connections cannot overcome fundamental business execution failures.</strong></p>
+            </div>
+        </div>
+
+        <div class="risk-warning-box" style="margin-top: 2rem;">
+            <h3 style="color: #ff6600;">🚨 FINAL INVESTMENT WARNING</h3>
+            <p><strong>Before investing, understand that:</strong></p>
+            <ul style="line-height: 1.6;">
+                <li>You are investing in individual, early-stage companies with unproven business models</li>
+                <li>Your entire investment may be lost if the company fails</li>
+                <li>Any returns are speculative and may never materialize</li>
+                <li>This is suitable only for accredited investors who can afford total loss</li>
+                <li>No regulatory protections apply to these private investments</li>
+            </ul>
+            <p><strong>Only proceed if you fully understand and accept these risks.</strong></p>
+        </div>
+
+        <div class="highlight-box" style="margin: 2rem auto; max-width: 600px;">
+            <h3 class="green-bold">Investor Suitability Requirements</h3>
+            <p><strong>This investment opportunity is only suitable for:</strong></p>
+            <ul>
+                <li>Accredited investors with substantial risk tolerance</li>
+                <li>Individuals who can afford complete loss of investment</li>
+                <li>Long-term investors comfortable with 5-10 year investment horizons</li>
+                <li>Those who understand early-stage company risks</li>
+            </ul>
+        </div>
+        
+        <div class="cta-buttons">
+            <a href="invest" class="cta-btn cta-invest-btn" aria-label="Proceed with High-Risk Investment">Proceed Understanding Risks</a>
+            <button onclick="toggleRiskDisclosures()" class="cta-btn" style="background-color: #666; border-color: #444;">Close Risk Disclosures</button>
+        </div>
+        
+        <p style="margin-top: 2rem; font-style: italic; color: #aaa; font-size: 1rem; text-align: center;">Investment in early-stage companies carries substantial risk of total loss. Past performance does not guarantee future results.</p>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" aria-labelledby="about-heading">
+        <h2 id="about-heading" class="glow-heading">My Vision: Building Tomorrow Together</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">I'm Kyal, and I believe we're standing at the most critical crossroads in human history. The challenges we face today, from AI safety and cybersecurity to economic inequality and environmental crisis — aren't isolated problems. They're interconnected challenges that require coordinated, innovative solutions.</p>
+        
+        <div class="highlight-box">
+            <p><strong class="blue-bold">My mission is both ambitious and achievable:</strong> Create an ecosystem of innovative companies that work together to solve humanity's biggest challenges. Not just individual businesses competing for market share, but a coordinated network of solutions addressing AI alignment, quantum security, environmental restoration, consciousness-based education, real estate innovation, and debt elimination.</p>
+        </div>
+        
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-top: 1.5rem;">Whether you choose to donate $1 or invest $1 million, you join a growing community of forward-thinking individuals who believe the future isn’t something that happens to us, it’s something we create together. Every contribution, large or small, supports the research, development, and implementation of technologies with the potential to transform civilization for the better.</p>
+        
+        <div class="highlight-box">
+            <p><strong class="green-bold">Your Impact Matters:</strong> Donations directly fund research and development across all companies. Investments provide equity stakes in individual companies while supporting their growth and development. Both forms of support are essential to our mission's success.</p>
+        </div>
+        
+        <div class="cta-buttons">
+        </div>
+    </section>
+
+    <!-- Why Invest Section -->
+    <section class="why-invest-section" aria-labelledby="why-invest-heading">
+        <h2 id="why-invest-heading" class="glow-heading">Why This Ecosystem Approach Works</h2>
+        <p style="font-size: 1.1rem; margin-bottom: 2rem;">Our interconnected company model creates unique advantages for addressing humanity's greatest challenges:</p>
+        
+        <ul style="text-align: left;">
+            <li><strong class="blue-bold">Cross-Platform Synergies:</strong> Breakthroughs in one company can accelerate development across related companies</li>
+            <li><strong class="blue-bold">Shared Technology Foundation:</strong> Common security, AI optimization, and infrastructure systems benefit all companies</li>
+            <li><strong class="blue-bold">Coordinated Problem-Solving:</strong> Companies work together to address interconnected global challenges</li>
+            <li><strong class="blue-bold">Resource Optimization:</strong> Efficient allocation of development resources across the ecosystem</li>
+            <li><strong class="blue-bold">Real Asset Integration:</strong> Tangible real estate assets provide stability across the network</li>
+            <li><strong class="blue-bold">Community-Driven Development:</strong> Supporters and investors help guide priorities and share in success</li>
+        </ul>
+    </section>
+
+    <!-- Ideas Section -->
+    <section class="ideas-section" aria-labelledby="ideas-heading">
+        <h2 id="ideas-heading" class="glow-heading">Platform Portfolio Overview</h2>
+        <p style="font-size: 1.1rem; margin-bottom: 2rem;">Six interconnected platforms creating systematic value across multiple market sectors:</p>
+        
+        {% if ideas %}
+        <div class="ideas-container">
+            {% for idea in ideas %}
+            <article class="idea-card" aria-labelledby="{{ idea.name | replace(' ', '-') }}-title">
+                <div class="idea-banner-container">
+                    {% if idea.name == "JARVI3" %}
+                        <img src="{{ url_for('static', filename='images/ChatGPT Image Aug 9, 2025, 11_52_32 AM.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "QuantumSystemLock" %}
+                        <img src="{{ url_for('static', filename='images/qsl/5d5ead93-f52d-4072-96ba-328d0adbcfaf.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "EcoKure" %}
+                        <img src="{{ url_for('static', filename='images/ecokure/Ecokurebackgroundwallpaper.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "KureAcademy" %}
+                        <img src="{{ url_for('static', filename='images/kure_academy/kureacademybannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "KureMechanics" %}
+                        <img src="{{ url_for('static', filename='images/kure_mechanics/kuremechanicsbannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "PropertySolutionsAustralia (PSA)" %}
+                        <img src="{{ url_for('static', filename='images/psa/psabannor2.png') }}" 
+                             alt="Property Solutions Australia (PSA) banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "Zero Debt Solution" %}
+                        <img src="{{ url_for('static', filename='images/zde/zdebannor.png') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "Patents" %}
+                        <img src="{{ url_for('static', filename='images/Patentscover.jpg') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% elif idea.name == "Support Kyal" %}
+                        <img src="{{ url_for('static', filename='images/profilepic.jpg') }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% else %}
+                        <img src="{{ idea.banner }}" 
+                             alt="{{ idea.name }} banner" class="idea-banner" loading="lazy">
+                    {% endif %}
+                </div>
+
+                <div class="idea-header">
+                    {% if idea.name == "JARVI3" %}
+                        <img src="{{ url_for('static', filename='images/j3/jslogo.png') }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% elif idea.name == "QuantumSystemLock" %}
+                        <img src="{{ url_for('static', filename='images/qsl/ChatGPT Image Aug 11, 2025, 07_22_20 PM.png') }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% elif idea.name == "EcoKure" %}
+                        <img src="{{ url_for('static', filename='images/ecokure/ecokurelogo2.png') }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% elif idea.name == "KureAcademy" %}
+                        <img src="{{ url_for('static', filename='images/kure_academy/kureacademylogo.png') }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% elif idea.name == "KureMechanics" %}
+                        <img src="{{ url_for('static', filename='images/kure_mechanics/kuremechanicslogo.png') }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% elif idea.name == "PropertySolutionsAustralia (PSA)" %}
+                        <img src="{{ url_for('static', filename='images/psa/psalogo.jpg') }}" 
+                             alt="Property Solutions Australia (PSA) logo" class="idea-logo" loading="lazy">
+                    {% elif idea.name == "Zero Debt Solution" %}
+                        <img src="{{ url_for('static', filename='images/zde/zdelogo.jpg') }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% elif idea.name == "Patents" %}
+                        <img src="{{ url_for('static', filename='images/patentlogo.jpg') }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% elif idea.name == "Support Kyal" %}
+                        <img src="{{ url_for('static', filename='images/lovepic.jpg') }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% else %}
+                        <img src="{{ idea.logo }}" 
+                             alt="{{ idea.name }} logo" class="idea-logo" loading="lazy">
+                    {% endif %}
+                    <h3 id="{{ idea.name | replace(' ', '-') }}-title">
+                        {% if idea.name == "PropertySolutionsAustralia (PSA)" %}
+                            Property Solutions Australia (PSA)
+                        {% elif idea.name == "Patents" %}
+                            Patents
+                        {% elif idea.name == "Support Kyal" %}
+                            Support Kyal
+                        {% else %}
+                            {{ idea.name }}
+                        {% endif %}
+                    </h3>
+                </div>
+
+                <p style="margin-bottom: 1rem;">{{ idea.description }}</p>
+                <p><strong class="blue-bold">Stage:</strong> {{ idea.stage }}</p>
+                <p><strong class="blue-bold">Market:</strong> {{ idea.market }}</p>
+
+                <div class="whitepaper-preview">
+                    <p class="whitepaper-snippet">Ecosystem Impact: 
+                        <span style="color: #00aaff;">
+                            {% if idea.name == "Patents" %}
+                                Enabling hidden innovations to thrive, expanding MyFutureInvestor with cutting-edge tech ideas and new opportunities.
+                            {% elif idea.name == "Support Kyal" %}
+                                Direct contributions empower the founder’s vision, driving impactful advancements and new possibilities for MyFutureInvestor.
+                            {% elif idea.name == "JARVI3" %}
+                                Pioneering AI with golden ratio principles for ethical, intuitive human-AI collaboration.
+                            {% elif idea.name == "QuantumSystemLock" %}
+                                Revolutionizing cybersecurity with quantum encryption for unbreakable data protection.
+                            {% elif idea.name == "EcoKure" %}
+                                Promoting sustainable living through practical, eco-friendly strategies that support personal and planetary wellbeing.
+                            {% elif idea.name == "KureMechanics" %}
+                                Redefining physics education through consciousness-driven theoretical exploration.
+                            {% elif idea.name == "KureAcademy" %}
+                                Transforming education with consciousness-focused learning for global impact.
+                            {% elif idea.name == "PropertySolutionsAustralia (PSA)" %}
+                                Streamlining real estate investment for wealth creation in Australia’s market.
+                            {% elif idea.name == "Zero Debt Solution" %}
+                                Empowering financial freedom through innovative debt management techniques.
+                            {% else %}
+                                Critical foundation for our interconnected future.
+                            {% endif %}
+                        </span>
+                    </p>
+                </div>
+
+                <div class="goal-bar" aria-label="Funding progress for {{ idea.name }}">
+                    <div class="progress" style="width: {{ (total_raised_by_idea[idea.name] | default(23400 if idea.name == 'EcoKure' else 0) / idea.funding_goal * 100) if idea.funding_goal > 0 else 0 }}%"></div>
+                    <p><strong>${{ total_raised_by_idea[idea.name] | default(23400 if idea.name == 'EcoKure' else 0) | int }} / ${{ idea.funding_goal | int }}</strong> platform development funding</p>
+                </div>
+
+                <div class="buttons">
+                    <a href="{{ url_for(idea.detail_endpoint) }}" class="btn details-btn" aria-label="View details for {{ idea.name }}">Platform Details</a>
+                    {% if idea.name != "Patents" and idea.name != "Support Kyal" %}
+                        {% if idea.name == "EcoKure" %}
+                            <a href="{{ url_for('static', filename='pdf/ecokurewhitepaper.pdf') }}" target="_blank" class="btn pdf-btn" aria-label="View full EcoKure whitepaper">Technical Whitepaper</a>
+                        {% elif idea.name == "PropertySolutionsAustralia (PSA)" %}
+                            <a href="{{ url_for('static', filename='pdf/psawhitepaper.pdf') }}" target="_blank" class="btn pdf-btn" aria-label="View full Property Solutions Australia whitepaper">Technical Whitepaper</a>
+                        {% elif idea.name == "Zero Debt Solution" %}
+                            <a href="{{ url_for('static', filename='pdf/zdewhitepaper.pdf') }}" target="_blank" class="btn pdf-btn" aria-label="View full Zero Debt Solution whitepaper">Technical Whitepaper</a>
+                        {% else %}
+                            <a href="{{ idea.pdf_url }}" target="_blank" class="btn pdf-btn" aria-label="View full {{ idea.name }} whitepaper">Technical Whitepaper</a>
+                        {% endif %}
+                    {% endif %}
+                    <a href="invest" class="btn donate-btn" aria-label="Support {{ idea.name }}">Support Development</a>
+                    <a href="{{ url_for('join_ecosystem') }}" class="btn invest-btn" aria-label="Get updates for {{ idea.name }}">Get Updates</a>
+                </div>
+
+                <div id="{{ idea.name | replace(' ', '-') }}-details" class="details" style="display: none;" role="region" aria-hidden="true">
+                    <p>{{ idea.long_description }}</p>
+                    <p>Development Stage: {{ idea.stage }}</p>
+                    <p>Target Market: {{ idea.market }}</p>
+                    <p>Ecosystem Integration: {{ idea.benefits }}</p>
+                    {% if idea.achievements %}
+                    <h4>Development Milestones</h4>
+                    <ul>
+                        {% for achievement in idea.achievements %}
+                        <li>{{ achievement }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="error">Platform details are currently being updated. Contact us for complete investment documentation.</p>
+        {% endif %}
+    </section>
+
+    <!-- Leaderboards Section -->
+    <section class="leaderboards-section" aria-labelledby="leaderboards-heading">
+        <h2 id="leaderboards-heading" class="centered-text glow-heading">Current Investor Community</h2>
+        <p style="margin-bottom: 2rem;">Active participants in ecosystem development and growth</p>
+        
+        <div class="leaderboards-container">
+            <div id="recent-donations" class="recent-donations">
+                <h3>Recent Contributions</h3>
+                {% if donations %}
+                <ul>
+                    {% for donation in donations[:5] %}
+                    <li>
+                        <strong>{{ donation.username }}</strong> contributed ${{ donation.amount | int }}
+                        {% if donation.message %}
+                        <br><em style="color: #aaa;">"{{ donation.message | truncate(50, True) }}"</em>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Be among the first strategic investors!</p>
+                {% endif %}
+            </div>
+            <div id="donation-leaderboard" class="leaderboard">
+                <h3>Development Supporters</h3>
+                {% if donations %}
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Contributor</th>
+                            <th>Amount</th>
+                            <th>Focus Area</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donation in donations %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ donation.username }}</td>
+                            <td>${{ donation.amount | int }}</td>
+                            <td>{{ donation.message | default('General development') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>Join as a founding contributor!</p>
+                {% endif %}
+            </div>
+            <div id="investor-leaderboard" class="leaderboard">
+                <h3>Equity Partners</h3>
+                {% if investments %}
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Partner</th>
+                            <th>Investment</th>
+                            <th>Platform Focus</th>
+                            <th>Equity Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for investment in investments %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ investment.username }}</td>
+                            <td>${{ investment.amount | int }}</td>
+                            <td>{{ investment.idea }}</td>
+                            <td style="color: #4caf50;">{{ investment.benefits }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>Become a founding equity partner!</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Sponsors and Collaborators Section -->
+    <section class="sponsors-collaborators-section" aria-labelledby="sponsors-collaborators-heading">
+        <h2 id="sponsors-collaborators-heading" class="centered-text glow-heading">Strategic Partners & Collaborators and Supporters</h2>
+        <p style="margin-bottom: 2rem;">Organizations and professionals contributing to ecosystem development</p>
+        
+        <div class="leaderboards-container">
+            <div id="sponsors-leaderboard" class="leaderboard">
+                <h3>Strategic Sponsors</h3>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Partner</th>
+                            <th>Contribution</th>
+                            <th>Impact Area</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Self-Employment Assistance (NEIS)</td>
+                            <td>$23,400</td>
+                            <td>EcoKure Development</td>
+                        </tr>
+                        <tr>
+                            <td>Tech Innovate</td>
+                            <td>$5,000</td>
+                            <td>AI Safety Research</td>
+                        </tr>
+                        <tr>
+                            <td>Grow Ventures</td>
+                            <td>$3,000</td>
+                            <td>Ecosystem Development</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="collaborators-leaderboard" class="leaderboard">
+                <h3>Collaborators and Supporters</h3>
+                <p>Join our growing team of innovators, researchers, and visionaries working to solve humanity's greatest challenges.</p>
+                <div style="margin-top: 1rem;">
+                    <a href="{{ url_for('join_a_team') }}" class="btn apply-btn">Apply to Join Our Mission</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+        <h2 id="cta-heading" class="centered-text glow-heading">Ready to Shape the Future?</h2>
+        
+        <p class="centered-text" style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6;">
+            We're developing companies that address critical challenges: AI alignment, quantum security, environmental restoration, and human development. While these companies work together through shared systems and resources, each represents an independent investment opportunity with its own risks and potential returns.
+            <br><br>
+            <strong class="blue-bold">Every contribution makes a difference.</strong> Whether you donate to support our research and development or invest in specific companies, you're helping build technologies that could reshape humanity's future.
+            <br><br>
+            This is your opportunity to be part of something larger than traditional investing. This is a coordinated effort to solve a few of the world's greatest challenges.
+        </p>
+        
+        <div class="highlight-box" style="margin: 2rem auto; max-width: 600px;">
+            <h3 class="green-bold">Multiple Ways to Participate</h3>
+            <p><strong>Support through Donations:</strong> Fund research, development, and operations across all companies with no investment risk.</p>
+            <p><strong>Strategic Investment:</strong> Take equity positions in individual companies with potential for significant returns (but also significant risks).</p>
+        </div>
+        
+        <div class="cta-buttons">
+            <a href="invest" class="cta-btn cta-donate-btn" aria-label="Support our mission">Support Our Mission</a>
+            <a href="about" class="cta-btn cta-invest-btn" aria-label="Learn about investment opportunities">Learn About Investment</a>
+        </div>
+        
+        <p style="margin-top: 2rem; font-style: italic; color: #aaa; font-size: 1rem;">Join thousands building humanity's future together.</p>
+    </section>
+
+    <!-- Join Team Section -->
+    <section class="join-team-section" aria-labelledby="join-team-heading">
+        <h2 id="join-team-heading" class="centered-text glow-heading">Join a Team</h2>
+        <p class="centered-text">Explore future opportunities to contribute to our innovative projects. Apply to join the team and be part of groundbreaking ideas.</p>
+        <p class="centered-text">No specific job openings are available yet, but you can apply to express your interest!</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('join_a_team') }}" class="btn apply-btn" aria-label="Apply to join a team">Apply Now</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" aria-labelledby="contact-heading" id="donation-section">
+        <h2 id="contact-heading" class="centered-text glow-heading">Send a Message</h2>
+        <form class="contact-form" action="mailto:kyal11105@gmail.com" method="POST" enctype="text/plain">
+            <label for="message-type">Message Type</label>
+            <select id="message-type" name="message_type" required>
+                <option value="support">Support</option>
+                <option value="inquiry">Inquiry</option>
+                <option value="collaboration">Collaboration</option>
+                <option value="feedback">Feedback</option>
+                <option value="other">Other</option>
+            </select>
+            <label for="message-content">Your Message</label>
+            <textarea id="message-content" name="message" required placeholder="Type your message here..."></textarea>
+            <button type="submit" class="btn submit-btn" aria-label="Send message">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Market Opportunity Section -->
+    <section class="market-opportunity-section" aria-labelledby="market-opportunity-heading">
+        <h2 id="market-opportunity-heading" class="centered-text glow-heading">$200B+ Potential Market Opportunity</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            This figure represents the theoretical, combined potential impact of our interconnected ecosystem over the next 20 years, assuming broad adoption, efficient execution, and systemic integration. It illustrates the scale of opportunity when debt is reduced, productivity is amplified, and resources are optimized across AI, quantum security, environmental solutions, education, real estate, and human development.
+        </p>
+        <p style="font-style: italic; color: #aaa; font-size: 1rem;">
+            Disclaimer: This is not a guaranteed valuation. It demonstrates the mathematical potential of the system if fully realized, but actual results depend on adoption, execution, regulation, and global cooperation.
+        </p>
+    </section>
+</div>
+
+<!-- JavaScript for risk disclosure toggle -->
+<script>
+    function toggleRiskDisclosures() {
+        const riskSection = document.getElementById('risk-disclosure-section');
+        const button = document.getElementById('view-risk-disclosures');
+        
+        if (riskSection.style.display === 'none' || riskSection.style.display === '') {
+            riskSection.style.display = 'block';
+            riskSection.scrollIntoView({ behavior: 'smooth' });
+            console.log('JoinTeam: Risk section shown');
+        } else {
+            riskSection.style.display = 'none';
+            document.getElementById('welcome-heading').scrollIntoView({ behavior: 'smooth' });
+            console.log('JoinTeam: Risk section hidden');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('JoinTeam: DOMContentLoaded fired');
+    });
+</script>
+{% endblock %}

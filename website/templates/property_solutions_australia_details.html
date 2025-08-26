@@ -1,0 +1,501 @@
+{% extends "base.html" %}
+{% block title %}Property Solutions Australia Details - My Future Investor{% endblock %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .idea-banner-container {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        background: transparent;
+    }
+
+    .idea-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    .total-raised-section,
+    .section-box,
+    .investment-structure-section {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #333;
+    }
+
+    .total-raised-section,
+    .investment-structure-section {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+        color: #fff;
+    }
+
+    .blue-bold {
+        color: #00aaff;
+        font-weight: 600;
+    }
+
+    .green-bold {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+        margin: 1rem 0;
+    }
+
+    ul li {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    ul ul {
+        list-style-type: none;
+        padding-left: 1.5rem;
+    }
+
+    ul ul li:before {
+        content: "• ";
+        color: #00aaff;
+    }
+
+    ul ul ul li:before {
+        content: "◦ ";
+        color: #4caf50;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    .invest-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+
+    .invest-btn:hover {
+        background-color: #1b5e20;
+        box-shadow: 0 0 8px #4caf5088;
+        border-color: #145214;
+    }
+
+    .donate-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #0088cc;
+    }
+
+    .donate-btn:hover {
+        background-color: #0088cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0066aa;
+    }
+
+    .back-btn, .risk-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+    }
+
+    .back-btn:hover, .risk-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    .risk-btn {
+        background-color: #ff6600;
+        border-color: #cc5500;
+    }
+
+    .risk-btn:hover {
+        background-color: #cc5500;
+        box-shadow: 0 0 12px #ff6600cc;
+        border-color: #b34700;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .risk-warning-box {
+        background: linear-gradient(135deg, #ff660011, #ff990011);
+        border-left: 4px solid #ff6600;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .pdf-viewer {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .pdf-viewer iframe {
+        width: 100%;
+        height: 800px;
+        border: none;
+        border-radius: 8px;
+    }
+
+    .progress-gallery {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+        justify-items: center;
+    }
+
+    .progress-gallery img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #333;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        transform-origin: center;
+    }
+
+    .progress-gallery img:hover {
+        transform: scale(1.05);
+    }
+
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lightbox img {
+        width: 100%;
+        height: 100%;
+        max-width: 95vw;
+        max-height: 95vh;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 2px solid #fff;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        text-shadow: 0 0 5px #000;
+    }
+
+    #risk-disclosure-section {
+        display: none;
+    }
+</style>
+
+<div class="content-container">
+    <div class="idea-banner-container">
+        <img src="{{ url_for('static', filename='images/psa/psabannor2.png') }}" 
+             alt="Property Solutions Australia Banner" class="idea-banner" loading="lazy">
+    </div>
+
+    <section class="total-raised-section" aria-labelledby="total-raised-heading">
+        <h2 id="total-raised-heading" class="centered-text glow-heading">Total Raised for Property Solutions Australia</h2>
+        <p id="total-raised-amount" class="centered-text" style="font-size: 3rem; margin: 1rem 0; color: #4caf50; text-shadow: 0 0 10px #ffffffaa, 0 0 20px #ffffff88;">
+            ${{ '{:,.2f}'.format(0) }}
+        </p>
+        <p class="centered-text" style="font-size: 1.1rem; color: #ccc;">Revitalizing Australia’s Stale Property Listings</p>
+    </section>
+
+    <section class="section-box" aria-labelledby="vision-heading">
+        <h2 id="vision-heading" class="glow-heading">Vision</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Property Solutions Australia (PSA) seeks to transform the real estate market by unlocking value from properties stalled over 90 days. With only <strong class="blue-bold">10% equity available</strong>, our innovative “easy moving system” leverages a growing agent network and digital platform to enable rapid auctions or professional handovers, achieving sales in hours to days. We aim to redefine efficiency in Australia’s property market, benefiting sellers, buyers, and agents.
+        </p>
+        <div class="highlight-box">
+            <p><strong class="green-bold">Your Investment Impact:</strong> Fund PSA to revolutionize real estate sales, with potential 100× returns at a $1B valuation by 2035.</p>
+        </div>
+        <div class="buttons" style="margin-bottom: 1.5rem;">
+            <button id="view-risk-disclosures" class="btn risk-btn" aria-label="View Investment Risks" aria-controls="risk-disclosure-section">
+                View Investment Risks
+            </button>
+        </div>
+    </section>
+
+    <section id="risk-disclosure-section" class="investment-structure-section" aria-labelledby="risk-disclosure-heading">
+        <h2 id="risk-disclosure-heading" class="glow-heading">Investment Risks</h2>
+        <div class="risk-warning-box">
+            <h3 style="color: #ff6600; margin-bottom: 1rem;">⚠️ CRITICAL INVESTMENT RISK DISCLOSURE</h3>
+            <p><strong>READ CAREFULLY:</strong> Investing in Property Solutions Australia involves significant risks, including the potential for total loss of your investment. Returns are speculative and depend entirely on PSA’s success.</p>
+            <p><strong>Key Risks:</strong></p>
+            <ul>
+                <li><strong>Market Risk:</strong> Fluctuations in the Australian real estate market could reduce demand for PSA’s services.</li>
+                <li><strong>Early-Stage Risk:</strong> PSA is in the development phase with no guaranteed user adoption or revenue.</li>
+                <li><strong>Regulatory Risk:</strong> Changes in real estate regulations or compliance requirements could hinder operations.</li>
+                <li><strong>Execution Risk:</strong> Failure to scale the agent network or develop the platform could lead to project failure.</li>
+                <li><strong>Financial Risk:</strong> No guarantee of revenue, profitability, or exits (e.g., acquisition or IPO).</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Only invest funds you can afford to lose completely. Suitable for accredited investors with high risk tolerance.</p>
+        </div>
+        <div class="buttons">
+            <button id="close-risk-disclosures" class="btn back-btn" aria-label="Close Risk Disclosures">Close Risk Disclosures</button>
+        </div>
+    </section>
+
+    <section class="section-box" aria-labelledby="mission-heading">
+        <h2 id="mission-heading" class="glow-heading">Mission</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Our mission is to streamline the sale of stale property listings through a scalable digital platform and a dedicated agent network. By offering rapid auctions, seamless handovers, and a 20% commission model, PSA ensures efficiency and trust, reducing sale times by up to 50%. We are committed to compliance, scalability, and delivering value to sellers, buyers, and agents across Australia.
+        </p>
+    </section>
+
+    <section class="section-box" aria-labelledby="core-innovation-heading">
+        <h2 id="core-innovation-heading" class="glow-heading">Core Innovation</h2>
+        <ul>
+            <li><strong class="blue-bold">Targeted Focus:</strong> Specializes in properties stalled over 90 days, maximizing turnaround potential.</li>
+            <li><strong class="blue-bold">Agent Network:</strong> Starting with 2 agents, expandable to 10–20, with 20% commission sharing to align incentives.</li>
+            <li><strong class="blue-bold">Rapid Resolution:</strong> Auctions or handovers reduce sale times by up to 50%, with pilots showing sales in 45–60 days vs. 120 days.</li>
+            <li><strong class="blue-bold">Digital Platform:</strong> Intuitive APIs for listing uploads, auction setups, and agent matchmaking, with user-friendly dashboards.</li>
+            <li><strong class="blue-bold">Scalability:</strong> Supports web, mobile, and CRM integrations, with <10-minute onboarding and same-day campaign launches.</li>
+            <li><strong class="blue-bold">Compliance:</strong> Adheres to real estate laws, with strict agent agreements to prevent poaching.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="market-opportunity-heading">
+        <h2 id="market-opportunity-heading" class="glow-heading">Market Opportunity</h2>
+        <ul>
+            <li><strong class="blue-bold">Real Estate Market:</strong> $100B+ Australian property market, with significant stale listing challenges (CoreLogic, 2024).</li>
+            <li><strong class="blue-bold">Target Segment:</strong> Properties stalled over 90 days, addressing seller fatigue and market overhang.</li>
+            <li><strong class="blue-bold">Projected Revenue Streams:</strong>
+                <ul>
+                    <li>Subscriptions: $0–$50/month for platform access.</li>
+                    <li>Commissions: 20% on PSA-supplied deals.</li>
+                    <li>Enterprise Partnerships: $5,000–$100,000+ for custom integrations.</li>
+                    <li>One-Time Listings: $100–$500 for auction setups.</li>
+                    <li>API Usage: $0.05 per transaction for high-volume users.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">5-Year Revenue Goal:</strong> $15M/year through platform growth and agent network expansion.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="investment-structure-heading">
+        <h2 id="investment-structure-heading" class="glow-heading">Investment Structure</h2>
+        <ul>
+            <li><strong class="blue-bold">Equity Partner:</strong>
+                <ul>
+                    <li>Investment: $100,000 per 1% equity.</li>
+                    <li>Availability: Up to 10 partners (10% total equity).</li>
+                    <li>Benefits: Equity ownership, strategic input, performance reports, and priority access to platform features.</li>
+                    <li>Growth Potential: $10M per 1% at $1B valuation by 2035.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">Total Capital Goal:</strong> $1M for 10% equity allocation.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="use-of-funds-heading">
+        <h2 id="use-of-funds-heading" class="glow-heading">Use of Funds (Year 1)</h2>
+        <ul>
+            <li><strong class="blue-bold">Platform Development:</strong> $200,000 for website, APIs, and CRM integrations.</li>
+            <li><strong class="blue-bold">Agent Recruitment:</strong> $100,000 for onboarding and training 10–20 agents.</li>
+            <li><strong class="blue-bold">Marketing:</strong> $100,000 for lead generation and campaign visibility.</li>
+            <li><strong class="blue-bold">Operations:</strong> $50,000 for infrastructure and compliance.</li>
+            <li><strong class="blue-bold">Total:</strong> $450,000, with runway for scaling and national expansion.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="sustainability-heading">
+        <h2 id="sustainability-heading" class="glow-heading">Sustainability Analysis</h2>
+        <ul>
+            <li><strong class="blue-bold">Revenue Generation:</strong> Subscriptions, commissions, and partnerships provide steady income.</li>
+            <li><strong class="blue-bold">Controlled Costs:</strong> Efficient resource allocation for platform and agent network maintenance.</li>
+            <li><strong class="blue-bold">Scalability:</strong> High potential with platform growth and agent network expansion.</li>
+            <li><strong class="blue-bold">Long-Term Viability:</strong> Strong, leveraging Australia’s growing real estate market and stale listing challenges.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="future-plans-heading">
+        <h2 id="future-plans-heading" class="glow-heading">Future Plans & Potential Achievements</h2>
+        <ul>
+            <li><strong class="blue-bold">Scale Agent Network:</strong> Expand to 10–20 agents by Month 12, targeting national reach.</li>
+            <li><strong class="blue-bold">Launch Platform:</strong> Deploy MVP website within 3 months, with full beta rollout.</li>
+            <li><strong class="blue-bold">Enhance Technology:</strong> Integrate AI for matchmaking and analytics to improve efficiency.</li>
+            <li><strong class="blue-bold">Market Impact:</strong> Reduce average sale times to 45 days, revitalizing 1,000+ listings annually.</li>
+            <li><strong class="blue-bold">Economic Value:</strong> Unlock capital for sellers and boost buyer confidence in a dynamic market.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="cta-heading">
+        <h2 id="cta-heading" class="glow-heading">Join the Future of Real Estate</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Invest in Property Solutions Australia to transform the real estate market, with only 10% equity available. Join us in revitalizing stale listings, empowering sellers and buyers, and creating a more efficient, inclusive property market.
+        </p>
+        <div class="buttons">
+            <a href="{{ url_for('invest') }}" class="btn invest-btn" aria-label="Donate or Invest in Property Solutions Australia">Donate or Invest</a>
+            <a href="{{ url_for('join_ecosystem') }}" class="btn invest-btn" aria-label="Join PSA Ecosystem">Join Ecosystem</a>
+            <a href="{{ url_for('index') }}" class="btn back-btn" aria-label="Back to Home">Back to Home</a>
+        </div>
+    </section>
+
+    <section class="pdf-viewer" aria-labelledby="whitepaper-heading">
+        <h2 id="whitepaper-heading" class="glow-heading">PSA Whitepaper</h2>
+        <iframe src="{{ url_for('static', filename='pdf/psawhitepaper.pdf') }}" 
+                width="100%" height="800" style="border: none;"></iframe>
+    </section>
+
+    <section class="section-box" aria-labelledby="progress-heading">
+        <h2 id="progress-heading" class="glow-heading">Development Progress</h2>
+        <div class="progress-gallery">
+            <img src="{{ url_for('static', filename='images/psa/psawebpage.PNG') }}" alt="PSA Progress Image 1" loading="lazy" class="gallery-img">
+            <img src="{{ url_for('static', filename='images/psa/psa4.PNG') }}" alt="PSA Progress Image 2" loading="lazy" class="gallery-img">
+            <img src="{{ url_for('static', filename='images/psa/psa7.JPG') }}" alt="PSA Progress Image 3" loading="lazy" class="gallery-img">
+            <img src="{{ url_for('static', filename='images/psa/psa8.JPG') }}" alt="PSA Progress Image 4" loading="lazy" class="gallery-img">
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('PSA: DOMContentLoaded fired');
+
+        // Risk disclosure functionality
+        const riskButton = document.getElementById('view-risk-disclosures');
+        const closeButton = document.getElementById('close-risk-disclosures');
+        const riskSection = document.getElementById('risk-disclosure-section');
+
+        if (!riskButton) console.error('PSA: View Risk Disclosures button not found');
+        if (!closeButton) console.error('PSA: Close Risk Disclosures button not found');
+        if (!riskSection) console.error('PSA: Risk Disclosure section not found');
+
+        if (riskButton) {
+            riskButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        if (closeButton) {
+            closeButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        function toggleRiskDisclosures() {
+            console.log('PSA: toggleRiskDisclosures called');
+            if (riskSection) {
+                if (riskSection.style.display === 'none' || riskSection.style.display === '') {
+                    riskSection.style.display = 'block';
+                    riskSection.scrollIntoView({ behavior: 'smooth' });
+                    console.log('PSA: Risk section shown');
+                } else {
+                    riskSection.style.display = 'none';
+                    const visionHeading = document.getElementById('vision-heading');
+                    if (visionHeading) {
+                        visionHeading.scrollIntoView({ behavior: 'smooth' });
+                        console.log('PSA: Risk section hidden');
+                    } else {
+                        console.error('PSA: Vision heading not found');
+                    }
+                }
+            }
+        }
+
+        // Lightbox functionality
+        const galleryImages = document.querySelectorAll('.gallery-img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        if (galleryImages.length > 0) {
+            galleryImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.style.display = 'flex';
+                });
+            });
+        }
+
+        if (lightbox) {
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target === lightboxClose) {
+                    lightbox.style.display = 'none';
+                    lightboxImg.src = '';
+                    lightboxImg.alt = '';
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox && lightbox.style.display === 'flex') {
+                lightbox.style.display = 'none';
+                lightboxImg.src = '';
+                lightboxImg.alt = '';
+            }
+        });
+    });
+    </script>
+</div>
+{% endblock %}

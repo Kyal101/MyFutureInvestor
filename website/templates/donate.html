@@ -1,0 +1,415 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Profile{% endblock %}
+
+{% block content %}
+<style>
+    /* Import Montserrat for headers and buttons */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        color: #fff;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-heading {
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 5px #00aaff88;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+        font-family: 'Montserrat', Arial, sans-serif;
+    }
+
+    .donate-btn, .invest-btn, .update-btn, .cancel-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #00aaff;
+        box-shadow: 0 0 8px #00aaff88;
+    }
+
+    .donate-btn:hover, .invest-btn:hover, .update-btn:hover, .cancel-btn:hover {
+        background-color: white;
+        color: #0077cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0088ee;
+    }
+
+    .profile-card {
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        padding: 2rem;
+        border: 1px solid #333;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 0 15px #00aaff22;
+    }
+
+    .avatar-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .avatar-container:hover {
+        transform: scale(1.05);
+    }
+
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #00aaff;
+        box-shadow: 0 0 10px #00aaff88;
+        cursor: pointer;
+    }
+
+    .avatar-dropdown {
+        display: none;
+        position: absolute;
+        top: 160px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 8px;
+        box-shadow: 0 0 10px #00aaff22;
+        z-index: 100;
+        padding: 1rem;
+        width: 200px;
+        text-align: left;
+    }
+
+    .avatar-dropdown.show {
+        display: block;
+    }
+
+    .avatar-dropdown ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .avatar-dropdown li {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .avatar-dropdown li:hover {
+        background-color: #2a2a2a;
+    }
+
+    .avatar-dropdown img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 1rem;
+        border: 1px solid #00aaff;
+    }
+
+    .avatar-dropdown span {
+        color: #fff;
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-size: 1rem;
+    }
+
+    .avatar-upload {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .avatar-upload input[type="file"] {
+        padding: 0.5rem;
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #444;
+        border-radius: 4px;
+        font-family: 'Montserrat', Arial, sans-serif;
+    }
+
+    .section-card {
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid #333;
+        margin-bottom: 2rem;
+        box-shadow: 0 0 10px #00aaff11;
+    }
+
+    .leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+    }
+
+    .leaderboard-table th, .leaderboard-table td {
+        border: 1px solid #444;
+        padding: 0.75rem;
+        text-align: left;
+        color: #fff;
+        font-family: 'Montserrat', Arial, sans-serif;
+    }
+
+    .leaderboard-table th {
+        background-color: #2a2a2a;
+        font-weight: 600;
+    }
+
+    .subscription-form {
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .subscription-form label {
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-weight: 600;
+        color: #fff;
+        text-align: left;
+    }
+
+    .subscription-form select {
+        padding: 0.5rem;
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #444;
+        border-radius: 4px;
+        font-family: 'Montserrat', Arial, sans-serif;
+        font-size: 1rem;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .no-data {
+        color: #aaa;
+        font-style: italic;
+        text-align: center;
+        font-family: 'Montserrat', Arial, sans-serif;
+    }
+</style>
+
+<div class="content-container">
+    <h2 class="glow-heading">Welcome, {{ username | default('User') }}</h2>
+
+    <!-- Profile Card -->
+    <div class="profile-card" aria-labelledby="profile-heading">
+        <h3 id="profile-heading" class="section-heading">Your Profile</h3>
+        <div class="avatar-container">
+            <img src="{{ user.avatar_url if user and user.avatar_url else url_for('static', filename='images/avatars/avatar1.png') }}" 
+                 alt="{{ username | default('User') }}'s avatar" class="avatar-img" loading="lazy" id="avatar-img">
+            <div class="avatar-dropdown" id="avatar-dropdown" role="menu">
+                <ul>
+                    <li data-avatar="{{ url_for('static', filename='images/avatars/avatar1.png') }}" role="menuitem" tabindex="0">
+                        <img src="{{ url_for('static', filename='images/avatars/avatar1.png') }}" alt="Default Avatar 1">
+                        <span>Avatar 1</span>
+                    </li>
+                    <li data-avatar="{{ url_for('static', filename='images/avatars/avatar2.png') }}" role="menuitem" tabindex="0">
+                        <img src="{{ url_for('static', filename='images/avatars/avatar2.png') }}" alt="Default Avatar 2">
+                        <span>Avatar 2</span>
+                    </li>
+                    <li data-avatar="{{ url_for('static', filename='images/avatars/avatar3.png') }}" role="menuitem" tabindex="0">
+                        <img src="{{ url_for('static', filename='images/avatars/avatar3.png') }}" alt="Default Avatar 3">
+                        <span>Avatar 3</span>
+                    </li>
+                    <li data-avatar="{{ url_for('static', filename='images/avatars/avatar4.png') }}" role="menuitem" tabindex="0">
+                        <img src="{{ url_for('static', filename='images/avatars/avatar4.png') }}" alt="Default Avatar 4">
+                        <span>Avatar 4</span>
+                    </li>
+                    <li data-avatar="{{ url_for('static', filename='images/avatars/avatar5.png') }}" role="menuitem" tabindex="0">
+                        <img src="{{ url_for('static', filename='images/avatars/avatar5.png') }}" alt="Default Avatar 5">
+                        <span>Avatar 5</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <p><strong>{{ username | default('User') }}</strong></p>
+        <p>Total Donations: ${{ total_donations | default(0) | int }}</p>
+        <p>Total Investments: ${{ total_investments | default(0) | int }}</p>
+        <form class="avatar-upload" action="{{ url_for('upload_avatar') }}" method="POST" enctype="multipart/form-data">
+            <label for="avatar-upload">Upload Custom Avatar</label>
+            <input type="file" id="avatar-upload" name="avatar" accept="image/*" aria-label="Upload new avatar" required>
+            <button type="submit" class="btn update-btn" aria-label="Upload avatar">Upload</button>
+        </form>
+    </div>
+
+    <!-- Donations Section -->
+    <div class="section-card" aria-labelledby="donations-heading">
+        <h3 id="donations-heading" class="section-heading">Your Donations</h3>
+        {% if donations %}
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in donations %}
+                <tr>
+                    <td>{{ donation.idea }}</td>
+                    <td>${{ donation.amount | int }}</td>
+                    <td>{{ donation.message | default('No message') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">You haven't made any donations yet.</p>
+        {% endif %}
+        <div class="buttons">
+            <a href="{{ url_for('invest') }}" class="btn donate-btn" aria-label="Make a donation">Make a Donation</a>
+        </div>
+    </div>
+
+    <!-- Investments Section -->
+    <div class="section-card" aria-labelledby="investments-heading">
+        <h3 id="investments-heading" class="section-heading">Your Investments</h3>
+        {% if investments %}
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for investment in investments %}
+                <tr>
+                    <td>{{ investment.idea }}</td>
+                    <td>${{ investment.amount | int }}</td>
+                    <td>{{ investment.status | default('Active') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">You haven't made any investments yet.</p>
+        {% endif %}
+        <div class="buttons">
+            <a href="{{ url_for('invest') }}" class="btn invest-btn" aria-label="Make an investment">Make an Investment</a>
+        </div>
+    </div>
+
+    <!-- Subscription Settings -->
+    <div class="section-card" aria-labelledby="subscription-heading">
+        <h3 id="subscription-heading" class="section-heading">Subscription Settings</h3>
+        {% if subscription %}
+        <p>Current Plan: <strong>{{ subscription.plan | default('Free') }}</strong></p>
+        <p>Status: <strong>{{ subscription.status | default('Active') }}</strong></p>
+        <p>Next Billing: {{ subscription.next_billing | default('N/A') }}</p>
+        <form class="subscription-form" action="{{ url_for('update_subscription') }}" method="POST">
+            <label for="subscription-plan">Change Plan</label>
+            <select id="subscription-plan" name="plan" aria-label="Select subscription plan">
+                <option value="free" {% if subscription.plan == 'Free' %}selected{% endif %}>Free</option>
+                <option value="basic" {% if subscription.plan == 'Basic' %}selected{% endif %}>Basic</option>
+                <option value="premium" {% if subscription.plan == 'Premium' %}selected{% endif %}>Premium</option>
+            </select>
+            <div class="buttons">
+                <button type="submit" class="btn update-btn" aria-label="Update subscription plan">Update Plan</button>
+                <button type="submit" formaction="{{ url_for('cancel_subscription') }}" class="btn cancel-btn" aria-label="Cancel subscription">Cancel Subscription</button>
+            </div>
+        </form>
+        {% else %}
+        <p class="no-data">You are not subscribed to any plan.</p>
+        <div class="buttons">
+            <a href="{{ url_for('join_ecosystem') }}" class="btn update-btn" aria-label="Subscribe to a plan">Subscribe Now</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const avatarImg = document.getElementById('avatar-img');
+    const avatarDropdown = document.getElementById('avatar-dropdown');
+    const dropdownItems = avatarDropdown.querySelectorAll('li');
+
+    // Toggle dropdown on avatar click
+    avatarImg.addEventListener('click', (e) => {
+        e.stopPropagation();
+        avatarDropdown.classList.toggle('show');
+    });
+
+    // Handle avatar selection
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const newAvatar = item.getAttribute('data-avatar');
+            avatarImg.src = newAvatar;
+            avatarImg.alt = item.querySelector('span').textContent;
+            avatarDropdown.classList.remove('show');
+            // Note: Server-side update would require an AJAX call to save the new avatar URL
+        });
+
+        // Keyboard navigation for accessibility
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const newAvatar = item.getAttribute('data-avatar');
+                avatarImg.src = newAvatar;
+                avatarImg.alt = item.querySelector('span').textContent;
+                avatarDropdown.classList.remove('show');
+            }
+        });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!avatarImg.contains(e.target) && !avatarDropdown.contains(e.target)) {
+            avatarDropdown.classList.remove('show');
+        }
+    });
+
+    // Close dropdown with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && avatarDropdown.classList.contains('show')) {
+            avatarDropdown.classList.remove('show');
+        }
+    });
+});
+</script>
+{% endblock %}

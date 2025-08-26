@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+{% block title %}Kure Academy Details - My Future Investor{% endblock %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .idea-banner-container {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        background: transparent;
+    }
+
+    .idea-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    .total-raised-section,
+    .section-box,
+    .investment-structure-section {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #333;
+    }
+
+    .total-raised-section,
+    .investment-structure-section {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+        color: #fff;
+    }
+
+    .blue-bold {
+        color: #00aaff;
+        font-weight: 600;
+    }
+
+    .green-bold {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+        margin: 1rem 0;
+    }
+
+    ul li {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    ul ul {
+        list-style-type: none;
+        padding-left: 1.5rem;
+    }
+
+    ul ul li:before {
+        content: "• ";
+        color: #00aaff;
+    }
+
+    ul ul ul li:before {
+        content: "◦ ";
+        color: #4caf50;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    .invest-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+
+    .invest-btn:hover {
+        background-color: #1b5e20;
+        box-shadow: 0 0 8px #4caf5088;
+        border-color: #145214;
+    }
+
+    .donate-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #0088cc;
+    }
+
+    .donate-btn:hover {
+        background-color: #0088cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0066aa;
+    }
+
+    .back-btn, .risk-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+    }
+
+    .back-btn:hover, .risk-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    .risk-btn {
+        background-color: #ff6600;
+        border-color: #cc5500;
+    }
+
+    .risk-btn:hover {
+        background-color: #cc5500;
+        box-shadow: 0 0 12px #ff6600cc;
+        border-color: #b34700;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .risk-warning-box {
+        background: linear-gradient(135deg, #ff660011, #ff990011);
+        border-left: 4px solid #ff6600;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .pdf-viewer {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .pdf-viewer iframe {
+        width: 100%;
+        height: 800px;
+        border: none;
+        border-radius: 8px;
+    }
+
+    .video-section {
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .video-section video {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 8px;
+    }
+
+    #risk-disclosure-section {
+        display: none;
+    }
+</style>
+
+<div class="content-container">
+    <div class="idea-banner-container">
+        <img src="{{ url_for('static', filename='images/kure_academy/kureacademybannor.png') }}" 
+             alt="Kure Academy Banner" class="idea-banner" loading="lazy">
+    </div>
+
+    <section class="total-raised-section" aria-labelledby="total-raised-heading">
+        <h2 id="total-raised-heading" class="centered-text glow-heading">Total Raised for Kure Academy</h2>
+        <p id="total-raised-amount" class="centered-text" style="font-size: 3rem; margin: 1rem 0; color: #4caf50; text-shadow: 0 0 10px #ffffffaa, 0 0 20px #ffffff88;">
+            ${{ '{:,.2f}'.format(0) }}
+        </p>
+        <p class="centered-text" style="font-size: 1.1rem; color: #ccc;">Towards Holistic Education in Consciousness and Harmony</p>
+    </section>
+
+    <section class="section-box" aria-labelledby="vision-heading">
+        <h2 id="vision-heading" class="glow-heading">Vision</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Kure Academy aims to revolutionize education by offering an online platform that explores consciousness, harmonic resonance, and sacred geometry through a holistic, pseudoscientific lens. With only <strong class="blue-bold">10% equity available</strong> for investment, we seek to fund a transformative digital ecosystem and expand into global retreats, empowering learners to foster personal growth and collective wellbeing.
+        </p>
+        <div class="highlight-box">
+            <p><strong class="green-bold">Your Investment Impact:</strong> Fund Kure Academy to redefine holistic education, with potential 100× returns at a $1B valuation by 2035.</p>
+        </div>
+        <div class="buttons" style="margin-bottom: 1.5rem;">
+            <button id="view-risk-disclosures" class="btn risk-btn" aria-label="View Investment Risks" aria-controls="risk-disclosure-section">
+                View Investment Risks
+            </button>
+        </div>
+    </section>
+
+    <section id="risk-disclosure-section" class="investment-structure-section" aria-labelledby="risk-disclosure-heading">
+        <h2 id="risk-disclosure-heading" class="glow-heading">Investment Risks</h2>
+        <div class="risk-warning-box">
+            <h3 style="color: #ff6600; margin-bottom: 1rem;">⚠️ CRITICAL INVESTMENT RISK DISCLOSURE</h3>
+            <p><strong>READ CAREFULLY:</strong> Investing in Kure Academy involves significant risks, including the potential for total loss of your investment. Returns are speculative and depend entirely on Kure Academy’s success.</p>
+            <p><strong>Key Risks:</strong></p>
+            <ul>
+                <li><strong>Market Risk:</strong> The holistic education market may not accept pseudoscientific content, limiting adoption.</li>
+                <li><strong>Early-Stage Risk:</strong> Kure Academy is in the development phase with no guaranteed user base or revenue.</li>
+                <li><strong>Regulatory Risk:</strong> Potential regulations on alternative education platforms could hinder operations.</li>
+                <li><strong>Execution Risk:</strong> Failure to develop engaging content or secure retreat partnerships could lead to project failure.</li>
+                <li><strong>Financial Risk:</strong> No guarantee of revenue, profitability, or exits (e.g., acquisition or IPO).</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Only invest funds you can afford to lose completely. Suitable for accredited investors with high risk tolerance.</p>
+        </div>
+        <div class="buttons">
+            <button id="close-risk-disclosures" class="btn back-btn" aria-label="Close Risk Disclosures">Close Risk Disclosures</button>
+        </div>
+    </section>
+
+    <section class="section-box" aria-labelledby="mission-heading">
+        <h2 id="mission-heading" class="glow-heading">Mission</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Our mission is to create an accessible, engaging platform that delivers courses on harmonic theory, cymatics, and consciousness, complemented by immersive VR simulations and community forums. By expanding into physical retreats at sacred sites, Kure Academy will build global wellness communities, blending ancient wisdom with modern technology to inspire lifelong learning and cultural transformation.
+        </p>
+    </section>
+
+    <section class="section-box" aria-labelledby="core-innovation-heading">
+        <h2 id="core-innovation-heading" class="glow-heading">Core Innovation</h2>
+        <ul>
+            <li><strong class="blue-bold">Curriculum:</strong> Courses on harmonic theory, cymatics (90% comprehension boost), and consciousness physics, designed for diverse learners.</li>
+            <li><strong class="blue-bold">Platform Features:</strong> Interactive videos, VR simulations, and adaptive learning paths for immersive education.</li>
+            <li><strong class="blue-bold">Events:</strong> Virtual webinars and physical retreats at sacred sites to deepen engagement.</li>
+            <li><strong class="blue-bold">Community Hub:</strong> Forums for discussions, fostering pseudoscientific exploration and collaboration.</li>
+            <li><strong class="blue-bold">Deployment:</strong> User-friendly online portal with mobile access, ensuring broad accessibility.</li>
+            <li><strong class="blue-bold">Performance:</strong> Targets 90% learner satisfaction through engaging, personalized content.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="market-opportunity-heading">
+        <h2 id="market-opportunity-heading" class="glow-heading">Market Opportunity</h2>
+        <ul>
+            <li><strong class="blue-bold">Wellness Education:</strong> $100B+ alternative education market by 2030 (Statista).</li>
+            <li><strong class="blue-bold">Target Sectors:</strong> Mindfulness training, holistic workshops—$50B+ potential.</li>
+            <li><strong class="blue-bold">Projected Revenue Streams:</strong>
+                <ul>
+                    <li>Course subscriptions: $10–$30/month for individuals.</li>
+                    <li>Event tickets: 15–20% commissions on retreats and webinars.</li>
+                    <li>Partnerships: $0.02 per collaboration with wellness influencers.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">5-Year Revenue Goal:</strong> $10M/year through user growth and partnerships.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="investment-structure-heading">
+        <h2 id="investment-structure-heading" class="glow-heading">Investment Structure</h2>
+        <ul>
+            <li><strong class="blue-bold">Equity Partner:</strong>
+                <ul>
+                    <li>Investment: $100,000 per 1% equity.</li>
+                    <li>Availability: Up to 10 partners (10% total equity).</li>
+                    <li>Benefits: Equity ownership, curriculum input, event co-hosting, community reports, and priority access to platform features.</li>
+                    <li>Growth Potential: $10M per 1% at $1B valuation by 2035.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">Total Capital Goal:</strong> $1M for 10% equity allocation.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="use-of-funds-heading">
+        <h2 id="use-of-funds-heading" class="glow-heading">Use of Funds (Year 1)</h2>
+        <ul>
+            <li><strong class="blue-bold">Platform Development:</strong> $150,000 for online courses and VR features.</li>
+            <li><strong class="blue-bold">Content Creation:</strong> $100,000 for expert-led course materials.</li>
+            <li><strong class="blue-bold">Marketing & Events:</strong> $100,000 for webinars and initial retreats.</li>
+            <li><strong class="blue-bold">Operations:</strong> $50,000 for infrastructure and support.</li>
+            <li><strong class="blue-bold">Total:</strong> $400,000, with runway for physical events and scaling.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="sustainability-heading">
+        <h2 id="sustainability-heading" class="glow-heading">Sustainability Analysis</h2>
+        <ul>
+            <li><strong class="blue-bold">Revenue Generation:</strong> Subscriptions, event fees, and partnerships provide steady income.</li>
+            <li><strong class="blue-bold">Controlled Costs:</strong> Efficient resource allocation for content and platform maintenance.</li>
+            <li><strong class="blue-bold">Scalability:</strong> High potential with user growth and global retreat expansion.</li>
+            <li><strong class="blue-bold">Long-Term Viability:</strong> Strong, leveraging wellness education trends and community engagement.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="future-plans-heading">
+        <h2 id="future-plans-heading" class="glow-heading">Future Plans & Potential Achievements</h2>
+        <ul>
+            <li><strong class="blue-bold">Launch Online Platform:</strong> Onboard 1,000+ users with courses and VR simulations.</li>
+            <li><strong class="blue-bold">Expand Events:</strong> Host global webinars and retreats at sacred sites, building communities.</li>
+            <li><strong class="blue-bold">Achieve Impact:</strong> Attain 90% learner satisfaction, influencing holistic education globally.</li>
+            <li><strong class="blue-bold">Cultural Shift:</strong> Empower millions with consciousness tools, driving wellbeing and cultural transformation.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labeledby="cta-heading">
+        <h2 id="cta-heading" class="glow-heading">Join the Future of Holistic Education</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Invest in Kure Academy to support a transformative platform for holistic education, with only 10% equity available. Join us in creating resonant learning experiences that empower individuals and foster global wellness communities.
+        </p>
+        <div class="buttons">
+            <a href="{{ url_for('invest') }}" class="btn invest-btn" aria-label="Donate or Invest in Kure Academy">Donate or Invest</a>
+            <a href="{{ url_for('join_ecosystem') }}" class="btn invest-btn" aria-label="Join Kure Academy Ecosystem">Join Ecosystem</a>
+            <a href="{{ url_for('index') }}" class="btn back-btn" aria-label="Back to Home">Back to Home</a>
+        </div>
+    </section>
+
+    <section class="pdf-viewer" aria-labelledby="whitepaper-heading">
+        <h2 id="whitepaper-heading" class="glow-heading">Kure Academy Whitepaper</h2>
+        <iframe src="{{ url_for('static', filename='pdf/kureacademywhitepaper.pdf') }}" 
+                width="100%" height="800" style="border: none;"></iframe>
+    </section>
+
+    <section class="video-section" aria-labelledby="promo-video-heading">
+        <h2 id="promo-video-heading" class="glow-heading">Kure Academy Promotional Video</h2>
+        <video controls>
+            <source src="{{ url_for('static', filename='mp4/kure_academy_vid.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Kure Academy: DOMContentLoaded fired');
+        const riskButton = document.getElementById('view-risk-disclosures');
+        const closeButton = document.getElementById('close-risk-disclosures');
+        const riskSection = document.getElementById('risk-disclosure-section');
+
+        if (!riskButton) console.error('Kure Academy: View Risk Disclosures button not found');
+        if (!closeButton) console.error('Kure Academy: Close Risk Disclosures button not found');
+        if (!riskSection) console.error('Kure Academy: Risk Disclosure section not found');
+
+        // Add event listener for View Investment Risks button
+        if (riskButton) {
+            riskButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        // Add event listener for Close Risk Disclosures button
+        if (closeButton) {
+            closeButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        function toggleRiskDisclosures() {
+            console.log('Kure Academy: toggleRiskDisclosures called');
+            if (riskSection) {
+                if (riskSection.style.display === 'none' || riskSection.style.display === '') {
+                    riskSection.style.display = 'block';
+                    riskSection.scrollIntoView({ behavior: 'smooth' });
+                    console.log('Kure Academy: Risk section shown');
+                } else {
+                    riskSection.style.display = 'none';
+                    const visionHeading = document.getElementById('vision-heading');
+                    if (visionHeading) {
+                        visionHeading.scrollIntoView({ behavior: 'smooth' });
+                        console.log('Kure Academy: Risk section hidden');
+                    } else {
+                        console.error('Kure Academy: Vision heading not found');
+                    }
+                }
+            }
+        }
+    });
+    </script>
+</div>
+{% endblock %}

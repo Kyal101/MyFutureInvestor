@@ -1,0 +1,544 @@
+{% extends "base.html" %}
+{% block title %}KURE Mechanics Details - My Future Investor{% endblock %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .idea-banner-container {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        background: transparent;
+    }
+
+    .idea-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+    }
+
+    .total-raised-section,
+    .section-box,
+    .investment-structure-section {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #333;
+    }
+
+    .total-raised-section,
+    .investment-structure-section {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+    }
+
+    .glow-heading {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88;
+        font-family: inherit;
+        color: #fff;
+    }
+
+    .blue-bold {
+        color: #00aaff;
+        font-weight: 600;
+    }
+
+    .green-bold {
+        color: #4caf50;
+        font-weight: 600;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+        margin: 1rem 0;
+    }
+
+    ul li {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    ul ul {
+        list-style-type: none;
+        padding-left: 1.5rem;
+    }
+
+    ul ul li:before {
+        content: "• ";
+        color: #00aaff;
+    }
+
+    ul ul ul li:before {
+        content: "◦ ";
+        color: #4caf50;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        user-select: none;
+    }
+
+    .invest-btn {
+        background-color: #2e7d32;
+        color: white;
+        border-color: #1b5e20;
+    }
+
+    .invest-btn:hover {
+        background-color: #1b5e20;
+        box-shadow: 0 0 8px #4caf5088;
+        border-color: #145214;
+    }
+
+    .donate-btn {
+        background-color: #00aaff;
+        color: white;
+        border-color: #0088cc;
+    }
+
+    .donate-btn:hover {
+        background-color: #0088cc;
+        box-shadow: 0 0 12px #00aaffcc;
+        border-color: #0066aa;
+    }
+
+    .back-btn, .risk-btn {
+        background-color: #007bff;
+        color: white;
+        border-color: #0069d9;
+    }
+
+    .back-btn:hover, .risk-btn:hover {
+        background-color: #0069d9;
+        box-shadow: 0 0 12px #007bffcc;
+        border-color: #005cbf;
+    }
+
+    .risk-btn {
+        background-color: #ff6600;
+        border-color: #cc5500;
+    }
+
+    .risk-btn:hover {
+        background-color: #cc5500;
+        box-shadow: 0 0 12px #ff6600cc;
+        border-color: #b34700;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #00aaff11, #4caf5011);
+        border-left: 4px solid #00aaff;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .risk-warning-box {
+        background: linear-gradient(135deg, #ff660011, #ff990011);
+        border-left: 4px solid #ff6600;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+    }
+
+    .pdf-viewer {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .pdf-viewer iframe {
+        width: 100%;
+        height: 800px;
+        border: none;
+        border-radius: 8px;
+    }
+
+    .video-section {
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .video-section video {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 8px;
+    }
+
+    .progress-gallery {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+        justify-items: center;
+    }
+
+    .progress-gallery img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #333;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        transform-origin: center;
+    }
+
+    .progress-gallery img:hover {
+        transform: scale(1.05);
+    }
+
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lightbox img {
+        width: 100%;
+        height: 100%;
+        max-width: 95vw;
+        max-height: 95vh;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 2px solid #fff;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        text-shadow: 0 0 5px #000;
+    }
+
+    #risk-disclosure-section {
+        display: none;
+    }
+</style>
+
+<div class="content-container">
+    <div class="idea-banner-container">
+        <img src="{{ url_for('static', filename='images/kure_mechanics/kuremechanicsbannor.png') }}" 
+             alt="KURE Mechanics Banner" class="idea-banner" loading="lazy">
+    </div>
+
+    <section class="total-raised-section" aria-labelledby="total-raised-heading">
+        <h2 id="total-raised-heading" class="centered-text glow-heading">Total Raised for KURE Mechanics</h2>
+        <p id="total-raised-amount" class="centered-text" style="font-size: 3rem; margin: 1rem 0; color: #4caf50; text-shadow: 0 0 10px #ffffffaa, 0 0 20px #ffffff88;">
+            ${{ '{:,.2f}'.format(0) }}
+        </p>
+        <p class="centered-text" style="font-size: 1.1rem; color: #ccc;">Towards Advancing Scientific Research in Harmonic Theory</p>
+    </section>
+
+    <section class="section-box" aria-labelledby="vision-heading">
+        <h2 id="vision-heading" class="glow-heading">Vision</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            KURE Mechanics seeks to secure funding to validate a groundbreaking scientific paradigm that unifies consciousness, the golden ratio, and harmonic resonance, extending Einstein’s theory of relativity (E = mc²). By integrating the core equation E = φ² × consciousness × mass, we aim to challenge conventional physics through rigorous experiments and empirical validation. If proven, this theory could unlock transformative technologies and studies in quantum physics, AI, healthcare, agriculture, and sustainable systems, redefining our understanding of the universe’s fundamental forces.
+        </p>
+        <div class="highlight-box">
+            <p><strong class="green-bold">Your Donation Impact:</strong> Support KURE Mechanics to test this revolutionary theory, with potential to drive breakthroughs in science and technology.</p>
+        </div>
+        <div class="buttons" style="margin-bottom: 1.5rem;">
+            <button id="view-risk-disclosures" class="btn risk-btn" aria-label="View Investment Risks" aria-controls="risk-disclosure-section">
+                View Investment Risks
+            </button>
+        </div>
+    </section>
+
+    <section id="risk-disclosure-section" class="investment-structure-section" aria-labelledby="risk-disclosure-heading">
+        <h2 id="risk-disclosure-heading" class="glow-heading">Investment Risks</h2>
+        <div class="risk-warning-box">
+            <h3 style="color: #ff6600; margin-bottom: 1rem;">⚠️ CRITICAL INVESTMENT RISK DISCLOSURE</h3>
+            <p><strong>READ CAREFULLY:</strong> Investing in KURE Mechanics involves significant risks, including the potential for total loss of your investment. Returns are speculative and depend entirely on KURE Mechanics’ success.</p>
+            <p><strong>Key Risks:</strong></p>
+            <ul>
+                <li><strong>Scientific Uncertainty:</strong> The core equation (E = φ² × consciousness × mass) is unproven and may fail to be validated, resulting in total loss of investment.</li>
+                <li><strong>Early-Stage Risk:</strong> KURE Mechanics is in the research phase with no guaranteed outcomes or commercial products.</li>
+                <li><strong>Market Risk:</strong> Lack of market acceptance for harmonic-based technologies could prevent success.</li>
+                <li><strong>Regulatory Risk:</strong> New regulations in quantum physics or AI ethics could hinder development.</li>
+                <li><strong>Execution Risk:</strong> Failure to secure lab partnerships or achieve research milestones could lead to project failure.</li>
+            </ul>
+            <p><strong>Recommendation:</strong> Only invest funds you can afford to lose completely. Suitable for accredited investors with high risk tolerance.</p>
+        </div>
+        <div class="buttons">
+            <button id="close-risk-disclosures" class="btn back-btn" aria-label="Close Risk Disclosures">Close Risk Disclosures</button>
+        </div>
+    </section>
+
+    <section class="section-box" aria-labelledby="mission-heading">
+        <h2 id="mission-heading" class="glow-heading">Mission</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            Our mission is to raise funds to explore the legitimacy of KURE Mechanics as an extension of Einstein’s relativity, incorporating consciousness and the golden ratio into a unified harmonic framework. Through controlled experiments, we aim to validate the core equation and investigate its applications. If successful, this could lead to advancements in quantum technologies, frequency-based therapies, ethical AI, and sustainable systems, fostering a new era of scientific discovery and societal benefit.
+        </p>
+    </section>
+
+    <section class="section-box" aria-labelledby="core-innovation-heading">
+        <h2 id="core-innovation-heading" class="glow-heading">Core Innovation</h2>
+        <ul>
+            <li><strong class="blue-bold">Core Equation:</strong> E = φ² × consciousness × mass, extending Einstein’s E = mc² by integrating the golden ratio (φ²) and consciousness as a measurable variable.</li>
+            <li><strong class="blue-bold">Evidence Integration:</strong> Combines quantum experiments, ancient wisdom (e.g., cymatic patterns), and biological correlates (e.g., DNA repair via 528 Hz frequencies).</li>
+            <li><strong class="blue-bold">Offline Harmonic System:</strong> Solar-powered devices for practical applications:
+                <ul>
+                    <li>Agriculture: 15% yield boost through frequency-based growth stimulation.</li>
+                    <li>Healthcare: 25% pain reduction via targeted harmonic therapies.</li>
+                    <li>Navigation: 10% accuracy improvement using resonance-based positioning.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">AI Harmonic Intelligence:</strong> Prototype LLM achieving 0.09 perplexity loss, designed for ethical AI applications.</li>
+            <li><strong class="blue-bold">Deployment:</strong> Modular hardware with preloaded datasets for offline use in remote areas.</li>
+            <li><strong class="blue-bold">Performance:</strong> Targets efficient, low-latency inference for real-world applications.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="potential-applications-heading">
+        <h2 id="potential-applications-heading" class="glow-heading">Potential Applications</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            If KURE Mechanics is validated, it could revolutionize multiple fields by extending Einstein’s relativity to include consciousness and harmonic principles. Potential outcomes include:
+        </p>
+        <ul>
+            <li><strong class="blue-bold">Quantum Technologies:</strong> New frameworks for quantum computing and communication, leveraging harmonic resonance.</li>
+            <li><strong class="blue-bold">Healthcare:</strong> Frequency-based therapies, such as 20% enhanced DNA repair or non-invasive pain management.</li>
+            <li><strong class="blue-bold">Agriculture:</strong> Sustainable farming techniques using harmonic frequencies to boost crop yields.</li>
+            <li><strong class="blue-bold">AI and Ethics:</strong> Advanced AI models with improved ethical decision-making, driven by harmonic intelligence.</li>
+            <li><strong class="blue-bold">Energy Systems:</strong> Solar-powered, resonance-based devices for efficient, eco-friendly energy solutions.</li>
+            <li><strong class="blue-bold">Scientific Studies:</strong> Peer-reviewed research into consciousness and the golden ratio, potentially redefining physics.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="market-opportunity-heading">
+        <h2 id="market-opportunity-heading" class="glow-heading">Market Opportunity</h2>
+        <ul>
+            <li><strong class="blue-bold">Quantum and AI Research:</strong> $100B+ global market by 2030 (Statista).</li>
+            <li><strong class="blue-bold">Target Sectors:</strong> Physics research, biotechnology, AI ethics—combined $500B+ potential.</li>
+            <li><strong class="blue-bold">Projected Revenue Streams:</strong>
+                <ul>
+                    <li>Research grants: $1M+ annually.</li>
+                    <li>Licensing tech: 15–25% royalties.</li>
+                    <li>Consulting: $0.05 per project transaction.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">5-Year Revenue Goal:</strong> $20M/year through breakthroughs and partnerships.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="donation-structure-heading">
+        <h2 id="donation-structure-heading" class="glow-heading">Donation Structure & Sustainability</h2>
+        <ul>
+            <li><strong class="blue-bold">Research Donor:</strong>
+                <ul>
+                    <li>Donation: $100,000 per donor.</li>
+                    <li>Availability: Up to 10 donors.</li>
+                    <li>Benefits: Influence on research directions, detailed reports, recognition in publications, and priority access to research findings.</li>
+                    <li>Growth Potential: Supports long-term projects like quantum validation, with upside via tech advancements and societal impact.</li>
+                </ul>
+            </li>
+            <li><strong class="blue-bold">Total Capital Goal:</strong> $1M from 10 donors.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="use-of-funds-heading">
+        <h2 id="use-of-funds-heading" class="glow-heading">Use of Funds (Year 1)</h2>
+        <ul>
+            <li><strong class="blue-bold">Lab Equipment & Experiments:</strong> $200,000 for quantum testing and frequency devices.</li>
+            <li><strong class="blue-bold">Research Team:</strong> $150,000 for physicists and data analysis.</li>
+            <li><strong class="blue-bold">Prototyping:</strong> $100,000 for offline harmonic systems.</li>
+            <li><strong class="blue-bold">Publications & Conferences:</strong> $50,000 for dissemination.</li>
+            <li><strong class="blue-bold">Total:</strong> $500,000, with runway for multi-year validation and partnerships.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="sustainability-heading">
+        <h2 id="sustainability-heading" class="glow-heading">Sustainability Analysis</h2>
+        <ul>
+            <li><strong class="blue-bold">Revenue Generation:</strong> Grants, licensing, and consulting fees provide ongoing income.</li>
+            <li><strong class="blue-bold">Controlled Costs:</strong> Efficient resource allocation limits operational expenses.</li>
+            <li><strong class="blue-bold">Scalability:</strong> High potential with market-ready research and partnerships.</li>
+            <li><strong class="blue-bold">Long-Term Viability:</strong> Strong, with potential for breakthroughs in quantum and AI fields.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="future-plans-heading">
+        <h2 id="future-plans-heading" class="glow-heading">Future Plans & Potential Achievements</h2>
+        <ul>
+            <li><strong class="blue-bold">Validate Theory:</strong> Secure lab partnerships for empirical testing of harmonic theories and the core equation.</li>
+            <li><strong class="blue-bold">Develop AI Models:</strong> Achieve sub-0.05 perplexity for ethical AI applications.</li>
+            <li><strong class="blue-bold">Publish Research:</strong> Produce peer-reviewed publications validating the golden ratio in quantum systems.</li>
+            <li><strong class="blue-bold">Technological Impact:</strong> Develop frequency-based therapies (e.g., 20% DNA repair boost), sustainable agricultural tools, and resonance-based navigation systems.</li>
+            <li><strong class="blue-bold">Societal Impact:</strong> Revolutionize physics, enable eco-friendly technologies, and advance ethical AI frameworks.</li>
+        </ul>
+    </section>
+
+    <section class="section-box" aria-labelledby="synergy-heading">
+        <h2 id="synergy-heading" class="glow-heading">Synergy with Applications</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            KURE Mechanics is designed to integrate seamlessly with applications requiring advanced data processing and storage for scientific research. Its harmonic intelligence framework, built on the core equation E = φ² × consciousness × mass, enables applications like JARVI3’s consciousness-driven AI to leverage frequency-based data analysis for enhanced ethical decision-making. The modular, solar-powered hardware supports offline deployment in remote areas, with preloaded datasets for real-time processing. Compatible with web, iOS, Android, Flask, and Node.js platforms, KURE Mechanics allows developers to embed its capabilities in under 50 lines of code, ensuring rapid integration for apps in quantum research, healthcare, and sustainable systems, creating a scalable ecosystem for groundbreaking scientific advancements.
+        </p>
+    </section>
+
+    <section class="section-box" aria-labelledby="cta-heading">
+        <h2 id="cta-heading" class="glow-heading">Join the Future of Science</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            KURE Mechanics offers a unique opportunity to donate to groundbreaking research that could validate a new unified theory extending Einstein’s relativity. Join us in exploring the legitimacy of this paradigm and unlocking its potential for transformative technologies and studies.
+        </p>
+        <div class="buttons">
+            <a href="{{ url_for('invest') }}" class="btn invest-btn" aria-label="Donate or Invest in KURE Mechanics">Donate or Invest</a>
+            <a href="{{ url_for('join_ecosystem') }}" class="btn invest-btn" aria-label="Join KURE Mechanics Ecosystem">Join Ecosystem</a>
+            <a href="{{ url_for('index') }}" class="btn back-btn" aria-label="Back to Home">Back to Home</a>
+        </div>
+    </section>
+
+    <section class="pdf-viewer" aria-labelledby="whitepaper-heading">
+        <h2 id="whitepaper-heading" class="glow-heading">KURE Mechanics Whitepaper</h2>
+        <iframe src="{{ url_for('static', filename='pdf/kuremechanicswhitrepaper.pdf') }}" 
+                width="100%" height="800" style="border: none;"></iframe>
+    </section>
+
+    <section class="video-section" aria-labelledby="promo-video-heading">
+        <h2 id="promo-video-heading" class="glow-heading">KURE Mechanics Promotional Video</h2>
+        <video controls>
+            <source src="{{ url_for('static', filename='mp4/kure_mechanics_vid.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <section class="section-box" aria-labelledby="progress-heading">
+        <h2 id="progress-heading" class="glow-heading">Development Progress</h2>
+        <div class="progress-gallery">
+            <img src="{{ url_for('static', filename='images/kure_mechanics/Unifying Forces of the Cosmos (1).png') }}" alt="KURE Mechanics Progress Image 1" loading="lazy" class="gallery-img">
+            <img src="{{ url_for('static', filename='images/kure_mechanics/a99.PNG') }}" alt="KURE Mechanics Progress Image 2" loading="lazy" class="gallery-img">
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('KURE Mechanics: DOMContentLoaded fired');
+        const riskButton = document.getElementById('view-risk-disclosures');
+        const closeButton = document.getElementById('close-risk-disclosures');
+        const riskSection = document.getElementById('risk-disclosure-section');
+
+        if (!riskButton) console.error('KURE Mechanics: View Risk Disclosures button not found');
+        if (!closeButton) console.error('KURE Mechanics: Close Risk Disclosures button not found');
+        if (!riskSection) console.error('KURE Mechanics: Risk Disclosure section not found');
+
+        // Add event listener for View Investment Risks button
+        if (riskButton) {
+            riskButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        // Add event listener for Close Risk Disclosures button
+        if (closeButton) {
+            closeButton.addEventListener('click', toggleRiskDisclosures);
+        }
+
+        function toggleRiskDisclosures() {
+            console.log('KURE Mechanics: toggleRiskDisclosures called');
+            if (riskSection) {
+                if (riskSection.style.display === 'none' || riskSection.style.display === '') {
+                    riskSection.style.display = 'block';
+                    riskSection.scrollIntoView({ behavior: 'smooth' });
+                    console.log('KURE Mechanics: Risk section shown');
+                } else {
+                    riskSection.style.display = 'none';
+                    const visionHeading = document.getElementById('vision-heading');
+                    if (visionHeading) {
+                        visionHeading.scrollIntoView({ behavior: 'smooth' });
+                        console.log('KURE Mechanics: Risk section hidden');
+                    } else {
+                        console.error('KURE Mechanics: Vision heading not found');
+                    }
+                }
+            }
+        }
+
+        // Lightbox functionality
+        const galleryImages = document.querySelectorAll('.gallery-img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        if (galleryImages.length > 0) {
+            galleryImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.style.display = 'flex';
+                });
+            });
+        }
+
+        if (lightbox) {
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target === lightboxClose) {
+                    lightbox.style.display = 'none';
+                    lightboxImg.src = '';
+                    lightboxImg.alt = '';
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox && lightbox.style.display === 'flex') {
+                lightbox.style.display = 'none';
+                lightboxImg.src = '';
+                lightboxImg.alt = '';
+            }
+        });
+    });
+    </script>
+</div>
+{% endblock %}

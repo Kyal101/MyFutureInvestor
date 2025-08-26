@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+{% block title %}My Future Investor - Donate or Invest{% endblock %}
+
+{% block content %}
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+    body { background-color: #000; }
+    .invest-section { margin-bottom: 2rem; padding: 1rem; background-color: #0e0e0e; border-radius: 8px; text-align: center; border: 1px solid #333; }
+    .invest-form { max-width: 600px; margin: 2rem auto; padding: 1.5rem; border: 1px solid #005cbf; border-radius: 8px; background-color: #1e1e1e; box-shadow: 0 0 12px #007bff88; }
+    .invest-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #fff; text-align: left; }
+    .invest-form select, .invest-form input, .invest-form textarea { width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #444; border-radius: 4px; font-size: 1rem; background-color: #333; color: #fff; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+    .invest-form textarea { height: 150px; resize: vertical; }
+    .invest-form .submit-btn { background-color: #007bff; color: white; border-color: #0069d9; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-family: Arial, sans-serif; font-weight: 600; }
+    .invest-form .submit-btn:hover { background-color: #0069d9; box-shadow: 0 0 12px #007bffcc; border-color: #005cbf; }
+    .glow-heading { font-family: Arial, sans-serif; font-weight: 700; font-size: 2rem; text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff88; }
+    .centered-text { text-align: center; }
+    .blue-bold { color: #00aaff; font-weight: 600; }
+    #payment-element { padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #444; border-radius: 4px; background-color: #333; }
+    #payment-errors { color: #ff4444; margin-bottom: 1rem; text-align: left; }
+    #payment-loading { color: #fff; margin-bottom: 1rem; text-align: left; display: none; }
+</style>
+
+<div class="content-container">
+    <section class="invest-section" aria-labelledby="invest-heading">
+        <h2 id="invest-heading" class="centered-text glow-heading">Support Our Vision</h2>
+        <p class="centered-text" style="font-size: 1rem; line-height: 1.5; margin-top: 0.5rem; margin-bottom: 1rem;">
+            Empower our innovative projects and help safeguard the future of our ideas. We deeply appreciate your support.
+        </p>
+
+        <form class="invest-form" id="paymentForm">
+            <input type="hidden" name="is_guest" value="{{ 'true' if not current_user.is_authenticated else 'false' }}">
+
+            {% if not current_user.is_authenticated %}
+                <label for="guest-name">Name (optional, will appear on leaderboard)</label>
+                <input type="text" id="guest-name" name="guest_name" placeholder="Anonymous">
+                <label for="guest-email">Email (required for guest donations)</label>
+                <input type="email" id="guest-email" name="guest_email" placeholder="your.email@example.com" required>
+            {% endif %}
+
+            <label for="action">Action</label>
+            <select id="action" name="action" required>
+                <option value="Donate">Donate</option>
+                {% if current_user.is_authenticated %}
+                <option value="Invest">Invest</option>
+                {% endif %}
+            </select>
+
+            <label for="idea">Project or Cause</label>
+            <select id="idea" name="idea" required>
+                {% for idea in ideas %}
+                <option value="{{ idea.name }}">{{ idea.name }}</option>
+                {% endfor %}
+            </select>
+
+            <div id="invest-options" style="display:none;">
+                <label for="percentage">Choose Ownership Percentage</label>
+                <select id="percentage" name="percentage">
+                    <option value="">Select...</option>
+                    {% for p in range(1, 11) %}
+                    <option value="{{ p }}">{{ p }}%</option>
+                    {% endfor %}
+                </select>
+                <p id="investment-amount" style="color: #00ff00; font-weight: bold;"></p>
+                <p id="disclaimer" style="font-size: 0.8rem; color: #aaa;"></p>
+            </div>
+
+            <!-- Payment Type Selection -->
+            <label for="payment-type">Payment Type</label>
+            <select id="payment-type" name="payment_type" required>
+                <option value="oneoff">One-Time Payment</option>
+                <option value="monthly">Monthly Subscription</option>
+            </select>
+
+            <!-- One-Time Payment -->
+            <div id="oneoff-container">
+                <label for="oneoff-amount">Enter One-Time Amount ($ AUD)</label>
+                <input type="number" id="oneoff-amount" name="oneoff_amount" min="0.50" step="0.01" placeholder="Enter amount for one-time payment">
+            </div>
+
+            <!-- Monthly Payment Options -->
+            <div id="amount-container" style="display:none;">
+                <label for="subscription-amount">Choose Monthly Plan</label>
+                <select id="subscription-amount" name="amount">
+                    <option value="9.99">$9.99 / month</option>
+                    <option value="99.99">$99.99 / month</option>
+                    <option value="999.99">$999.99 / month</option>
+                </select>
+            </div>
+
+            <label for="message-content">Your Message (Optional)</label>
+            <textarea id="message-content" name="message" placeholder="Share your thoughts or motivation for supporting..."></textarea>
+
+            <label for="payment-element">Card Details</label>
+            <div id="payment-loading">Loading payment form...</div>
+            <div id="payment-element"></div>
+            <div id="payment-errors" role="alert"></div>
+
+            <button type="submit" class="submit-btn" aria-label="Submit donation or investment">Submit</button>
+        </form>
+
+        {% if not current_user.is_authenticated %}
+        <p class="centered-text blue-bold" style="margin-top:1rem;">
+            Note: Your donation will appear on the leaderboard as "{{ request.form.get('guest_name') or 'Anonymous' }}".
+            To <strong>invest</strong>, please <a href="{{ url_for('login') }}">log in</a>.
+        </p>
+        {% endif %}
+    </section>
+</div>
+
+<script>
+const stripe = Stripe('{{ stripe_publishable_key }}');
+const elements = stripe.elements();
+const cardElement = elements.create('card', {
+    style: {
+        base: { color: '#fff', fontFamily: 'Arial, sans-serif', fontSize: '16px', '::placeholder': { color: '#aaa' } },
+        invalid: { color: '#ff4444' }
+    }
+});
+cardElement.mount('#payment-element');
+document.getElementById('payment-loading').style.display = 'none';
+
+// Store all ideas from backend
+const allIdeas = [
+    {% for idea in ideas %}
+    { name: "{{ idea.name }}", value: "{{ idea.name }}", valuation: {{ idea.valuation | default(10000000) }} },
+    {% endfor %}
+];
+
+// Function to get valuation for an idea
+function getValuation(idea) {
+    const selectedIdea = allIdeas.find(i => i.name === idea);
+    return selectedIdea ? selectedIdea.valuation : 10000000; // Default valuation
+}
+
+// Function to get remaining percentage (placeholder - replace with API call)
+async function getRemainingPercentage(idea) {
+    try {
+        const resp = await fetch(`/api/remaining-percentage?idea=${encodeURIComponent(idea)}`);
+        const data = await resp.json();
+        return data.remainingPercentage || 10; // Default to 10% if no data
+    } catch (err) {
+        console.error('Error fetching remaining percentage:', err);
+        return 10; // Fallback
+    }
+}
+
+// Function to update idea dropdown based on action
+function updateIdeaDropdown(action) {
+    const ideaSelect = document.getElementById('idea');
+    const currentIdea = ideaSelect.value;
+
+    // Clear current options
+    ideaSelect.innerHTML = '';
+
+    // Filter ideas based on action
+    const availableIdeas = action === 'Invest'
+        ? allIdeas.filter(idea => idea.name !== 'Patents' && idea.name !== 'Support Kyal')
+        : allIdeas;
+
+    // Populate dropdown
+    availableIdeas.forEach(idea => {
+        const option = document.createElement('option');
+        option.value = idea.value;
+        option.textContent = idea.name;
+        if (idea.value === currentIdea) option.selected = true;
+        ideaSelect.appendChild(option);
+    });
+}
+
+// Update investment details
+function updateInvestmentInfo() {
+    const percentage = parseInt(document.getElementById('percentage').value);
+    const idea = document.getElementById('idea').value;
+    const investmentAmountEl = document.getElementById('investment-amount');
+    const disclaimerEl = document.getElementById('disclaimer');
+
+    if (isNaN(percentage)) {
+        investmentAmountEl.textContent = 'Select a percentage to see required investment';
+        disclaimerEl.textContent = 'Disclaimer will appear once a percentage is chosen';
+        return;
+    }
+
+    const valuation = getValuation(idea);
+    if (!valuation || isNaN(valuation)) {
+        investmentAmountEl.textContent = 'Error: Valuation not available for this idea';
+        disclaimerEl.textContent = 'Please select a valid idea or contact support';
+        return;
+    }
+
+    getRemainingPercentage(idea).then(remainingPercentage => {
+        const amount = (percentage / 100) * valuation;
+        investmentAmountEl.textContent = `Required Investment: $${amount.toFixed(2)} AUD for ${percentage}% of ${idea} (${remainingPercentage}% of company remaining for investors)`;
+
+        let disc = `Disclaimer: This investment entitles you to ${percentage}% ownership in ${idea}. Only 10% of the company is being offered in total. Investments are tracked in the backend to prevent over-investment. All investments are final and subject to terms and conditions.`;
+        if (idea === 'QSL') {
+            disc += ` A $50,000 investment (1%) also grants lifetime access to QSL for securing data in your company (if and when QSL secures sufficient funding and the idea is deemed viable).`;
+        }
+        disclaimerEl.textContent = disc;
+    });
+}
+
+// Toggle visibility based on selections
+function toggleFormOptions() {
+    const action = document.getElementById('action').value;
+    const idea = document.getElementById('idea').value;
+    const investOptions = document.getElementById('invest-options');
+    const paymentTypeLabel = document.querySelector('label[for="payment-type"]');
+    const paymentTypeSelect = document.getElementById('payment-type');
+    const oneoffContainer = document.getElementById('oneoff-container');
+    const amountContainer = document.getElementById('amount-container');
+
+    // Update idea dropdown when action changes
+    updateIdeaDropdown(action);
+
+    if (action === 'Invest' && idea && idea !== 'Patents' && idea !== 'Support Kyal') {
+        investOptions.style.display = 'block';
+        paymentTypeLabel.style.display = 'none';
+        paymentTypeSelect.style.display = 'none';
+        oneoffContainer.style.display = 'none';
+        amountContainer.style.display = 'none';
+        updateInvestmentInfo();
+    } else {
+        investOptions.style.display = 'none';
+        paymentTypeLabel.style.display = 'block';
+        paymentTypeSelect.style.display = 'block';
+        if (paymentTypeSelect.value === 'monthly') {
+            amountContainer.style.display = 'block';
+            oneoffContainer.style.display = 'none';
+        } else {
+            amountContainer.style.display = 'none';
+            oneoffContainer.style.display = 'block';
+        }
+    }
+}
+
+// Event listeners for toggling
+document.getElementById('action').addEventListener('change', toggleFormOptions);
+document.getElementById('idea').addEventListener('change', toggleFormOptions);
+document.getElementById('percentage')?.addEventListener('change', updateInvestmentInfo);
+document.getElementById('payment-type').addEventListener('change', function() {
+    if (this.value === 'monthly') {
+        document.getElementById('amount-container').style.display = 'block';
+        document.getElementById('oneoff-container').style.display = 'none';
+    } else {
+        document.getElementById('amount-container').style.display = 'none';
+        document.getElementById('oneoff-container').style.display = 'block';
+    }
+});
+toggleFormOptions(); // Initial toggle
+
+document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const submitButton = this.querySelector('.submit-btn');
+    submitButton.disabled = true;
+    document.getElementById('payment-errors').textContent = '';
+    document.getElementById('payment-loading').style.display = 'block';
+
+    const isGuest = "{{ 'true' if not current_user.is_authenticated else 'false' }}" === "true";
+    const name = isGuest ? (document.getElementById('guest-name').value || 'Anonymous') : '{{ current_user.username if current_user.is_authenticated else "" }}';
+    const email = isGuest ? document.getElementById('guest-email').value : '{{ current_user.email if current_user.is_authenticated else "" }}';
+    const action = document.getElementById('action').value;
+    const idea = document.getElementById('idea').value;
+    const message = document.getElementById('message-content').value;
+
+    let amount = 0;
+    let paymentType = document.getElementById('payment-type').value;
+    let percentage = null;
+
+    if (action === 'Invest') {
+        paymentType = 'oneoff';
+        percentage = parseInt(document.getElementById('percentage').value);
+        if (isNaN(percentage) || percentage < 1 || percentage > 10) {
+            document.getElementById('payment-errors').textContent = 'Please select a valid percentage';
+            submitButton.disabled = false;
+            document.getElementById('payment-loading').style.display = 'none';
+            return;
+        }
+        const valuation = getValuation(idea);
+        amount = (percentage / 100) * valuation;
+    } else {
+        if (paymentType === 'monthly') {
+            amount = parseFloat(document.getElementById('subscription-amount').value);
+        } else {
+            amount = parseFloat(document.getElementById('oneoff-amount').value);
+        }
+    }
+
+    // Validate amount client-side
+    if (isNaN(amount) || amount < 0.50) {
+        document.getElementById('payment-errors').textContent = 'Amount must be at least 0.50 AUD';
+        submitButton.disabled = false;
+        document.getElementById('payment-loading').style.display = 'none';
+        return;
+    }
+
+    try {
+        const resp = await fetch('{{ url_for("create_payment_intent") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount, name, email, action, idea, message, paymentType, percentage })
+        });
+
+        if (!resp.ok) throw new Error(`Backend error: ${resp.status} ${resp.statusText}`);
+        const data = await resp.json();
+        if (data.error) {
+            document.getElementById('payment-errors').textContent = data.error;
+            submitButton.disabled = false;
+            document.getElementById('payment-loading').style.display = 'none';
+            return;
+        }
+
+        const { clientSecret } = data;
+        if (!clientSecret) throw new Error('No clientSecret received from backend');
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: { card: cardElement, billing_details: { name, email } }
+        });
+
+        if (error) {
+            document.getElementById('payment-errors').textContent = error.message;
+            submitButton.disabled = false;
+        } else if (paymentIntent.status === 'succeeded') {
+            alert('Payment successful! Thank you for your support.');
+            window.location.href = "{{ url_for('return_page') }}?payment_intent=" + paymentIntent.id;
+        }
+    } catch (err) {
+        document.getElementById('payment-errors').textContent = 'Payment error: ' + err.message;
+        submitButton.disabled = false;
+    } finally {
+        document.getElementById('payment-loading').style.display = 'none';
+    }
+});
+
+// Ensure investment info shows immediately if Invest is selected
+document.addEventListener('DOMContentLoaded', () => {
+    const action = document.getElementById('action').value;
+    const idea = document.getElementById('idea').value;
+    const percentage = parseInt(document.getElementById('percentage').value);
+
+    toggleFormOptions(); // Show/hide correct sections
+
+    // If action is Invest, show placeholder message immediately
+    if (action === 'Invest' && idea) {
+        const investAmountEl = document.getElementById('investment-amount');
+        const disclaimerEl = document.getElementById('disclaimer');
+        investAmountEl.textContent = 'Select a percentage to see required investment';
+        disclaimerEl.textContent = 'Disclaimer will appear once a percentage is chosen';
+    }
+});
+</script>
+{% endblock %}
