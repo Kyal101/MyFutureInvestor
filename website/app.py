@@ -15,7 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError, OperationalError
 import stripe
 import time
 from flask import Flask
-from config import Config
+from .config import Config
 
 
 app = Flask(__name__)
