@@ -14,27 +14,16 @@ from sqlalchemy import inspect, text
 from sqlalchemy.exc import SQLAlchemyError, OperationalError
 import stripe
 import time
-from flask import Flask
 from config import Config
 
-
-app = Flask(__name__)
-app.config.from_object(Config)
-
-# --- Config / Env -----------------------------------------------------------
-
-try:
-    from config import Config
-except BaseException as e:
-    raise RuntimeError("config.py missing or invalid. Please create it as per instructions.") from e
-
+# Initialize Flask app
 app = Flask(__name__)
 app.config.from_object(Config)
 
 # Static uploads folder
 UPLOADS_DIR = os.path.join(app.static_folder, "Uploads")
 os.makedirs(UPLOADS_DIR, exist_ok=True)
-app.config.setdefault("UPLOAD_FOLDER", UPLOADS_DIR)
+app.config["UPLOAD_FOLDER"] = UPLOADS_DIR
 
 # Logging
 logging.basicConfig(
@@ -45,16 +34,16 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Stripe Configuration
-stripe.api_key = app.config.get('STRIPE_SECRET_KEY')
-if not stripe.api_key or not stripe.api_key.startswith('sk_'):
+stripe.api_key = app.config.get("STRIPE_SECRET_KEY")
+if not stripe.api_key or not stripe.api_key.startswith("sk_"):
     raise RuntimeError("Invalid or missing STRIPE_SECRET_KEY in config.py")
-stripe.api_version = '2023-10-16'
-webhook_secret = app.config.get('STRIPE_WEBHOOK_SECRET')
+stripe.api_version = app.config.get("STRIPE_API_VERSION")  # Use version from config.py
+webhook_secret = app.config.get("STRIPE_WEBHOOK_SECRET")
 
-# Replace with actual Stripe Price IDs from the Stripe Dashboard
-PRICE_ID_BASIC = '$9.99'  # Replace with actual Price ID for $9.99 AUD/month
-PRICE_ID_ADVANCED = '$99.99'  # Replace with actual Price ID for $99.99 AUD/month
-PRICE_ID_PREMIUM = '$999.99'  # Replace with actual Price ID for $999.99 AUD/month
+# Stripe Price IDs from config.py
+PRICE_ID_BASIC = app.config.get("PRICE_ID_BASIC")
+PRICE_ID_ADVANCED = app.config.get("PRICE_ID_ADVANCED")
+PRICE_ID_PREMIUM = app.config.get("PRICE_ID_PREMIUM")
 
 # Extensions
 db = SQLAlchemy(app)
@@ -64,14 +53,14 @@ login_manager.login_view = "login"
 login_manager.login_message_category = "warning"
 login_manager.login_message = "Please log in first to continue."
 
-# --- JSON File Paths --------------------------------------------------------
+# JSON File Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DONATIONS_FILE = os.path.join(BASE_DIR, "donations.json")
 INVESTMENTS_FILE = os.path.join(BASE_DIR, "investments.json")
 SPONSORS_FILE = os.path.join(BASE_DIR, "sponsors.json")
 TOTALS_FILE = os.path.join(BASE_DIR, "totals.json")
 
-# --- Models -----------------------------------------------------------------
+# Models
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -79,7 +68,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     avatar_url = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    subscribed_email = db.Column(db.Boolean, default=False)  # Added for email subscription tracking
+    subscribed_email = db.Column(db.Boolean, default=False)
 
 class Donation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -87,7 +76,7 @@ class Donation(db.Model):
     idea = db.Column(db.String(100), nullable=False)
     amount = db.Column(db.Integer, nullable=False)  # Stored in cents
     message = db.Column(db.Text, nullable=True)
-    names = db.Column(db.Text, nullable=True)  # Field for delegated names
+    names = db.Column(db.Text, nullable=True)
     timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     user = db.relationship("User", backref=db.backref("donations", lazy=True))
 
@@ -97,7 +86,7 @@ class Investment(db.Model):
     idea = db.Column(db.String(100), nullable=False)
     amount = db.Column(db.Integer, nullable=False)  # Stored in cents
     benefits = db.Column(db.Text, nullable=True)
-    names = db.Column(db.Text, nullable=True)  # Field for delegated names
+    names = db.Column(db.Text, nullable=True)
     timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     user = db.relationship("User", backref=db.backref("investments", lazy=True))
 
@@ -113,7 +102,7 @@ class Subscription(db.Model):
     updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     user = db.relationship("User", backref=db.backref("subscriptions", lazy=True))
 
-# --- Ensure email column exists in SQLite ---
+# Ensure email column exists in SQLite
 with app.app_context():
     inspector = inspect(db.engine)
     if 'subscription' in inspector.get_table_names():
@@ -128,7 +117,7 @@ with app.app_context():
             db.session.execute(text(f'ALTER TABLE subscription ADD COLUMN updated_at DATETIME DEFAULT "{datetime.now(timezone.utc).isoformat()}"'))
             db.session.commit()
 
-# --- User Loader for Flask-Login --------------------------------------------
+# User Loader for Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
     try:
@@ -149,7 +138,7 @@ def load_user(user_id):
         db.session.rollback()
         return None
 
-# --- JSON ↔ DB migration helpers -------------------------------------------
+# JSON ↔ DB migration helpers
 def load_json(file_path, default=None):
     if default is None:
         default = []
@@ -200,7 +189,6 @@ def ensure_database_schema():
                 logger.info("Adding names column to Investment table...")
                 with db.engine.connect() as conn:
                     conn.execute(text("ALTER TABLE investment ADD COLUMN names TEXT"))
-            # Ensure subscribed_email column exists
             if 'subscribed_email' not in user_columns:
                 logger.info("Adding subscribed_email column to User table...")
                 with db.engine.connect() as conn:
@@ -293,7 +281,7 @@ def migrate_json_to_db():
             logger.error(f"Error in migrate_json_to_db: {e}")
             db.session.rollback()
 
-# --- Ideas catalog ----------------------------------------------------------
+# Ideas catalog
 raw_ideas = [
     {
         "name": "JARVI3",
@@ -447,48 +435,38 @@ def get_ideas():
 
 def get_total_raised_by_idea():
     try:
-        # Load initial totals from totals.json as fallback
         totals_data = load_json(TOTALS_FILE, default={})
         total_raised_by_idea = {idea["name"]: totals_data.get(idea["name"], 0.0) for idea in raw_ideas}
-        
-        # Ensure EcoKure has at least $23,400 from NEIS funding
         total_raised_by_idea["EcoKure"] = max(total_raised_by_idea.get("EcoKure", 0.0), 23400.0)
         
-        # Aggregate donations and investments from database
         for idea in raw_ideas:
-            # Sum donations (in dollars, converted from cents)
             donations_sum = (
                 db.session.query(db.func.coalesce(db.func.sum(Donation.amount), 0))
                 .filter(Donation.idea == idea["name"])
                 .scalar() or 0
             ) / 100.0
-            # Sum investments (in dollars, converted from cents)
             investments_sum = (
                 db.session.query(db.func.coalesce(db.func.sum(Investment.amount), 0))
                 .filter(Investment.idea == idea["name"])
                 .scalar() or 0
             ) / 100.0
-            # Add to initial totals
             total_raised_by_idea[idea["name"]] += donations_sum + investments_sum
         
-        # Save updated totals to totals.json
         save_json(TOTALS_FILE, total_raised_by_idea)
         return total_raised_by_idea
     except SQLAlchemyError as e:
         logger.error(f"Error calculating total_raised_by_idea: {str(e)}")
-        # Fallback to totals.json if database query fails
         return totals_data if totals_data else {"EcoKure": 23400.0}
 
 def get_total_raised():
     try:
-        # Sum all totals from total_raised_by_idea
         total_raised_by_idea = get_total_raised_by_idea()
         return int(sum(total_raised_by_idea.values()))
     except Exception as e:
         logger.error(f"Error calculating total raised: {str(e)}")
-        return 23400  # Fallback to minimum EcoKure NEIS funding
+        return 23400
 
-# --- Routes -----------------------------------------------------------------
+# Routes
 @app.route("/")
 def index():
     ideas = get_ideas()
@@ -543,7 +521,7 @@ def spacify(text):
 def join_ecosystem():
     return render_template("join_ecosystem.html", username=session.get("username"))
 
-# --- Auth Routes ------------------------------------------------------------
+# Auth Routes
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -552,12 +530,10 @@ def signup():
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
 
-        # Check for missing fields
         if not all([username, email, password, confirm_password]):
             flash("All fields are required.", "error")
             return redirect(url_for("signup"))
 
-        # Password validation rules
         errors = []
         if len(password) < 8:
             errors.append("Password must be at least 8 characters long.")
@@ -577,7 +553,6 @@ def signup():
                 flash(error, "error")
             return redirect(url_for("signup"))
 
-        # Check for duplicate username or email
         if User.query.filter_by(username=username).first():
             flash("Username already exists.", "error")
             return redirect(url_for("signup"))
@@ -645,7 +620,7 @@ def logout():
     flash("Logged out successfully.", "success")
     return redirect(url_for("index"))
 
-# --- Debug Routes -----------------------------------------------------------
+# Debug Routes
 @app.route("/clear-session")
 def clear_session():
     session.clear()
@@ -681,7 +656,7 @@ def health():
         logger.error(f"Health check failed: {str(e)}")
         return jsonify({"status": "unhealthy", "error": str(e)}), 500
 
-# --- Create Stripe Customer -----------------------------------------------
+# Create Stripe Customer
 @app.route("/create-customer", methods=["POST"])
 def create_customer():
     data = request.get_json()
@@ -691,7 +666,6 @@ def create_customer():
     if not email:
         return jsonify({'error': 'Email is required'}), 400
 
-    # Check for existing customer
     existing_customers = stripe.Customer.list(email=email).data
     if existing_customers:
         customer = existing_customers[0]
@@ -709,18 +683,16 @@ def create_customer():
         logger.error(f"Error creating Stripe customer: {e}")
         return jsonify({'error': str(e)}), 400
 
-# --- Create PaymentIntent -------------------------------------------------
+# Create PaymentIntent
 @app.route("/create-payment-intent", methods=["POST"])
 def create_payment_intent():
     data = request.get_json()
     try:
-        # Validate amount
         amount = float(data.get("amount", 0))
         if amount < 0.50:
             return jsonify({"error": "Amount must be at least $0.50"}), 400
         amount_cents = int(amount * 100)
 
-        # Determine email and user
         if current_user.is_authenticated:
             email = current_user.email
             user_id = current_user.id
@@ -754,7 +726,7 @@ def create_payment_intent():
         logger.error(f"Server error creating PaymentIntent: {e}")
         return jsonify({"error": "Internal server error"}), 500
 
-# --- Stripe Webhook -------------------------------------------------------
+# Stripe Webhook
 @app.route("/webhook", methods=["POST"])
 def webhook():
     payload = request.get_data(as_text=True)
@@ -778,7 +750,7 @@ def webhook():
             action = metadata.get("action", "Donate")
             idea = metadata.get("idea", "General")
             message = metadata.get("message", "")
-            amount = payment_intent["amount"]  # cents
+            amount = payment_intent["amount"]
 
             user = User.query.get(int(user_id)) if user_id else None
             logger.info(f"Webhook: Processing payment for user: {user.username if user else 'Guest'}, action: {action}")
@@ -804,7 +776,6 @@ def webhook():
                 logger.info(f"{metadata.get('name', 'Guest')} donated ${amount/100} to {idea}")
 
             db.session.commit()
-            # Update totals.json after successful payment
             total_raised_by_idea = get_total_raised_by_idea()
             total_raised_by_idea[idea] = total_raised_by_idea.get(idea, 0.0) + (amount / 100.0)
             save_json(TOTALS_FILE, total_raised_by_idea)
@@ -816,7 +787,7 @@ def webhook():
         db.session.rollback()
         return jsonify({"error": "Webhook processing failed"}), 500
 
-# --- Cancel Subscription --------------------------------------------------
+# Cancel Subscription
 @app.route("/cancel-subscription", methods=["POST"])
 def cancel_subscription():
     data = request.get_json()
@@ -836,7 +807,7 @@ def cancel_subscription():
         logger.error(f"Error canceling subscription: {e}")
         return jsonify({'error': str(e)}), 400
 
-# --- Invest Page ----------------------------------------------------------
+# Invest Page
 @app.route("/invest", methods=["GET", "POST"])
 def invest():
     ideas = get_ideas()
@@ -856,16 +827,15 @@ def invest():
             flash("Please log in to invest.", "error")
             return redirect(url_for("login"))
 
-        # Redirect to Stripe Checkout for monthly subscription
         try:
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types=["card"],
-                mode="subscription",  # recurring monthly payment
+                mode="subscription",
                 line_items=[{
                     "price_data": {
                         "currency": "aud",
                         "product_data": {"name": f"Investment in {idea_name}"},
-                        "unit_amount": int(amount * 100),  # Stripe expects cents
+                        "unit_amount": int(amount * 100),
                         "recurring": {"interval": "month"}
                     },
                     "quantity": 1,
@@ -888,7 +858,7 @@ def invest():
         stripe_publishable_key=app.config.get('STRIPE_PUBLISHABLE_KEY')
     )
 
-# --- Donate Page ----------------------------------------------------------
+# Donate Page
 @app.route("/donate", methods=["GET", "POST"])
 def donate():
     customer_id = request.args.get('customer_id') or request.form.get('customer_id')
@@ -901,11 +871,10 @@ def donate():
             flash("Invalid donation amount.", "error")
             return redirect(url_for("donate"))
 
-        # Stripe Checkout one-time payment for donation
         try:
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types=["card"],
-                mode="payment",  # one-time payment
+                mode="payment",
                 line_items=[{
                     "price_data": {
                         "currency": "aud",
@@ -933,7 +902,7 @@ def donate():
         stripe_publishable_key=app.config.get('STRIPE_PUBLISHABLE_KEY')
     )
 
-# --- Subscribe Route ------------------------------------------------------
+# Subscribe Route
 @app.route("/subscribe", methods=["POST"])
 @login_required
 def subscribe():
@@ -945,7 +914,6 @@ def subscribe():
             flash("Please select a valid subscription amount.", "error")
             return redirect(url_for("profile"))
 
-        # Create Stripe subscription for monthly recurring payment
         stripe_customer = stripe.Customer.create(email=email, name=current_user.username)
 
         price_data = stripe.Price.create(
@@ -971,7 +939,7 @@ def subscribe():
         flash(f"Error creating subscription: {str(e)}", "error")
         return redirect(url_for("profile"))
 
-# --- Email Subscription Handler ---
+# Email Subscription Handler
 @app.route("/subscribe_email", methods=["POST"])
 @login_required
 def subscribe_email():
@@ -979,7 +947,6 @@ def subscribe_email():
         email = current_user.email
         subscription_type = request.form.get("subscription_type", "Email")
 
-        # Create or update subscription record
         subscription = Subscription.query.filter_by(user_id=current_user.id).first()
         if not subscription:
             subscription = Subscription(user_id=current_user.id, email=email)
@@ -989,7 +956,6 @@ def subscribe_email():
         subscription.status = "Active"
         subscription.created_at = subscription.created_at or datetime.now(timezone.utc)
 
-        # Update user email subscription flag
         current_user.subscribed_email = True
 
         db.session.commit()
@@ -1000,7 +966,7 @@ def subscribe_email():
         flash(f"Error updating email subscription: {str(e)}", "error")
         return redirect(url_for("profile"))
 
-# --- Unsubscribe Handler ---
+# Unsubscribe Handler
 @app.route("/unsubscribe", methods=["POST"])
 @login_required
 def unsubscribe():
@@ -1030,13 +996,12 @@ def unsubscribe():
         flash(f"Error unsubscribing: {str(e)}", "error")
         return redirect(url_for("profile"))
 
-# --- Placeholder Stripe Payment Function ---
+# Placeholder Stripe Payment Function
 def stripe_payment(amount, email):
-    # Replace with real Stripe API call
     print(f"Charging {email} an amount of {amount}")
     return True
 
-# --- Return Page -----------------------------------------------------------
+# Return Page
 @app.route("/return")
 def return_page():
     session_id = request.args.get('session_id')
@@ -1053,7 +1018,7 @@ def return_page():
         flash("Error verifying payment. Please contact support.", "error")
     return render_template("return.html")
 
-# --- Profile Page ----------------------------------------------------------
+# Profile Page
 @app.route("/profile")
 @login_required
 def profile():
@@ -1064,11 +1029,8 @@ def profile():
             flash("User not found. Please log in again.", "error")
             return redirect(url_for("login"))
 
-        # Fetch user donations and investments
         donations = Donation.query.filter_by(user_id=user.id).order_by(Donation.timestamp.desc()).all()
         investments = Investment.query.filter_by(user_id=user.id).order_by(Investment.timestamp.desc()).all()
-
-        # Fetch active subscription
         subscription = Subscription.query.filter_by(user_id=user.id, status="Active").first()
 
         return render_template(
@@ -1084,12 +1046,12 @@ def profile():
         flash("Error loading profile. Please try again.", "error")
         return redirect(url_for("login"))
 
-# --- API --------------------------------------------------------------------
+# API
 @app.route("/total-raised")
 def get_total_raised_json():
     return jsonify({"total_raised": get_total_raised()})
 
-# --- Project + Detail Pages -------------------------------------------------
+# Project + Detail Pages
 @app.route("/property_solutions_australia")
 def property_solutions_australia():
     return render_template("property_solutions_australia_details.html")
@@ -1179,7 +1141,7 @@ def join_a_team():
         total_raised=total_raised,
     )
 
-# --- App bootstrap ----------------------------------------------------------
+# App bootstrap
 with app.app_context():
     max_retries = 3
     for attempt in range(max_retries):
@@ -1192,8 +1154,7 @@ with app.app_context():
                 migrate_json_to_db()
             else:
                 logger.info("Database schema already exists")
-                ensure_database_schema()  # Ensure schema is up-to-date
-            # Verify database connectivity
+                ensure_database_schema()
             db.session.execute(text("SELECT 1"))
             logger.info("Database connection established at startup")
             break
@@ -1201,7 +1162,7 @@ with app.app_context():
             logger.error(f"Database initialization failed (attempt {attempt + 1}/{max_retries}): {str(e)}")
             if attempt == max_retries - 1:
                 raise RuntimeError(f"Failed to initialize database after {max_retries} attempts: {str(e)}")
-            time.sleep(1)  # Wait before retrying
+            time.sleep(1)
         except Exception as e:
             logger.error(f"Unexpected error during database initialization: {str(e)}")
             raise
